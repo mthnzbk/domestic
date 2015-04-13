@@ -3,14 +3,15 @@ from PyQt5.QtWidgets import QWidget, QGridLayout, QTreeWidgetItem, QTreeWidget
 class FirstPage(QWidget):
     def __init__(self, parent=None):
         super(QWidget, self).__init__(parent)
+        self.parent = parent
         self.gridLayout = QGridLayout(self)
         self.gridLayout.setContentsMargins(0, 0, 0, 0)
 
         self.treeWidget = QTreeWidget(self)
-        item_0 = QTreeWidgetItem(self.treeWidget)
+
         self.gridLayout.addWidget(self.treeWidget, 0, 0, 1, 1)
 
-        self.treeWidget.clicked['QModelIndex'].connect(self.close)
+        self.treeWidget.itemClicked.connect(self.feedClick)
 
         self.treeWidget.headerItem().setText(0, "Site")
         self.treeWidget.headerItem().setText(1, "Başlık")
@@ -18,8 +19,21 @@ class FirstPage(QWidget):
         self.treeWidget.headerItem().setText(3, "Kategori")
         self.treeWidget.headerItem().setText(4, "Tarih")
 
-        self.treeWidget.topLevelItem(0).setText(0, "MetehanUs")
-        self.treeWidget.topLevelItem(0).setText(1, "Pygame Time Modülü")
-        self.treeWidget.topLevelItem(0).setText(2, "Özbek Metehan")
-        self.treeWidget.topLevelItem(0).setText(3, "Python, pygame")
-        self.treeWidget.topLevelItem(0).setText(4, "25.06.1990")
+
+    def feedClick(self, a, b):
+        self.parent.setCurrentIndex(1)
+        w = self.parent.currentWidget()
+        w.addTextBrowser(a.content)
+
+    def feedList(self, l=None):
+        if len(l):
+            for i in l:
+                item = QTreeWidgetItem(self.treeWidget)
+                item.setText(0, i[0])
+                item.setText(1, i[1])
+                item.setText(2, i[2])
+                item.setText(3, i[3])
+                item.setText(4, i[5])
+                item.content = i[6]
+        else:
+            self.treeWidget.clear()

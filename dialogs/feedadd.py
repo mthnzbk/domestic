@@ -15,6 +15,10 @@ class FeedAddDialog(QDialog):
         self.vLayout.addWidget(self.labelFeed)
         self.lineEditURI = QLineEdit(self)
         self.vLayout.addWidget(self.lineEditURI)
+        self.labelWarning = QLabel(self)
+        self.labelWarning.setText("<span style='color:red; font-size:15px; font-weight:bold; align:'center';'>Yanlış bağlantı adı girdiniz!</span>")
+        self.labelWarning.hide()
+        self.vLayout.addWidget(self.labelWarning)
         self.line = QFrame(self)
         self.line.setFrameShape(QFrame.HLine)
         self.line.setFrameShadow(QFrame.Sunken)
@@ -28,6 +32,7 @@ class FeedAddDialog(QDialog):
 
         self.vLayout.addWidget(self.buttonBox)
         self.lineEditURI.returnPressed.connect(self.buttonBox.button(QDialogButtonBox.Save).animateClick)
+        self.lineEditURI.textChanged.connect(self.labelWarning.hide)
 
         self.setWindowTitle("Yeni Besleme")
         self.labelTitle.setText("<span style=' font-size:16pt; font-weight:600;'>Yeni Besleme Ekle</span>")
@@ -46,6 +51,7 @@ class FeedAddDialog(QDialog):
             db = ReaderDb()
             db.feedAddDb(url=data[0], title=data[1])
             self.close()
-        else: pass
+        else:
+            self.labelWarning.show()
 
 

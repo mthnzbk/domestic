@@ -1,9 +1,11 @@
 from PyQt5.QtWidgets import QDialog, QVBoxLayout, QTabWidget, QWidget, QGridLayout, QLabel, QTextBrowser, QDialogButtonBox
+from PyQt5.QtWidgets import QApplication as app
 
 class About(QDialog):
     def __init__(self, parent=None):
         super(QDialog, self).__init__(parent)
-        self.resize(640, 480)
+        self.setMinimumSize(600, 480)
+        self.setMaximumSize(600,480)
         self.verticalLayout = QVBoxLayout(self)
         self.tabWidget = QTabWidget(self)
         self.tabVersion = QWidget()
@@ -42,4 +44,15 @@ class About(QDialog):
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tabVersion), "Sürüm Bilgileri")
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tabLicense), "Lisans")
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tabDonate), "Bağış Yapın")
+        self.labelAbout.setText("""
+        <p align="center"><img src=":/images/rss-icon-128.png"/></p>
+        <p align="center"><span style=" font-size:20pt; font-weight:bold;">{}</span></p>
+        <p align="center">Sürüm: {}</p><p align="center"></p>
+        <p>Domestic RSS Reader, çapraz platformlu, özgür ve ücretsiz bir</p>
+        <p>RSS/Atom besleme okuyucusudur.</p>
+        <p>PyQt5(Qt5), Python3.4 ve sqlite3 ile oluşturulmuştur.</p>
+        <p>Lisans: Gpl v3</p>
+        <p align="center">Copyright © 2015 Metehan Özbek - <a href="http://metehan.us">
+            <span style=" color:#0000ff;">metehan.us</span></a></p>
+                                """.format(app.applicationName(), app.applicationVersion()))
 

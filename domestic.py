@@ -1,8 +1,9 @@
-from PyQt5.QtGui import *
 from PyQt5.QtCore import *
+from PyQt5.QtGui import QIcon, QPixmap
 from PyQt5.QtWidgets import *
 from widgets import *
 from dialogs import *
+import resource
 
 class MainWindow(QMainWindow):
     def __init__(self, parent=None):
@@ -10,6 +11,9 @@ class MainWindow(QMainWindow):
         self.setWindowTitle("XXX - {} {}".format(QApplication.applicationName(),QApplication.applicationVersion()))
         self.resize(Settings.value("MainWindow/size"))
         self.move(Settings.value("MainWindow/position"))
+        icon = QIcon()
+        icon.addPixmap(QPixmap(":/images/rss-icon-128.png"))
+        self.setWindowIcon(icon)
         self.widget = QWidget(self)
         self.setCentralWidget(self.widget)
 
@@ -21,10 +25,13 @@ class MainWindow(QMainWindow):
 
         self.treeWidget = TreeWidget(self.splitter)
         self.treeWidget.resize(Settings.value("TreeWidget/size"))
+
         self.toolBox = ToolBox(self.splitter)
         self.toolBox.resize(Settings.value("ToolBox/size"))
 
         self.page = FirstPage(self.toolBox)
+        self.treeWidget.unreadFolderSignal.connect(self.page.feedList)
+        self.treeWidget.deletedFolderSignal.connect(self.page.feedList)
         self.toolBox.addItem(self.page, "")
 
         self.page2 = LastPage(self.toolBox)
@@ -74,7 +81,7 @@ def main():
     translator.load(os.path.join(QDir.currentPath(), "languages"), "{}".format(LOCALE))
     app.installTranslator(translator)
     app.setApplicationName("Domestic RSS Reader")
-    app.setApplicationVersion("0.0.2")
+    app.setApplicationVersion("0.0.2.1")
 
     mainWindow = MainWindow()
     mainWindow.show()
