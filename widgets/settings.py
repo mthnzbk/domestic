@@ -11,4 +11,3 @@ else:
 def initial():
     if not QFile.exists(Settings.fileName()):
         pass
-        #settings.setValue("Genel/Yol", QDir.homePath())

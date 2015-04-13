@@ -9,6 +9,4 @@ class Splitter(QSplitter):
         self.setOpaqueResize(True)
         self.setHandleWidth(5)
         self.setChildrenCollapsible(False)
-        print(Settings.value("Splitter/state"))
-
         self.restoreState(Settings.value("Splitter/state"))

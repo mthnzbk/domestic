@@ -39,8 +39,6 @@ class TreeWidget(QTreeWidget):
         self.addAction(self.actionPreference)'''
 
 
-        self.pressed['QModelIndex'].connect(self.expandAll)
-
         item_0 = QTreeWidgetItem(self)
         item_0 = QTreeWidgetItem(self)
         item_0 = QTreeWidgetItem(self)

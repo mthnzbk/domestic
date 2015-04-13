@@ -6,7 +6,6 @@ class FeedAddDialog(QDialog):
     def __init__(self, parent=None):
         super(QDialog, self).__init__(parent)
         self.resize(400, 150)
-
         self.vLayout = QVBoxLayout(self)
         self.vLayout.setSpacing(5)
         self.vLayout.setContentsMargins(5, 5, 5, 5)
