@@ -5,6 +5,7 @@ from widgets.settings import Settings
 class Splitter(QSplitter):
     def __init__(self, parent=None):
         super(QSplitter, self).__init__(parent)
+        self.parent = parent
         self.setOrientation(Qt.Horizontal)
         self.setOpaqueResize(True)
         self.setHandleWidth(5)

@@ -1,0 +1,22 @@
+<RCC>
+    <qresource prefix="/">
+        <file>images/rss-icon-128.png</file>
+        <file>images/donate-button.png</file>
+        <file>images/icons/exit.png</file>
+        <file>images/icons/edit_add.png</file>
+        <file>images/icons/bookmark.png</file>
+        <file>images/icons/bookmark_disable.png</file>
+        <file>images/icons/folder_yellow.png</file>
+        <file>images/icons/configure.png</file>
+        <file>images/icons/reload.png</file>
+        <file>images/icons/trash_empty.png</file>
+        <file>images/icons/trash_full.png</file>
+        <file>images/icons/folder_home.png</file>
+        <file>images/icons/folder_html.png</file>
+        <file>images/icons/folder_tar.png</file>
+        <file>images/icons/apply.png</file>
+        <file>images/icons/button_cancel.png</file>
+        <file>images/icons/info.png</file>
+        <file>images/icons/web.png</file>
+    </qresource>
+</RCC>
