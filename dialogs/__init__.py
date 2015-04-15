@@ -1,3 +1,3 @@
-from dialogs.feedadd import FeedAddDialog
-from dialogs.feedfolderadd import FeedFolderDialog
+from dialogs.rssadd import RSSAddDialog
+from dialogs.rssfolderadd import RSSFolderDialog
 from dialogs.about import About
