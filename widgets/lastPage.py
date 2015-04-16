@@ -1,19 +1,23 @@
-from PyQt5.QtWidgets import QWidget, QGridLayout
+from PyQt5.QtWidgets import QWidget, QVBoxLayout, QLabel
 from PyQt5.QtWebKitWidgets import QWebView
 from PyQt5.QtGui import QDesktopServices
 from PyQt5.QtCore import QUrl
+from widgets.settings import Settings
 
 class LastPage(QWidget):
     def __init__(self, parent=None):
         super(QWidget, self).__init__(parent)
-        self.gridLayout = QGridLayout(self)
-        self.gridLayout.setContentsMargins(0, 0, 0, 0)
-        self.textBrowser = QWebView(self)
-        self.textBrowser.linkClicked.connect(self.linkClick)
-        self.gridLayout.addWidget(self.textBrowser, 0, 0, 1, 1)
+        self.Layout = QVBoxLayout(self)
+        self.Layout.setContentsMargins(0, 0, 0, 0)
+        self.browser = QWebView(self)
+        self.browser.resize(Settings.value("ToolWebView/size"))
+        self.browser.linkClicked.connect(self.linkClick)
+        self.infoLabel = QLabel(self)
+        self.Layout.addWidget(self.infoLabel)
+        self.Layout.addWidget(self.browser)
 
-    def addTextBrowser(self, data):
-        self.textBrowser.setHtml(data)
+    def addBrowser(self, data):
+        self.browser.setHtml(data)
 
     def linkClick(self, url):
         print(url)

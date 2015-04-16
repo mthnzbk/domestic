@@ -1,7 +1,6 @@
 from PyQt5.QtWidgets import QMenu, QAction, QApplication
 from PyQt5.QtGui import QDesktopServices, QIcon
 from PyQt5.QtCore import QUrl
-from core import ReaderDb, readAllFeedEntries
 
 class FileMenu(QMenu):
     def __init__(self, parent = None):
@@ -39,45 +38,27 @@ class FeedMenu(QMenu):
     def __init__(self, parent = None):
         super(QMenu, self).__init__(parent)
         self.setTitle("Beslemeler")
-        self.actionRefresh = QAction(self)
-        self.actionRefresh.setIcon(QIcon(":/images/icons/reload.png"))
-        self.actionRefresh.triggered.connect(self.feedsUpdate)
-        self.actionFeedRefresh = QAction(self)
-        self.actionFeedRefresh.setIcon(QIcon(":/images/icons/reload.png"))
+        self.actionAllRefresh = QAction(self)
+        self.actionAllRefresh.setIcon(QIcon(":/images/icons/reload.png"))
         self.actionDelete = QAction(self)
         self.actionDelete.setIcon(QIcon(":/images/icons/button_cancel.png"))
         self.actionInfo = QAction(self)
         self.actionInfo.setIcon(QIcon(":/images/icons/info.png"))
-        self.actionReadMark = QAction(self)
-        self.actionReadMark.setIcon(QIcon(":/images/icons/apply.png"))
         self.actionStoreAdd = QAction(self)
         self.actionStoreAdd.setIcon(QIcon(":/images/icons/folder_tar.png"))
 
-        self.addAction(self.actionFeedRefresh)
-        self.addAction(self.actionRefresh)
+        self.addAction(self.actionAllRefresh)
         self.addSeparator()
-        self.addAction(self.actionReadMark)
         self.addAction(self.actionStoreAdd)
         self.addAction(self.actionDelete)
         self.addSeparator()
         self.addAction(self.actionInfo)
 
-        self.actionRefresh.setText("Tümünü güncelle")
-        self.actionRefresh.setShortcut("Ctrl+F5")
-        self.actionFeedRefresh.setText("Besleme güncelle")
-        self.actionFeedRefresh.setShortcut("F5")
+        self.actionAllRefresh.setText("Tümünü güncelle")
+        self.actionAllRefresh.setShortcut("F5")
         self.actionDelete.setText("Sil")
         self.actionInfo.setText("Özellikler")
-        self.actionReadMark.setText("Okundu/Okunmadı olarak işaretle")
         self.actionStoreAdd.setText("Sakla")
-
-    def feedsUpdate(self):
-        db = ReaderDb()
-        feedList = db.rssList()
-        data = readAllFeedEntries(feedList)
-        db.updateFeed(data)
-        #self.unreadTitleSignal.emit(self.unreadFolder.text(0))
-        #self.unreadFolderSignal.emit(feedList)
 
 class ToolsMenu(QMenu):
     def __init__(self, parent = None):

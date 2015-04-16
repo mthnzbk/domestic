@@ -1,6 +1,3 @@
-from widgets.splitter import Splitter
-from widgets.toolBar import ToolBar
-from widgets.menuBar import MenuBar
 from widgets.statusBar import StatusBar
 from widgets.treewidget import TreeWidget
 from widgets.firstPage import FirstPage
