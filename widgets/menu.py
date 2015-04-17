@@ -5,7 +5,7 @@ from PyQt5.QtCore import QUrl
 class FileMenu(QMenu):
     def __init__(self, parent = None):
         super(QMenu, self).__init__(parent)
-        self.setTitle("Dosya")
+        self.setTitle(self.tr("Dosya"))
         self.menuAdd = AddMenu(self)
         self.actionExit = QAction(self)
         self.actionExit.setIcon(QIcon(":/images/icons/exit.png"))
@@ -14,13 +14,13 @@ class FileMenu(QMenu):
         self.addSeparator()
         self.addAction(self.actionExit)
 
-        self.actionExit.setText("Çıkış")
+        self.actionExit.setText(self.tr("Çıkış"))
         self.actionExit.setShortcut("Ctrl+W")
 
 class AddMenu(QMenu):
     def __init__(self, parent = None):
         super(QMenu, self).__init__(parent)
-        self.setTitle("Ekle")
+        self.setTitle(self.tr("Ekle"))
         self.actionFeedAdd = QAction(self)
         self.actionFeedAdd.setIcon(QIcon(":/images/icons/edit_add.png"))
         self.actionFolderAdd = QAction(self)
@@ -29,17 +29,17 @@ class AddMenu(QMenu):
         self.addAction(self.actionFeedAdd)
         self.addAction(self.actionFolderAdd)
 
-        self.actionFeedAdd.setText("Besleme Ekle")
+        self.actionFeedAdd.setText(self.tr("Besleme Ekle"))
         self.actionFeedAdd.setShortcut("Ctrl+N")
-        self.actionFolderAdd.setText("Dizin Ekle")
+        self.actionFolderAdd.setText(self.tr("Dizin Ekle"))
         self.actionFolderAdd.setShortcut("Ctrl+Shift+N")
 
 class FeedMenu(QMenu):
     def __init__(self, parent = None):
         super(QMenu, self).__init__(parent)
-        self.setTitle("Beslemeler")
-        self.actionAllRefresh = QAction(self)
-        self.actionAllRefresh.setIcon(QIcon(":/images/icons/reload.png"))
+        self.setTitle(self.tr("Beslemeler"))
+        self.actionAllUpdate = QAction(self)
+        self.actionAllUpdate.setIcon(QIcon(":/images/icons/reload.png"))
         self.actionDelete = QAction(self)
         self.actionDelete.setIcon(QIcon(":/images/icons/button_cancel.png"))
         self.actionInfo = QAction(self)
@@ -47,23 +47,23 @@ class FeedMenu(QMenu):
         self.actionStoreAdd = QAction(self)
         self.actionStoreAdd.setIcon(QIcon(":/images/icons/folder_tar.png"))
 
-        self.addAction(self.actionAllRefresh)
+        self.addAction(self.actionAllUpdate)
         self.addSeparator()
         self.addAction(self.actionStoreAdd)
         self.addAction(self.actionDelete)
         self.addSeparator()
         self.addAction(self.actionInfo)
 
-        self.actionAllRefresh.setText("Tümünü güncelle")
-        self.actionAllRefresh.setShortcut("F5")
-        self.actionDelete.setText("Sil")
-        self.actionInfo.setText("Özellikler")
-        self.actionStoreAdd.setText("Sakla")
+        self.actionAllUpdate.setText(self.tr("Tümünü güncelle"))
+        self.actionAllUpdate.setShortcut("F5")
+        self.actionDelete.setText(self.tr("Sil"))
+        self.actionInfo.setText(self.tr("Özellikler"))
+        self.actionStoreAdd.setText(self.tr("Sakla"))
 
 class ToolsMenu(QMenu):
     def __init__(self, parent = None):
         super(QMenu, self).__init__(parent)
-        self.setTitle("Araçlar")
+        self.setTitle(self.tr("Araçlar"))
         self.actionSettings = QAction(self)
         self.actionSettings.setIcon(QIcon(":/images/icons/configure.png"))
         self.actionDownloaded = QAction(self)
@@ -74,14 +74,14 @@ class ToolsMenu(QMenu):
         self.actionDownloaded.setEnabled(False)
         self.actionSettings.setEnabled(False)
 
-        self.actionSettings.setText("Seçenekler")
+        self.actionSettings.setText(self.tr("Seçenekler"))
         self.actionSettings.setShortcut("Ctrl+O")
-        self.actionDownloaded.setText("İndirilenler")
+        self.actionDownloaded.setText(self.tr("İndirilenler"))
 
 class HelpMenu(QMenu):
     def __init__(self, parent = None):
         super(QMenu, self).__init__(parent)
-        self.setTitle("Yardım")
+        self.setTitle(self.tr("Yardım"))
         self.actionUpdateControl = QAction(self)
         self.actionUpdateControl.setDisabled(True)
         self.actionReport = QAction(self)
@@ -97,10 +97,10 @@ class HelpMenu(QMenu):
         self.addAction(self.actionQtAbout)
         self.addAction(self.actionAbout)
 
-        self.actionUpdateControl.setText("Güncellemeyi kontrol et")
-        self.actionReport.setText("Sorun bildir")
-        self.actionQtAbout.setText("Qt Hakkında")
-        self.actionAbout.setText("Hakkında")
+        self.actionUpdateControl.setText(self.tr("Güncellemeyi kontrol et"))
+        self.actionReport.setText(self.tr("Sorun bildir"))
+        self.actionQtAbout.setText(self.tr("Qt Hakkında"))
+        self.actionAbout.setText(self.tr("Hakkında"))
 
     def openUrl(self):
         QDesktopServices.openUrl(QUrl("https://github.com/mthnzbk/domestic/issues"))

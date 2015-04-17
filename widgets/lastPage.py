@@ -2,7 +2,9 @@ from PyQt5.QtWidgets import QWidget, QVBoxLayout, QLabel
 from PyQt5.QtWebKitWidgets import QWebView
 from PyQt5.QtGui import QDesktopServices
 from PyQt5.QtCore import QUrl
-from widgets.settings import Settings
+
+from core.settings import Settings
+
 
 class LastPage(QWidget):
     def __init__(self, parent=None):
@@ -19,6 +21,6 @@ class LastPage(QWidget):
     def addBrowser(self, data):
         self.browser.setHtml(data)
 
-    def linkClick(self, url):
+    def linkClick(self, url): # FIXME
         print(url)
         QDesktopServices.openUrl(QUrl(url))

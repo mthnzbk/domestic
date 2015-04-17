@@ -110,7 +110,7 @@ class TreeWidget(QTreeWidget):
         data = db.execute("select * from store where isstore=1")
         feedList = data.fetchall()
         db.close()
-        self.storeFolderClicked.emit(feedList)
+        #self.storeFolderClicked.emit(feedList)
         print(len(feedList), feedList)
         if len(feedList) > 0:
             self.storeFolder.setText(0, self.tr("Saklananlar ({})").format(len(feedList)))
@@ -126,7 +126,7 @@ class TreeWidget(QTreeWidget):
             if len(feedList) > 0:
                 self.unreadFolder.setText(0, self.tr("Okunmamışlar ({})").format(len(feedList)))
                 self.deletedFolder.setIcon(0, QIcon(":/images/icons/trash_full.png"))
-        else:pass
+        else: self.unreadFolder.setText(0, self.tr("Okunmamışlar"))
 
     deletedFolderClicked = pyqtSignal(list)
     def deletedFolderClick(self):
@@ -135,7 +135,8 @@ class TreeWidget(QTreeWidget):
         print(len(feedList), feedList)
         self.deletedFolderClicked.emit(feedList)
         if len(feedList) > 0:
-                self.deletedFolder.setText(0, self.tr("Silinenler ({})").format(len(feedList)))
+            self.deletedFolder.setText(0, self.tr("Silinenler ({})").format(len(feedList)))
+        else: self.deletedFolder.setText(0, self.tr("Silinenler"))
 
     storeFolderClicked = pyqtSignal(list)
     def storeFolderClick(self):
@@ -145,6 +146,7 @@ class TreeWidget(QTreeWidget):
         print(len(feedList), feedList)
         if len(feedList) > 0:
             self.storeFolder.setText(0, self.tr("Saklananlar ({})").format(len(feedList)))
+        else: self.storeFolder.setText(0, self.tr("Saklananlar"))
 
     def allFeedFolderClick(self):
         if self.allFeedFolder.isExpanded():
