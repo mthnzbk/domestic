@@ -1,47 +1,73 @@
 from PyQt5.QtWidgets import QTreeWidget, QTreeWidgetItem, QAbstractItemView
 from PyQt5.QtCore import Qt, QSize, pyqtSignal
-from core import ReaderDb, readAllFeedEntries
+from PyQt5.QtGui import QIcon
+from core import ReaderDb
 
 class TreeWidget(QTreeWidget):
-    unreadFolderSignal = pyqtSignal(list)
-    deletedFolderSignal = pyqtSignal(list)
-    storeFolderSignal = pyqtSignal(list)
     def __init__(self, parent=None):
         super(QTreeWidget, self).__init__(parent)
         self.parent = parent
         self.setContextMenuPolicy(Qt.ActionsContextMenu)
         self.setAlternatingRowColors(True)
-        self.setIconSize(QSize(12, 12))
+        self.setIconSize(QSize(24, 24))
         self.setAnimated(True)
         self.header().setVisible(False)
         self.headerItem().setText(0,"Feed")
-        self.setSelectionMode(QAbstractItemView.ExtendedSelection)
+        self.setSelectionMode(QAbstractItemView.SingleSelection)
 
         self.unreadFolder = QTreeWidgetItem(self)
-        #self.unreadFolder.setDisabled(True)
-        self.unreadFolder.setText(0, "Okunmamışlar")
+        self.unreadFolder.setIcon(0, QIcon(":/images/icons/folder_home.png"))
+        self.unreadFolder.setText(0, self.tr("Okunmamışlar"))
         self.deletedFolder = QTreeWidgetItem(self)
-        self.deletedFolder.setText(0, "Silinenler")
+        self.deletedFolder.setIcon(0, QIcon(":/images/icons/trash_empty.png"))
+        self.deletedFolder.setText(0, self.tr("Silinenler"))
         self.storeFolder = QTreeWidgetItem(self)
-        self.storeFolder.setText(0, "Saklananlar")
+        self.storeFolder.setIcon(0, QIcon(":/images/icons/folder_tar.png"))
+        self.storeFolder.setText(0, self.tr("Saklananlar"))
         self.allFeedFolder = QTreeWidgetItem(self)
-        self.allFeedFolder.setText(0, "Tüm Beslemeler")
+        self.allFeedFolder.setIcon(0, QIcon(":/images/icons/folder_grey_open.png"))
+        self.allFeedFolder.setText(0, self.tr("Tüm Beslemeler"))
         self.itemClicked.connect(self.folderClick)
+        self.expandItem(self.allFeedFolder)
 
-        self.setCurrentItem(self.unreadFolder) # başlangıçta seçili olanı yüklemesi sağlanacak.
-        self.unreadTitleSignal.emit(self.unreadFolder.text(0))
+        #self.unreadTitleSignal.emit(self.unreadFolder.text(0))
 
+        self.allFolderAndFeed()
+        self.unreadFolderInıt()
+        self.deletedFolderInıt()
+        self.storeFolderInıt()
+
+    def allFolderAndFeed(self):
         db = ReaderDb()
-        allFeed = db.allFeed()
-        for url, title in allFeed:
-            item = QTreeWidgetItem(self.allFeedFolder)
-            item.setText(0, title)
-            item.url = url
+        control = db.execute("select * from categories where subcategory=0")
+        maincategories = control.fetchall()
+        for maincategory in maincategories:
+            maintree = QTreeWidgetItem(self.allFeedFolder)
+            maintree.setIcon(0, QIcon(":/images/icons/folder_grey.png"))
+            maintree.id = maincategory[0]
+            maintree.category_name = maincategory[1]
+            maintree.setText(0,maintree.category_name)
+            maintree.subcategory = maincategory[2]
+            control = db.execute("select * from categories where subcategory={}".format(maintree.id))
+            subcategories = control.fetchall()
+            print(maintree.id, maintree.subcategory, subcategories)
+            if subcategories:
+                for subcategory in subcategories:
+                    subtree = QTreeWidgetItem(maintree)
+                    maintree.addChild(subtree)
+                    subtree.setIcon(0, QIcon(":/images/icons/folder_grey.png"))
+                    subtree.id = subcategory[0]
+                    subtree.category_name = subcategory[1]
+                    subtree.setText(0,subtree.category_name)
+                    subtree.subcategory = subcategory[2]
+            else:
+                continue
 
-
-
+    treeWidgetTitleSignal = pyqtSignal(str)
+    folderClicked = pyqtSignal()
     def folderClick(self, widget, row):
-        print(widget, row)
+        print(widget, widget.text(0))
+        self.treeWidgetTitleSignal.emit(widget.text(0))
         if widget == self.unreadFolder:
             self.parent.widget(1).setCurrentIndex(0)
             self.unreadFolderClick()
@@ -53,36 +79,77 @@ class TreeWidget(QTreeWidget):
             self.storeFolderClick()
         elif widget == self.allFeedFolder:
             self.allFeedFolderClick()
-        else: pass
+        else:
+            self.folderClicked.emit()
 
-    unreadTitleSignal = pyqtSignal(str)
+    def unreadFolderInıt(self):
+        db = ReaderDb()
+        data = db.execute("select * from store where iscache=1")
+        feedList = data.fetchall()
+        db.close()
+        print(len(feedList), feedList)
+        #self.unreadFolderClicked.emit(feedList)
+        if len(feedList) > 0:
+            self.unreadFolder.setText(0, self.tr("Okunmamışlar ({})").format(len(feedList)))
+            self.deletedFolder.setIcon(0, QIcon(":/images/icons/trash_full.png"))
+        return feedList
+
+    def deletedFolderInıt(self):
+        db = ReaderDb()
+        data = db.execute("select * from store where istrash=1")
+        feedList = data.fetchall()
+        db.close()
+        print(len(feedList), feedList)
+        #self.deletedFolderClicked.emit(feedList)
+        if len(feedList) > 0:
+                self.deletedFolder.setText(0, self.tr("Silinenler ({})").format(len(feedList)))
+        return feedList
+
+    def storeFolderInıt(self):
+        db = ReaderDb()
+        data = db.execute("select * from store where isstore=1")
+        feedList = data.fetchall()
+        db.close()
+        self.storeFolderClicked.emit(feedList)
+        print(len(feedList), feedList)
+        if len(feedList) > 0:
+            self.storeFolder.setText(0, self.tr("Saklananlar ({})").format(len(feedList)))
+        return feedList
+
+    unreadFolderClicked = pyqtSignal(list)
     def unreadFolderClick(self):
+        self.parent.widget(1).widget(0).treeWidget.clear()
         if not self.unreadFolder.isDisabled():
-            db = ReaderDb()
-            feedList = db.feedsList()
-            #e = readAllFeedEntries(feedList)
-            self.unreadTitleSignal.emit(self.unreadFolder.text(0))
-            self.unreadFolderSignal.emit(feedList)
+            feedList = self.unreadFolderInıt()
+            print(len(feedList), feedList)
+            self.unreadFolderClicked.emit(feedList)
+            if len(feedList) > 0:
+                self.unreadFolder.setText(0, self.tr("Okunmamışlar ({})").format(len(feedList)))
+                self.deletedFolder.setIcon(0, QIcon(":/images/icons/trash_full.png"))
         else:pass
 
-    deletedTitleSignal = pyqtSignal(str)
+    deletedFolderClicked = pyqtSignal(list)
     def deletedFolderClick(self):
-        db = ReaderDb()
-        feedList = db.deletedFeeds()
-        self.deletedTitleSignal.emit(self.deletedFolder.text(0))
-        self.deletedFolderSignal.emit(feedList)
+        self.parent.widget(1).widget(0).treeWidget.clear()
+        feedList = self.deletedFolderInıt()
+        print(len(feedList), feedList)
+        self.deletedFolderClicked.emit(feedList)
+        if len(feedList) > 0:
+                self.deletedFolder.setText(0, self.tr("Silinenler ({})").format(len(feedList)))
 
-    storeTitleSignal = pyqtSignal(str)
+    storeFolderClicked = pyqtSignal(list)
     def storeFolderClick(self):
-        db = ReaderDb()
-        feedList = db.storeFeeds()
-        self.storeFolderSignal.emit(feedList)
-        self.storeTitleSignal.emit(self.storeFolder.text(0))
+        self.parent.widget(1).widget(0).treeWidget.clear()
+        feedList = self.storeFolderInıt()
+        self.storeFolderClicked.emit(feedList)
+        print(len(feedList), feedList)
+        if len(feedList) > 0:
+            self.storeFolder.setText(0, self.tr("Saklananlar ({})").format(len(feedList)))
 
-    allFeedTitleSignal = pyqtSignal(str)
     def allFeedFolderClick(self):
-        self.allFeedTitleSignal.emit(self.allFeedFolder.text(0))
         if self.allFeedFolder.isExpanded():
             self.allFeedFolder.setExpanded(False)
+            #self.allFeedFolder.setIcon(0, QIcon(":/images/icons/folder_grey.png"))
         else:
             self.allFeedFolder.setExpanded(True)
+            #self.allFeedFolder.setIcon(0, QIcon(":/images/icons/folder_grey_open.png"))
