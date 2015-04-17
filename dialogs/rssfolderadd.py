@@ -18,7 +18,7 @@ class RSSFolderDialog(QDialog):
         self.verticalLayout.addWidget(self.lineEditFolder)
         self.labelWarning = QLabel(self)
 
-        self.labelWarning.setText("<span style='color:red; font-size:15px; font-weight:bold; align:'center';'>Dizin adı girmediniz!</span>")
+        self.labelWarning.setText(self.tr("<span style='color:red; font-size:15px; font-weight:bold; align:'center';'>Dizin adı girmediniz!</span>"))
         self.labelWarning.hide()
         self.verticalLayout.addWidget(self.labelWarning)
         self.labelFolder = QLabel(self)
@@ -39,8 +39,8 @@ class RSSFolderDialog(QDialog):
 
         self.buttonBox = QDialogButtonBox(self)
         self.buttonBox.setStandardButtons(QDialogButtonBox.Cancel|QDialogButtonBox.Save)
-        self.buttonBox.button(QDialogButtonBox.Cancel).setText("Vazgeç")
-        self.buttonBox.button(QDialogButtonBox.Save).setText("Kaydet")
+        self.buttonBox.button(QDialogButtonBox.Cancel).setText(self.tr("Vazgeç"))
+        self.buttonBox.button(QDialogButtonBox.Save).setText(self.tr("Kaydet"))
         self.verticalLayout.addWidget(self.buttonBox)
 
         self.buttonBox.button(QDialogButtonBox.Save).clicked.connect(self.folderAdd)
@@ -48,12 +48,11 @@ class RSSFolderDialog(QDialog):
         self.lineEditFolder.returnPressed.connect(self.buttonBox.button(QDialogButtonBox.Save).toggle)
         self.lineEditFolder.textChanged.connect(self.labelWarning.hide)
 
-        self.setWindowTitle("Dizin Ekle")
-        self.labelName.setText("İsim:")
-        self.labelFolder.setText("Yerleşim:")
-        self.treeWidget.headerItem().setText(0, "Dizin")
+        self.setWindowTitle(self.tr("Dizin Ekle"))
+        self.labelName.setText(self.tr("İsim:"))
+        self.labelFolder.setText(self.tr("Yerleşim:"))
+        self.treeWidget.headerItem().setText(0, self.tr("Dizin"))
         self.treeWidget.setIconSize(QSize(24, 24))
-
 
         self.categorySorting()
         print(self.treeWidget.selectedItems())
