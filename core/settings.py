@@ -3,9 +3,9 @@ from PyQt5.QtCore import QSettings,  QFile
 
 
 if sys.platform == "win32":
-    Settings = QSettings("reader.ini", QSettings.IniFormat)
+    Settings = QSettings("Domestic.ini", QSettings.IniFormat)
 else:
-    Settings = QSettings("reader", "reader")
+    Settings = QSettings("Domestic", "Domestic")
 
 
 def initial():
