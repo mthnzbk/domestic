@@ -1,9 +1,11 @@
 import sys
-from PyQt5.QtCore import QSettings,  QFile
+import os.path as os
+from PyQt5.QtCore import QSettings,  QFile, QDir
 
 
 if sys.platform == "win32":
-    Settings = QSettings("Domestic.ini", QSettings.IniFormat)
+    QDir(QDir.homePath()).mkdir(".domestic")
+    Settings = QSettings(os.join(QDir.homePath(), ".domestic","Domestic.ini"), QSettings.IniFormat)
 else:
     Settings = QSettings("Domestic", "Domestic")
 
@@ -36,4 +38,6 @@ size3=94
 size4=309"""
         with open(Settings.fileName(), "w") as conf:
             conf.write(conftext)
+
+        Settings.sync()
     else: pass
