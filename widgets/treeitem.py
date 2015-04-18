@@ -10,8 +10,6 @@ class FolderItem(QTreeWidgetItem):
         self.subcategory = 0
         self.isFolder = True
 
-    def setText(self, p_str, p_int=0):
-        super(FolderItem, self).setText(p_str)
 
 class FeedItem(QTreeWidgetItem):
     def __init__(self, parent=None):
@@ -22,9 +20,8 @@ class FeedItem(QTreeWidgetItem):
         self.title = ""
         self.isFeed = True
         self.category = 0
+        self.description = ""
 
-    def setText(self, p_str, p_int=0):
-        super(FeedItem, self).setText(p_str)
 
 class EntryItem(QTreeWidgetItem):
     def __init__(self, parent=None):

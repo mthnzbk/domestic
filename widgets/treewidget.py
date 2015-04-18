@@ -2,6 +2,7 @@ from PyQt5.QtWidgets import QTreeWidget, QTreeWidgetItem, QAbstractItemView
 from PyQt5.QtCore import Qt, QSize, pyqtSignal
 from PyQt5.QtGui import QIcon
 from core import ReaderDb
+from widgets.treeitem import FolderItem, FeedItem
 
 class TreeWidget(QTreeWidget):
     def __init__(self, parent=None):
@@ -42,7 +43,8 @@ class TreeWidget(QTreeWidget):
         control = db.execute("select * from categories where subcategory=0")
         maincategories = control.fetchall()
         for maincategory in maincategories:
-            maintree = QTreeWidgetItem(self.allFeedFolder)
+            maintree = FolderItem(self.allFeedFolder)
+            self.allFeedFolder.addChild(maintree)
             maintree.setIcon(0, QIcon(":/images/icons/folder_grey.png"))
             maintree.id = maincategory[0]
             maintree.category_name = maincategory[1]
@@ -62,6 +64,16 @@ class TreeWidget(QTreeWidget):
                     subtree.subcategory = subcategory[2]
             else:
                 continue
+        feedcontrol = db.execute("select * from feeds")
+        allfeeds = feedcontrol.fetchall()
+        for feed in allfeeds:
+            feedtree = FeedItem(self.allFeedFolder)
+            self.allFeedFolder.addChild(feedtree)
+            feedtree.id, feedtree.site_url, feedtree.url, feedtree.title = feed[0], feed[1], feed[2], feed[3]
+            feedtree.category, feedtree.description = feed[4], feed[5]
+            feedtree.setText(0, feedtree.title)
+
+        db.close()
 
     treeWidgetTitleSignal = pyqtSignal(str)
     folderClicked = pyqtSignal()
@@ -91,7 +103,7 @@ class TreeWidget(QTreeWidget):
         #self.unreadFolderClicked.emit(feedList)
         if len(feedList) > 0:
             self.unreadFolder.setText(0, self.tr("Okunmamışlar ({})").format(len(feedList)))
-            self.deletedFolder.setIcon(0, QIcon(":/images/icons/trash_full.png"))
+            #self.deletedFolder.setIcon(0, QIcon(":/images/icons/trash_full.png"))
         return feedList
 
     def deletedFolderInıt(self):
@@ -126,7 +138,7 @@ class TreeWidget(QTreeWidget):
             if len(feedList) > 0:
                 self.unreadFolder.setText(0, self.tr("Okunmamışlar ({})").format(len(feedList)))
                 self.deletedFolder.setIcon(0, QIcon(":/images/icons/trash_full.png"))
-        else: self.unreadFolder.setText(0, self.tr("Okunmamışlar"))
+            else: self.unreadFolder.setText(0, self.tr("Okunmamışlar"))
 
     deletedFolderClicked = pyqtSignal(list)
     def deletedFolderClick(self):

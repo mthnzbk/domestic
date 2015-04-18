@@ -4,7 +4,7 @@ from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import *
 from widgets import *
 from dialogs import *
-from core import ReaderDb, Settings, FeedSync
+from core import ReaderDb, Settings, FeedSync, initialSettings, inıtıalDb
 import resource
 
 class MainWindow(QMainWindow):
@@ -12,7 +12,7 @@ class MainWindow(QMainWindow):
         super(QMainWindow, self).__init__(parent)
         self.resize(Settings.value("MainWindow/size"))
         self.move(Settings.value("MainWindow/position"))
-        self.setWindowTitle("")
+        self.setWindowTitle()
         self.setWindowIcon(QIcon(":/images/rss-icon-128.png"))
         self.widget = QWidget(self)
         self.setCentralWidget(self.widget)
@@ -84,7 +84,6 @@ class MainWindow(QMainWindow):
 
     def sync(self): # açılış ve sinyalle  MainWindowu güncelleme
         self.menuFeeds.actionAllUpdate.setEnabled(True)
-        print("sex2")
 
     def closeEvent(self, QCloseEvent):
         Settings.setValue("Splitter/state", self.splitter.saveState())
@@ -100,8 +99,11 @@ class MainWindow(QMainWindow):
         Settings.setValue("ToolTreeWidget/size", self.page.treeWidget.size())
         Settings.setValue("ToolWebView/size", self.page2.browser.size())
 
-    def setWindowTitle(self, title):
-        super(MainWindow, self).setWindowTitle("{} - {} {}".format(title, QApplication.applicationName(),QApplication.applicationVersion()))
+    def setWindowTitle(self, title=None):
+        if title != None:
+            super(MainWindow, self).setWindowTitle("{} - {} {}".format(title, QApplication.applicationName(),QApplication.applicationVersion()))
+        else:
+            super(MainWindow, self).setWindowTitle("{} {}".format(QApplication.applicationName(),QApplication.applicationVersion()))
 
     def allUpdate(self):
         self.menuFeeds.actionAllUpdate.setEnabled(False)
@@ -113,25 +115,26 @@ class MainWindow(QMainWindow):
         thread.start()
         thread.finished.connect(self.sync)
 
-        print("sex")
-
     def feedDelete(self):
-        print(self.page.treeWidget.hasFocus(), self.treeWidget.hasFocus())
         if self.page.treeWidget.hasFocus():
             item = self.page.treeWidget.currentItem()
-            print(item)
             db = ReaderDb()
             if item != None:
                 if self.treeWidget.currentItem() == self.treeWidget.unreadFolder or self.treeWidget.currentItem() == self.treeWidget.storeFolder:
                     db.execute("update store set istrash=1, iscache=0, isstore=0 where entry_url='{}'".format(item.getEntryUrl()))
-                    print(item.getEntryUrl(), item.getFeedTitle(), item.getEntryTitle(), item.getFeedUrl())
                     db.commit()
                     db.close()
                 if self.treeWidget.currentItem() == self.treeWidget.deletedFolder:
                     db.execute("update store set istrash=-1, iscache=0, isstore=0 where entry_url='{}'".format(item.getEntryUrl()))
-                    print("widget iyi2")
                     db.commit()
                     db.close()
+                if self.treeWidget.currentItem() == self.treeWidget.unreadFolder:
+                    print(self.page.treeWidget.currentColumn())
+                    self.treeWidget.unreadFolderClick()
+                elif self.treeWidget.currentItem() == self.treeWidget.storeFolder:
+                    self.treeWidget.storeFolderClick()
+                elif self.treeWidget.currentItem() == self.treeWidget.deletedFolder:
+                    self.treeWidget.deletedFolderClick()
             else:
                 print("Seçim yapılmamış!")
         elif self.treeWidget.hasFocus():
@@ -140,10 +143,8 @@ class MainWindow(QMainWindow):
             print("Hıamına!")
 
     def feedStore(self):
-        print(self.page.treeWidget.hasFocus(), self.treeWidget.hasFocus())
         if self.page.treeWidget.hasFocus():
             item = self.page.treeWidget.currentItem()
-            print(item)
             db = ReaderDb()
             if item != None:
                 if self.treeWidget.currentItem() == self.treeWidget.unreadFolder or self.treeWidget.currentItem() == self.treeWidget.deletedFolder:
@@ -152,6 +153,12 @@ class MainWindow(QMainWindow):
                     db.close()
                 if self.treeWidget.currentItem() == self.treeWidget.storeFolder:
                     print("Bunları saklayamazsın. Zaten saklamışsın!")
+                if self.treeWidget.currentItem() == self.treeWidget.unreadFolder:
+                    self.treeWidget.unreadFolderClick()
+                elif self.treeWidget.currentItem() == self.treeWidget.deletedFolder:
+                    self.treeWidget.deletedFolderClick()
+            else:
+                print("Seçim yapılmamış!")
         elif self.treeWidget.hasFocus():
             print("Yanlış yapıyorsun!")
         else:
@@ -180,8 +187,10 @@ def main():
     translator.load(os.path.join(QDir.currentPath(), "languages"), "{}".format(LOCALE))
     app.installTranslator(translator)
     app.setApplicationName("Domestic RSS Reader")
-    app.setApplicationVersion("0.0.2.7")
+    app.setApplicationVersion("0.0.2.9")
 
+    initialSettings()
+    inıtıalDb()
 
     """sharedMemory = QSharedMemory("f33a4b06-72f5-4b72-90f4-90d606cdf98c")
     if sharedMemory.create(512, QSharedMemory.ReadWrite) == False:
