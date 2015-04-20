@@ -5,7 +5,7 @@ from core.settings import Settings
 def isDbExist():
     return os.isfile(os.join(os.dirname(Settings.fileName()), "Domestic.db"))
 
-def inıtıalDb():
+def initialDb():
     if isDbExist():
         pass
     else:
@@ -14,16 +14,16 @@ def inıtıalDb():
         id integer primary key autoincrement not null,
         category_name text not null,
         subcategory integer default 0
-        )"""
-        sqlcode1 = """create table feeds (
+        );
+        create table feeds (
         id integer primary key autoincrement not null,
         site_url text not null,
         url text not null,
         title text not null,
         category integer default 0,
         description text default ''
-        )"""
-        sqlcode2 = """create table store (
+        );
+        create table store (
         id integer primary key autoincrement not null,
         feed_url text not null,
         feed_title text not null,
@@ -36,10 +36,8 @@ def inıtıalDb():
         isstore integer default 0,
         istrash integer default 0,
         iscache integer default 1
-        )"""
-        createDb.execute(sqlcode)
-        createDb.execute(sqlcode1)
-        createDb.execute(sqlcode2)
+        );"""
+        createDb.executescript(sqlcode)
         createDb.commit()
         createDb.close()
 

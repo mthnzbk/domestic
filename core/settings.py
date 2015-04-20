@@ -36,6 +36,7 @@ size1=251
 size2=70
 size3=94
 size4=309"""
+        QDir(QDir.homePath()).mkdir(".config/Domestic")
         with open(Settings.fileName(), "w") as conf:
             conf.write(conftext)
 
