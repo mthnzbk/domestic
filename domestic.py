@@ -72,6 +72,7 @@ class MainWindow(QMainWindow):
         self.menuFile.actionExit.triggered.connect(self.close)
         self.menuFile.menuAdd.actionFeedAdd.triggered.connect(self.feedAdd)
         self.menuFile.menuAdd.actionFolderAdd.triggered.connect(self.feedFolderAdd)
+
         self.menuHelp.actionAbout.triggered.connect(self.aboutDialog)
         self.menuFeeds.actionDelete.triggered.connect(self.feedDelete)
         self.menuFeeds.actionStoreAdd.triggered.connect(self.feedStore)
@@ -83,6 +84,12 @@ class MainWindow(QMainWindow):
         self.treeWidget.storeFolderClicked.connect(self.page.entryList)
 
     def sync(self): # açılış ve sinyalle  MainWindowu güncelleme
+        self.treeWidget.clear()
+        self.treeWidget.widgetInitial()
+        self.treeWidget.allFolderAndFeed()
+        self.treeWidget.unreadFolderInıt()
+        self.treeWidget.deletedFolderInıt()
+        self.treeWidget.storeFolderInıt()
         self.menuFeeds.actionAllUpdate.setEnabled(True)
 
     def closeEvent(self, QCloseEvent):
@@ -121,11 +128,11 @@ class MainWindow(QMainWindow):
             db = ReaderDb()
             if item != None:
                 if self.treeWidget.currentItem() == self.treeWidget.unreadFolder or self.treeWidget.currentItem() == self.treeWidget.storeFolder:
-                    db.execute("update store set istrash=1, iscache=0, isstore=0 where entry_url='{}'".format(item.getEntryUrl()))
+                    db.execute("update store set istrash=1, iscache=0, isstore=0 where entry_url=?",(item.getEntryUrl(),))
                     db.commit()
                     db.close()
                 if self.treeWidget.currentItem() == self.treeWidget.deletedFolder:
-                    db.execute("update store set istrash=-1, iscache=0, isstore=0 where entry_url='{}'".format(item.getEntryUrl()))
+                    db.execute("update store set istrash=-1, iscache=0, isstore=0 where entry_url=?",(item.getEntryUrl(),))
                     db.commit()
                     db.close()
                 if self.treeWidget.currentItem() == self.treeWidget.unreadFolder:
@@ -148,7 +155,7 @@ class MainWindow(QMainWindow):
             db = ReaderDb()
             if item != None:
                 if self.treeWidget.currentItem() == self.treeWidget.unreadFolder or self.treeWidget.currentItem() == self.treeWidget.deletedFolder:
-                    db.execute("update store set istrash=0, iscache=0, isstore=1 where entry_url='{}'".format(item.getEntryUrl()))
+                    db.execute("update store set istrash=0, iscache=0, isstore=1 where entry_url=?",(item.getEntryUrl(),))
                     db.commit()
                     db.close()
                 if self.treeWidget.currentItem() == self.treeWidget.storeFolder:
@@ -173,10 +180,13 @@ class MainWindow(QMainWindow):
 
     def feedAdd(self):
         f = RSSAddDialog(self)
+        f.rssAddFinished.connect(self.allUpdate)
+
         f.show()
 
     def feedFolderAdd(self):
         f = RSSFolderDialog(self)
+        f.folderAddFinished.connect(self.sync)
         f.show()
 
 def main():

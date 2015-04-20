@@ -68,7 +68,7 @@ class RSSFolderDialog(QDialog):
             maintree.category_name = maincategory[1]
             maintree.setText(0,maintree.category_name)
             maintree.subcategory = maincategory[2]
-            control = db.execute("select * from categories where subcategory={}".format(maintree.id))
+            control = db.execute("select * from categories where subcategory=?", (maintree.id,))
             subcategories = control.fetchall()
             print(maintree.id, maintree.subcategory, subcategories)
             if subcategories:
@@ -88,17 +88,16 @@ class RSSFolderDialog(QDialog):
         text = self.lineEditFolder.text()
         db = ReaderDb()
         if len(text):
-            control = db.execute("select * from categories where category_name='{}'".format(text))
+            control = db.execute("select * from categories where category_name=?", (text,))
             if not control.fetchone():
                 print(self.treeWidget.currentItem() == None, not len(self.treeWidget.selectedItems()))
                 if self.treeWidget.currentItem() == None or not len(self.treeWidget.selectedItems()):
-                    db.execute("insert into categories (category_name) values ('{}')".format(text))
+                    db.execute("insert into categories (category_name) values (?)", (text,))
                     db.commit()
                     db.close()
                 else:
                     print(self.treeWidget.currentItem().id)
-                    db.execute("insert into categories (category_name, subcategory) values ('{}', '{}')".format(text,
-                                                                                    self.treeWidget.currentItem().id))
+                    db.execute("insert into categories (category_name, subcategory) values (?, ?)", (text,self.treeWidget.currentItem().id))
                     db.commit()
                     db.close()
                 self.folderAddFinished.emit()

@@ -16,6 +16,16 @@ class TreeWidget(QTreeWidget):
         self.headerItem().setText(0,"Feed")
         self.setSelectionMode(QAbstractItemView.SingleSelection)
 
+        self.widgetInitial()
+
+        self.itemClicked.connect(self.folderClick)
+        #self.unreadTitleSignal.emit(self.unreadFolder.text(0))
+        self.allFolderAndFeed()
+        self.unreadFolderInıt()
+        self.deletedFolderInıt()
+        self.storeFolderInıt()
+
+    def widgetInitial(self):
         self.unreadFolder = QTreeWidgetItem(self)
         self.unreadFolder.setIcon(0, QIcon(":/images/icons/folder_home.png"))
         self.unreadFolder.setText(0, self.tr("Okunmamışlar"))
@@ -28,15 +38,8 @@ class TreeWidget(QTreeWidget):
         self.allFeedFolder = QTreeWidgetItem(self)
         self.allFeedFolder.setIcon(0, QIcon(":/images/icons/folder_grey_open.png"))
         self.allFeedFolder.setText(0, self.tr("Tüm Beslemeler"))
-        self.itemClicked.connect(self.folderClick)
+
         self.expandItem(self.allFeedFolder)
-
-        #self.unreadTitleSignal.emit(self.unreadFolder.text(0))
-
-        self.allFolderAndFeed()
-        self.unreadFolderInıt()
-        self.deletedFolderInıt()
-        self.storeFolderInıt()
 
     def allFolderAndFeed(self):
         db = ReaderDb()
@@ -50,7 +53,7 @@ class TreeWidget(QTreeWidget):
             maintree.category_name = maincategory[1]
             maintree.setText(0,maintree.category_name)
             maintree.subcategory = maincategory[2]
-            control = db.execute("select * from categories where subcategory={}".format(maintree.id))
+            control = db.execute("select * from categories where subcategory=?",(maintree.id,))
             subcategories = control.fetchall()
             print(maintree.id, maintree.subcategory, subcategories)
             if subcategories:

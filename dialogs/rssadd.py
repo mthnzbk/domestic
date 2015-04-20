@@ -49,10 +49,10 @@ class RSSAddDialog(QDialog):
         if rss:
             data = feedInfo(self.lineEditURI.text())
             db = ReaderDb()
-            control = db.execute("select * from feeds where url='{}'".format(data[1]))
+            control = db.execute("select * from feeds where url=?", (data[1],))
             if not control.fetchone():
-                db.execute("insert into feeds (site_url, url, title, description) values ('{}','{}','{}', '{}')"
-                           .format(data[0], data[1],data[2], data[3]))
+                db.execute("insert into feeds (site_url, url, title, description) values (?, ?, ?, ?)",
+                           (data[0], data[1],data[2], data[3]))
                 db.commit()
                 db.close()
                 self.rssAddFinished.emit()
