@@ -1,4 +1,4 @@
-from PyQt5.QtWidgets import QWidget, QVBoxLayout, QTreeWidgetItem, QTreeWidget, QHeaderView
+from PyQt5.QtWidgets import QWidget, QVBoxLayout, QTreeWidget, QHeaderView
 from widgets.treeitem import EntryItem
 from core.settings import Settings
 

@@ -1,10 +1,13 @@
 from feedparser import parse
-import time
+import feedparser
 
 def isRSS(link):
     feed = parse(link)
     if feed.bozo:
-        return False
+        if feed.bozo_exception != feedparser.CharacterEncodingOverride:
+            return True
+        else:
+            return False
     else: return True
 
 def feedInfo(link):

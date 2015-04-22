@@ -1,6 +1,5 @@
+Domestic RSS Okuyucu, Python kullanılarak yazılmış bir uygulamadır. Python'un 3.4 sürümünü kullanır.
+Arayüz kütüphanesi olarak PyQt5 ve rss parse etmek için feedparser kullanır.
 
-
-
-INSTAL - Python3.4
-    * feedparser
-    * PyQt5
+Uygulamayı çalıştırabilmek için Python3.4 üzerine PyQt5 ve feedparser modülünü kurmalısınız.
+Domestic RSS Okuyucu hala geliştirilme aşamasındadır, ama kullanılabilir durumdadır.

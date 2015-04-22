@@ -4,7 +4,7 @@ from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import *
 from widgets import *
 from dialogs import *
-from core import ReaderDb, Settings, FeedSync, initialSettings, inıtıalDb
+from core import ReaderDb, Settings, FeedSync, initialSettings, initialDb
 import resource
 
 class MainWindow(QMainWindow):
@@ -92,7 +92,7 @@ class MainWindow(QMainWindow):
         self.treeWidget.storeFolderInıt()
         self.menuFeeds.actionAllUpdate.setEnabled(True)
 
-    def closeEvent(self, QCloseEvent):
+    def closeEvent(self, event):
         Settings.setValue("Splitter/state", self.splitter.saveState())
         Settings.setValue("MainWindow/size", self.size())
         Settings.setValue("MainWindow/position", self.pos())
@@ -138,8 +138,10 @@ class MainWindow(QMainWindow):
                 if self.treeWidget.currentItem() == self.treeWidget.unreadFolder:
                     print(self.page.treeWidget.currentColumn())
                     self.treeWidget.unreadFolderClick()
+                    self.treeWidget.deletedFolderInıt()
                 elif self.treeWidget.currentItem() == self.treeWidget.storeFolder:
                     self.treeWidget.storeFolderClick()
+                    self.treeWidget.deletedFolderInıt()
                 elif self.treeWidget.currentItem() == self.treeWidget.deletedFolder:
                     self.treeWidget.deletedFolderClick()
             else:
@@ -162,8 +164,10 @@ class MainWindow(QMainWindow):
                     print("Bunları saklayamazsın. Zaten saklamışsın!")
                 if self.treeWidget.currentItem() == self.treeWidget.unreadFolder:
                     self.treeWidget.unreadFolderClick()
+                    self.treeWidget.storeFolderInıt()
                 elif self.treeWidget.currentItem() == self.treeWidget.deletedFolder:
                     self.treeWidget.deletedFolderClick()
+                    self.treeWidget.storeFolderInıt()
             else:
                 print("Seçim yapılmamış!")
         elif self.treeWidget.hasFocus():
@@ -181,7 +185,6 @@ class MainWindow(QMainWindow):
     def feedAdd(self):
         f = RSSAddDialog(self)
         f.rssAddFinished.connect(self.allUpdate)
-
         f.show()
 
     def feedFolderAdd(self):
@@ -196,11 +199,11 @@ def main():
     translator = QTranslator()
     translator.load(os.path.join(QDir.currentPath(), "languages"), "{}".format(LOCALE))
     app.installTranslator(translator)
-    app.setApplicationName("Domestic RSS Reader")
-    app.setApplicationVersion("0.0.2.9")
+    app.setApplicationName(app.tr("Domestic RSS Okuyucu"))
+    app.setApplicationVersion("0.0.3.1")
 
     initialSettings()
-    inıtıalDb()
+    initialDb()
 
     """sharedMemory = QSharedMemory("f33a4b06-72f5-4b72-90f4-90d606cdf98c")
     if sharedMemory.create(512, QSharedMemory.ReadWrite) == False:
