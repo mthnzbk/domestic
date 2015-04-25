@@ -10,18 +10,15 @@ def initialDb():
         pass
     else:
         createDb = sql.connect(os.join(os.dirname(Settings.fileName()), "Domestic.db"))
-        sqlcode = """create table categories (
+        sqlcode = """create table folders (
         id integer primary key autoincrement not null,
-        category_name text not null,
-        subcategory integer default 0
-        );
-        create table feeds (
-        id integer primary key autoincrement not null,
-        site_url text not null,
-        url text not null,
         title text not null,
-        category integer default 0,
-        description text default ''
+        parent integer not null default 0,
+        type text not null,
+        feed_url text not null,
+        site_url text not null,
+        description text,
+        favicon blob
         );
         create table store (
         id integer primary key autoincrement not null,
@@ -44,6 +41,7 @@ def initialDb():
 class ReaderDb(object):
     def __init__(self):
         self.connect = sql.connect(os.join(os.dirname(Settings.fileName()), "Domestic.db"))
+        self.connect.row_factory = sql.Row
         self.cursor = self.connect.cursor()
         self.execute = self.cursor.execute
         self.executemany = self.cursor.executemany

@@ -85,7 +85,7 @@ class MainWindow(QMainWindow):
     def sync(self): # açılış ve sinyalle  MainWindowu güncelleme
         self.treeWidget.clear()
         self.treeWidget.widgetInitial()
-        self.treeWidget.allFolderAndFeed()
+        self.treeWidget.categorySorting(treeitem=self.treeWidget.allFeedFolder)
         self.treeWidget.unreadFolderInıt()
         self.treeWidget.deletedFolderInıt()
         self.treeWidget.storeFolderInıt()
@@ -198,10 +198,10 @@ def main():
     app = QApplication(sys.argv)
     LOCALE = QLocale.system().name()
     translator = QTranslator()
-    translator.load(os.path.join(QDir.currentPath(), "languages"), "{}".format(LOCALE))
+    translator.load(os.path.join(QDir.currentPath(), "languages"), "{}.qm".format(LOCALE))
     app.installTranslator(translator)
     app.setApplicationName(app.tr("Domestic RSS Okuyucu"))
-    app.setApplicationVersion("0.0.3.1")
+    app.setApplicationVersion("0.0.3.3")
 
     initialSettings()
     initialDb()

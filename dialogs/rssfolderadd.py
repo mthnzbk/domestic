@@ -17,8 +17,6 @@ class RSSFolderDialog(QDialog):
         self.lineEditFolder = QLineEdit(self)
         self.verticalLayout.addWidget(self.lineEditFolder)
         self.labelWarning = QLabel(self)
-
-        self.labelWarning.setText(self.tr("<span style='color:red; font-size:15px; font-weight:bold; align:'center';'>Dizin adı girmediniz!</span>"))
         self.labelWarning.hide()
         self.verticalLayout.addWidget(self.labelWarning)
         self.labelFolder = QLabel(self)
@@ -54,49 +52,21 @@ class RSSFolderDialog(QDialog):
         self.treeWidget.headerItem().setText(0, self.tr("Dizin"))
         self.treeWidget.setIconSize(QSize(24, 24))
 
-        #self._categorySorting()
-        self.categorySorting()
-        print(self.treeWidget.selectedItems())
+        self.categorySorting(treeitem=self.treeWidget)
 
-
-    def _categorySorting(self):
-        category = self.db.cursor.fetchone()
-        if category[2] == 0:
-            folder = QTreeWidgetItem(self.treeWidget)
-        else:
-            folder = QTreeWidgetItem(self.treeWidget)
-        folder.setIcon(0, QIcon(":/images/icons/folder_grey.png"))
-        folder.id = category[0]
-        folder.category_name = category[1]
-        folder.setText(0, folder.category_name)
-        folder.subcategory = category[2]
-
-
-    def categorySorting(self):
+    def categorySorting(self, id=0, treeitem=None):
         db = ReaderDb()
-        control = db.execute("select * from categories where subcategory=0")
-        maincategories = control.fetchall()
-        for maincategory in maincategories:
-            maintree = QTreeWidgetItem(self.treeWidget)
-            maintree.setIcon(0, QIcon(":/images/icons/folder_grey.png"))
-            maintree.id = maincategory[0]
-            maintree.category_name = maincategory[1]
-            maintree.setText(0,maintree.category_name)
-            maintree.subcategory = maincategory[2]
-            control = db.execute("select * from categories where subcategory=?", (maintree.id,))
-            subcategories = control.fetchall()
-            print(maintree.id, maintree.subcategory, subcategories)
-            if subcategories:
-                for subcategory in subcategories:
-                    subtree = QTreeWidgetItem(maintree)
-                    #maintree.addChild(subtree)
-                    subtree.setIcon(0, QIcon(":/images/icons/folder_grey.png"))
-                    subtree.id = subcategory[0]
-                    subtree.category_name = subcategory[1]
-                    subtree.setText(0,subtree.category_name)
-                    subtree.subcategory = subcategory[2]
-            else:
-                continue
+        db.execute("select * from categories where subcategory=?",(id,))
+        data = db.cursor.fetchall()
+        for da in data:
+            item = QTreeWidgetItem(treeitem)
+            item.setIcon(0, QIcon(":/images/icons/folder_grey.png"))
+            item.id = da["id"]
+            item.category_name = da[1]
+            item.setText(0, item.category_name)
+            item.subcategory = da["subcategory"]
+            print(da["id"], da["category_name"], da["subcategory"])
+            self.categorySorting(da["id"], item)
 
     folderAddFinished = pyqtSignal()
     def folderAdd(self):
@@ -112,13 +82,15 @@ class RSSFolderDialog(QDialog):
                     db.close()
                 else:
                     print(self.treeWidget.currentItem().id)
-                    db.execute("insert into categories (category_name, subcategory) values (?, ?)", (text,self.treeWidget.currentItem().id))
+                    db.execute("insert into categories (category_name, subcategory) values (?, ?)", (text, self.treeWidget.currentItem().id))
                     db.commit()
                     db.close()
                 self.folderAddFinished.emit()
                 self.close()
             else:
-                print("Aynı kategori ismi eklenemiyor :(") # daha sonra gereken uyarı eklenecek
+                self.labelWarning.setText(self.tr("<span style='color:red; font-size:15px; font-weight:bold;'>Aynı kategori ismi eklenemiyor :(</span>"))
+                self.labelWarning.show()
         else:
+            self.labelWarning.setText(self.tr("<span style='color:red; font-size:15px; font-weight:bold; align:'center';'>Dizin adı girmediniz!</span>"))
             self.labelWarning.show()
 

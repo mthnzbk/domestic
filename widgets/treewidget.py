@@ -1,6 +1,6 @@
 from PyQt5.QtWidgets import QTreeWidget, QTreeWidgetItem, QAbstractItemView
 from PyQt5.QtCore import Qt, QSize, pyqtSignal
-from PyQt5.QtGui import QIcon
+from PyQt5.QtGui import QIcon, QBrush, QColor, QFont
 from core import ReaderDb
 from widgets.treeitem import FolderItem, FeedItem
 
@@ -20,7 +20,7 @@ class TreeWidget(QTreeWidget):
 
         self.itemClicked.connect(self.folderClick)
         #self.unreadTitleSignal.emit(self.unreadFolder.text(0))
-        self.allFolderAndFeed()
+        self.categorySorting(treeitem=self.allFeedFolder)
         self.unreadFolderInıt()
         self.deletedFolderInıt()
         self.storeFolderInıt()
@@ -41,42 +41,20 @@ class TreeWidget(QTreeWidget):
 
         self.expandItem(self.allFeedFolder)
 
-    def allFolderAndFeed(self):
+    def categorySorting(self, id=0, treeitem=None):
         db = ReaderDb()
-        control = db.execute("select * from categories where subcategory=0")
-        maincategories = control.fetchall()
-        for maincategory in maincategories:
-            maintree = FolderItem(self.allFeedFolder)
-            self.allFeedFolder.addChild(maintree)
-            maintree.setIcon(0, QIcon(":/images/icons/folder_grey.png"))
-            maintree.id = maincategory[0]
-            maintree.category_name = maincategory[1]
-            maintree.setText(0,maintree.category_name)
-            maintree.subcategory = maincategory[2]
-            control = db.execute("select * from categories where subcategory=?",(maintree.id,))
-            subcategories = control.fetchall()
-            print(maintree.id, maintree.subcategory, subcategories)
-            if subcategories:
-                for subcategory in subcategories:
-                    subtree = QTreeWidgetItem(maintree)
-                    #maintree.addChild(subtree)
-                    subtree.setIcon(0, QIcon(":/images/icons/folder_grey.png"))
-                    subtree.id = subcategory[0]
-                    subtree.category_name = subcategory[1]
-                    subtree.setText(0,subtree.category_name)
-                    subtree.subcategory = subcategory[2]
-            else:
-                continue
-        feedcontrol = db.execute("select * from feeds")
-        allfeeds = feedcontrol.fetchall()
-        for feed in allfeeds:
-            feedtree = FeedItem(self.allFeedFolder)
-            self.allFeedFolder.addChild(feedtree)
-            feedtree.id, feedtree.site_url, feedtree.url, feedtree.title = feed[0], feed[1], feed[2], feed[3]
-            feedtree.category, feedtree.description = feed[4], feed[5]
-            feedtree.setText(0, feedtree.title)
-
-        db.close()
+        db.execute("select * from categories where subcategory=?",(id,))
+        data = db.cursor.fetchall()
+        for da in data:
+            item = QTreeWidgetItem(treeitem)
+            item.setExpanded(True)
+            item.setIcon(0, QIcon(":/images/icons/folder_grey.png"))
+            item.id = da["id"]
+            item.category_name = da[1]
+            item.setText(0, item.category_name)
+            item.subcategory = da["subcategory"]
+            print(da["id"], da["category_name"], da["subcategory"])
+            self.categorySorting(da["id"], item)
 
     treeWidgetTitleSignal = pyqtSignal(str)
     folderClicked = pyqtSignal()
@@ -107,6 +85,8 @@ class TreeWidget(QTreeWidget):
         #self.unreadFolderClicked.emit(feedList)
         if len(feedList) > 0:
             self.unreadFolder.setText(0, self.tr("Okunmamışlar ({})").format(len(feedList)))
+            self.unreadFolder.setFont(0, QFont(weight=True))
+            self.unreadFolder.setForeground(0,QBrush(QColor(0,255,0)))
             #self.deletedFolder.setIcon(0, QIcon(":/images/icons/trash_full.png"))
         return feedList
 
