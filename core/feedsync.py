@@ -39,7 +39,7 @@ class FeedSync(QThread):
                     print(entry.get("tags", " "), "LAHAB")
                     entry_publish = time.strftime("%d.%m.%Y %H:%M", entry.published_parsed)
                     feed_url, feed_title, entry_url, entry_title = feedData.href, feedData.feed.title, entry.link, entry.title
-                    entry_author, entry_category, entry_datetime, entry_content = entry.get('author',' '), self.convert(entry.get("tags", " ")), entry_publish, self.convert(entry.get("content", entry.summary_detail))
+                    entry_author, entry_category, entry_datetime, entry_content = entry.get('author',' '), self.convert(entry.get("tags", " ")), entry_publish, self.convert(entry.get("content", entry.get("summary_detail"," ")))
                     db.execute("insert into store (feed_url, feed_title, entry_url, entry_title, entry_author, entry_category,"
                                         "entry_datetime, entry_content) values (?, ?, ?, ?, ?, ?, ?, ?)",
                         (feed_url, feed_title, entry_url, entry_title, entry_author, entry_category, entry_datetime, entry_content))

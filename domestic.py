@@ -25,7 +25,6 @@ class MainWindow(QMainWindow):
         self.splitter.setOpaqueResize(True)
         self.splitter.setHandleWidth(5)
         self.splitter.setChildrenCollapsible(False)
-        self.splitter.restoreState(Settings.value("Splitter/state"))
         self.gridLayout.addWidget(self.splitter, 0, 0, 1, 1)
 
         self.treeWidget = TreeWidget(self.splitter)
@@ -93,7 +92,6 @@ class MainWindow(QMainWindow):
         self.menuFeeds.actionAllUpdate.setEnabled(True)
 
     def closeEvent(self, event):
-        Settings.setValue("Splitter/state", self.splitter.saveState())
         Settings.setValue("MainWindow/size", self.size())
         Settings.setValue("MainWindow/position", self.pos())
         Settings.setValue("TreeWidget/size", self.treeWidget.size())
@@ -124,15 +122,17 @@ class MainWindow(QMainWindow):
 
     def feedDelete(self):
         if self.page.treeWidget.hasFocus():
-            item = self.page.treeWidget.currentItem()
+            itemAll = self.page.treeWidget.selectedItems()
+            item_list = [(item.getEntryUrl(),) for item in itemAll]
+            print(item_list)
             db = ReaderDb()
-            if item != None:
+            if itemAll != None:
                 if self.treeWidget.currentItem() == self.treeWidget.unreadFolder or self.treeWidget.currentItem() == self.treeWidget.storeFolder:
-                    db.execute("update store set istrash=1, iscache=0, isstore=0 where entry_url=?",(item.getEntryUrl(),))
+                    db.executemany("update store set istrash=1, iscache=0, isstore=0 where entry_url=?", item_list)
                     db.commit()
                     db.close()
                 if self.treeWidget.currentItem() == self.treeWidget.deletedFolder:
-                    db.execute("update store set istrash=-1, iscache=0, isstore=0 where entry_url=?",(item.getEntryUrl(),))
+                    db.executemany("update store set istrash=-1, iscache=0, isstore=0 where entry_url=?", item_list)
                     db.commit()
                     db.close()
                 if self.treeWidget.currentItem() == self.treeWidget.unreadFolder:
@@ -153,11 +153,12 @@ class MainWindow(QMainWindow):
 
     def feedStore(self):
         if self.page.treeWidget.hasFocus():
-            item = self.page.treeWidget.currentItem()
+            itemAll = self.page.treeWidget.selectedItems()
+            item_list = [(item.getEntryUrl(),) for item in itemAll]
             db = ReaderDb()
-            if item != None:
+            if itemAll != None:
                 if self.treeWidget.currentItem() == self.treeWidget.unreadFolder or self.treeWidget.currentItem() == self.treeWidget.deletedFolder:
-                    db.execute("update store set istrash=0, iscache=0, isstore=1 where entry_url=?",(item.getEntryUrl(),))
+                    db.executemany("update store set istrash=0, iscache=0, isstore=1 where entry_url=?", item_list)
                     db.commit()
                     db.close()
                 if self.treeWidget.currentItem() == self.treeWidget.storeFolder:

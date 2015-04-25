@@ -1,4 +1,4 @@
-from PyQt5.QtWidgets import QWidget, QVBoxLayout, QTreeWidget, QHeaderView
+from PyQt5.QtWidgets import QWidget, QVBoxLayout, QTreeWidget, QHeaderView, QAbstractItemView
 from widgets.treeitem import EntryItem
 from core.settings import Settings
 
@@ -14,6 +14,7 @@ class FirstPage(QWidget):
         self.treeWidget = QTreeWidget(self)
         self.treeWidget.resize(Settings.value("ToolTreeWidget/size"))
         self.treeWidget.setColumnCount(5)
+        self.treeWidget.setSelectionMode(QAbstractItemView.ExtendedSelection)
         self.treeWidget.header().setSectionsMovable(False)
         self.treeWidget.header().ResizeMode(QHeaderView.ResizeToContents)
         self.treeWidget.header().resizeSection(0, int(Settings.value("TreeWidgetHeader/size0")))

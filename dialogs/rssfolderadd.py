@@ -54,8 +54,23 @@ class RSSFolderDialog(QDialog):
         self.treeWidget.headerItem().setText(0, self.tr("Dizin"))
         self.treeWidget.setIconSize(QSize(24, 24))
 
+        #self._categorySorting()
         self.categorySorting()
         print(self.treeWidget.selectedItems())
+
+
+    def _categorySorting(self):
+        category = self.db.cursor.fetchone()
+        if category[2] == 0:
+            folder = QTreeWidgetItem(self.treeWidget)
+        else:
+            folder = QTreeWidgetItem(self.treeWidget)
+        folder.setIcon(0, QIcon(":/images/icons/folder_grey.png"))
+        folder.id = category[0]
+        folder.category_name = category[1]
+        folder.setText(0, folder.category_name)
+        folder.subcategory = category[2]
+
 
     def categorySorting(self):
         db = ReaderDb()
@@ -74,7 +89,7 @@ class RSSFolderDialog(QDialog):
             if subcategories:
                 for subcategory in subcategories:
                     subtree = QTreeWidgetItem(maintree)
-                    maintree.addChild(subtree)
+                    #maintree.addChild(subtree)
                     subtree.setIcon(0, QIcon(":/images/icons/folder_grey.png"))
                     subtree.id = subcategory[0]
                     subtree.category_name = subcategory[1]

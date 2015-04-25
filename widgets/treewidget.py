@@ -59,7 +59,7 @@ class TreeWidget(QTreeWidget):
             if subcategories:
                 for subcategory in subcategories:
                     subtree = QTreeWidgetItem(maintree)
-                    maintree.addChild(subtree)
+                    #maintree.addChild(subtree)
                     subtree.setIcon(0, QIcon(":/images/icons/folder_grey.png"))
                     subtree.id = subcategory[0]
                     subtree.category_name = subcategory[1]

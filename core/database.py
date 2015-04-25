@@ -46,5 +46,6 @@ class ReaderDb(object):
         self.connect = sql.connect(os.join(os.dirname(Settings.fileName()), "Domestic.db"))
         self.cursor = self.connect.cursor()
         self.execute = self.cursor.execute
+        self.executemany = self.cursor.executemany
         self.commit = self.connect.commit
         self.close = self.connect.close

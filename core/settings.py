@@ -1,6 +1,6 @@
 import sys
 import os.path as os
-from PyQt5.QtCore import QSettings,  QFile, QDir
+from PyQt5.QtCore import QSettings, QFile, QDir, QPoint, QSize
 
 
 if sys.platform == "win32":
@@ -11,34 +11,27 @@ else:
 
 def initialSettings():
     if not QFile.exists(Settings.fileName()):
-        conftext = r"""[MainWindow]
-position=@Point(52 14)
-size=@Size(1064 644)
-
-[Splitter]
-state=@ByteArray(\0\0\0\xff\0\0\0\x1\0\0\0\x2\0\0\x1\x31\0\0\x2\xf2\0\0\0\0\x5\x1\0\0\0\x1\x1)
-
-[ToolBox]
-size=@Size(754 582)
-
-[ToolTreeWidget]
-size=@Size(754 520)
-
-[ToolWebView]
-size=@Size(754 497)
-
-[TreeWidget]
-size=@Size(305 582)
-
-[TreeWidgetHeader]
-size0=109
-size1=251
-size2=70
-size3=94
-size4=309"""
-        QDir(QDir.homePath()).mkdir(".config/Domestic")
-        with open(Settings.fileName(), "w") as conf:
-            conf.write(conftext)
-
+        Settings.beginGroup("MainWindow")
+        Settings.setValue("position",QPoint(50, 20))
+        Settings.setValue("size",QSize(1000, 620))
+        Settings.endGroup()
+        Settings.beginGroup("TreeWidget")
+        Settings.setValue("size",QSize(305, 558))
+        Settings.endGroup()
+        Settings.beginGroup("ToolBox")
+        Settings.setValue("size",QSize(690, 558))
+        Settings.endGroup()
+        Settings.beginGroup("ToolTreeWidget")
+        Settings.setValue("size",QSize(690, 496))
+        Settings.endGroup()
+        Settings.beginGroup("ToolWebView")
+        Settings.setValue("size",QSize(690, 473))
+        Settings.endGroup()
+        Settings.beginGroup("TreeWidgetHeader")
+        Settings.setValue("size0", 100)
+        Settings.setValue("size1", 200)
+        Settings.setValue("size2", 100)
+        Settings.setValue("size3", 100)
+        Settings.setValue("size4", 100)
+        Settings.endGroup()
         Settings.sync()
-    else: pass
