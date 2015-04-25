@@ -85,8 +85,10 @@ class TreeWidget(QTreeWidget):
         #self.unreadFolderClicked.emit(feedList)
         if len(feedList) > 0:
             self.unreadFolder.setText(0, self.tr("Okunmamışlar ({})").format(len(feedList)))
-            self.unreadFolder.setFont(0, QFont(weight=True))
-            self.unreadFolder.setForeground(0,QBrush(QColor(0,255,0)))
+            font = QFont()
+            font.setBold(True)
+            self.unreadFolder.setFont(0, font)
+            self.unreadFolder.setForeground(0,QBrush(QColor(0,0,255)))
             #self.deletedFolder.setIcon(0, QIcon(":/images/icons/trash_full.png"))
         return feedList
 
