@@ -11,10 +11,16 @@ class TreeWidget(QTreeWidget):
         self.setContextMenuPolicy(Qt.ActionsContextMenu)
         self.setAlternatingRowColors(True)
         self.setIconSize(QSize(24, 24))
+        font = QFont()
+        font.setBold(True)
+        self.setFont(font)
         self.setAnimated(True)
         self.header().setVisible(False)
         self.headerItem().setText(0,"Feed")
         self.setSelectionMode(QAbstractItemView.SingleSelection)
+        self.setCurrentIndex(1)
+        #self.setDragEnabled(True)
+        #self.setDragDropMode(QAbstractItemView.InternalMove)
 
         self.widgetInitial()
 
@@ -43,18 +49,34 @@ class TreeWidget(QTreeWidget):
 
     def categorySorting(self, id=0, treeitem=None):
         db = ReaderDb()
-        db.execute("select * from categories where subcategory=?",(id,))
-        data = db.cursor.fetchall()
-        for da in data:
-            item = QTreeWidgetItem(treeitem)
-            item.setExpanded(True)
-            item.setIcon(0, QIcon(":/images/icons/folder_grey.png"))
-            item.id = da["id"]
-            item.category_name = da[1]
-            item.setText(0, item.category_name)
-            item.subcategory = da["subcategory"]
-            print(da["id"], da["category_name"], da["subcategory"])
-            self.categorySorting(da["id"], item)
+        db.execute("select * from folders where parent=?",(id,))
+        folders = db.cursor.fetchall()
+        for folder in folders:
+            if folder["type"] == "folder":
+                item = FolderItem(treeitem)
+                item.setExpanded(True)
+                item.setIcon(0, QIcon(":/images/icons/folder_grey.png"))
+                item.id = folder["id"]
+                item.title = folder["title"]
+                item.type = folder["type"]
+                item.setText(0, item.title)
+                item.parent = folder["parent"]
+                print(folder["id"], folder["title"], folder["parent"])
+                self.categorySorting(folder["id"], item)
+            elif folder["type"] == "feed":
+                item = FeedItem(treeitem)
+                #item.setIcon(0, QIcon(":/images/icons/folder_grey.png"))
+                item.id = folder["id"]
+                item.title = folder["title"]
+                item.setText(0, item.title)
+                item.parent = folder["parent"]
+                item.feed_url = folder["feed_url"]
+                item.site_url = folder["site_url"]
+                item.type = folder["type"]
+                item.description = folder["description"]
+                item.favicon = folder["favicon"]
+                print(folder["id"], folder["title"], folder["parent"])
+                self.categorySorting(folder["id"], item)
 
     treeWidgetTitleSignal = pyqtSignal(str)
     folderClicked = pyqtSignal()
@@ -83,11 +105,9 @@ class TreeWidget(QTreeWidget):
         db.close()
         print(len(feedList), feedList)
         #self.unreadFolderClicked.emit(feedList)
+        self.unreadFolder.setForeground(0,QBrush(QColor(0,0,0,255)))
         if len(feedList) > 0:
             self.unreadFolder.setText(0, self.tr("Okunmamışlar ({})").format(len(feedList)))
-            font = QFont()
-            font.setBold(True)
-            self.unreadFolder.setFont(0, font)
             self.unreadFolder.setForeground(0,QBrush(QColor(0,0,255)))
             #self.deletedFolder.setIcon(0, QIcon(":/images/icons/trash_full.png"))
         return feedList
@@ -99,8 +119,10 @@ class TreeWidget(QTreeWidget):
         db.close()
         print(len(feedList), feedList)
         #self.deletedFolderClicked.emit(feedList)
+        self.deletedFolder.setForeground(0,QBrush(QColor(0,0,0,255)))
         if len(feedList) > 0:
-                self.deletedFolder.setText(0, self.tr("Silinenler ({})").format(len(feedList)))
+            self.deletedFolder.setText(0, self.tr("Silinenler ({})").format(len(feedList)))
+            self.deletedFolder.setForeground(0,QBrush(QColor(0,0,255)))
         return feedList
 
     def storeFolderInıt(self):
@@ -110,8 +132,10 @@ class TreeWidget(QTreeWidget):
         db.close()
         #self.storeFolderClicked.emit(feedList)
         print(len(feedList), feedList)
+        self.storeFolder.setForeground(0,QBrush(QColor(0,0,0,255)))
         if len(feedList) > 0:
             self.storeFolder.setText(0, self.tr("Saklananlar ({})").format(len(feedList)))
+            self.storeFolder.setForeground(0,QBrush(QColor(0,0,255)))
         return feedList
 
     unreadFolderClicked = pyqtSignal(list)

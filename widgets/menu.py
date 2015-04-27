@@ -7,13 +7,21 @@ class FileMenu(QMenu):
         super(QMenu, self).__init__(parent)
         self.setTitle(self.tr("Dosya"))
         self.menuAdd = AddMenu(self)
+        self.actionImport = QAction(self)
+        self.actionImport.setDisabled(True)
+        self.actionExport = QAction(self)
+        self.actionExport.setDisabled(True)
         self.actionExit = QAction(self)
         self.actionExit.setIcon(QIcon(":/images/icons/exit.png"))
 
         self.addAction(self.menuAdd.menuAction())
         self.addSeparator()
+        self.addActions((self.actionImport, self.actionExport))
+        self.addSeparator()
         self.addAction(self.actionExit)
 
+        self.actionImport.setText(self.tr("İçe Aktar"))
+        self.actionExport.setText(self.tr("Dışa Aktar"))
         self.actionExit.setText(self.tr("Çıkış"))
         self.actionExit.setShortcut("Ctrl+W")
 
@@ -57,6 +65,7 @@ class FeedMenu(QMenu):
         self.actionAllUpdate.setText(self.tr("Tümünü güncelle"))
         self.actionAllUpdate.setShortcut("F5")
         self.actionDelete.setText(self.tr("Sil"))
+        self.actionDelete.setShortcut("Delete")
         self.actionInfo.setText(self.tr("Özellikler"))
         self.actionStoreAdd.setText(self.tr("Sakla"))
 

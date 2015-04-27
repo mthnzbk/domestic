@@ -56,33 +56,33 @@ class RSSFolderDialog(QDialog):
 
     def categorySorting(self, id=0, treeitem=None):
         db = ReaderDb()
-        db.execute("select * from categories where subcategory=?",(id,))
-        data = db.cursor.fetchall()
-        for da in data:
+        db.execute("select * from folders where type='folder' and parent=?",(id,))
+        folders = db.cursor.fetchall()
+        for folder in folders:
             item = QTreeWidgetItem(treeitem)
             item.setIcon(0, QIcon(":/images/icons/folder_grey.png"))
-            item.id = da["id"]
-            item.category_name = da[1]
+            item.id = folder["id"]
+            item.category_name = folder[1]
             item.setText(0, item.category_name)
-            item.subcategory = da["subcategory"]
-            print(da["id"], da["category_name"], da["subcategory"])
-            self.categorySorting(da["id"], item)
+            item.subcategory = folder["parent"]
+            print(folder["id"], folder["title"], folder["parent"])
+            self.categorySorting(folder["id"], item)
 
     folderAddFinished = pyqtSignal()
     def folderAdd(self):
         text = self.lineEditFolder.text()
         db = ReaderDb()
         if len(text):
-            control = db.execute("select * from categories where category_name=?", (text,))
+            control = db.execute("select * from folders where title=?", (text,))
             if not control.fetchone():
                 print(self.treeWidget.currentItem() == None, not len(self.treeWidget.selectedItems()))
                 if self.treeWidget.currentItem() == None or not len(self.treeWidget.selectedItems()):
-                    db.execute("insert into categories (category_name) values (?)", (text,))
+                    db.execute("insert into folders (title, type) values (?, 'folder')", (text,))
                     db.commit()
                     db.close()
                 else:
                     print(self.treeWidget.currentItem().id)
-                    db.execute("insert into categories (category_name, subcategory) values (?, ?)", (text, self.treeWidget.currentItem().id))
+                    db.execute("insert into folders (title, parent, type) values (?, ?, 'folder')", (text, self.treeWidget.currentItem().id))
                     db.commit()
                     db.close()
                 self.folderAddFinished.emit()

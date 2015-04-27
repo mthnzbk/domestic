@@ -1,4 +1,5 @@
 from PyQt5.QtWidgets import QWidget, QVBoxLayout, QTreeWidget, QHeaderView, QAbstractItemView
+from PyQt5.QtGui import QFont
 from widgets.treeitem import EntryItem
 from core.settings import Settings
 
@@ -12,6 +13,9 @@ class FirstPage(QWidget):
         self.Layout.setContentsMargins(0, 0, 0, 0)
 
         self.treeWidget = QTreeWidget(self)
+        font = QFont()
+        font.setBold(True)
+        self.treeWidget.setFont(font)
         self.treeWidget.resize(Settings.value("ToolTreeWidget/size"))
         self.treeWidget.setColumnCount(5)
         self.treeWidget.setSelectionMode(QAbstractItemView.ExtendedSelection)
@@ -36,7 +40,7 @@ class FirstPage(QWidget):
     def feedClick(self, a, b):
         self.parent.setCurrentIndex(1)
         w = self.parent.currentWidget()
-        w.addBrowser(a.getEntryContent())
+        w.addHtml(a.getEntryContent())
 
     def entryList(self, entryList=None):
         if len(entryList):

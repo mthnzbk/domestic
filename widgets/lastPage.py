@@ -13,12 +13,12 @@ class LastPage(QWidget):
         self.Layout.setContentsMargins(0, 0, 0, 0)
         self.browser = QWebView(self)
         self.browser.resize(Settings.value("ToolWebView/size"))
-        self.browser.linkClicked.connect(self.linkClick)
+        #self.browser.linkClicked.connect(self.linkClick)
         self.infoLabel = QLabel(self)
         self.Layout.addWidget(self.infoLabel)
         self.Layout.addWidget(self.browser)
 
-    def addBrowser(self, data):
+    def addHtml(self, data):
         self.browser.setHtml(data)
 
     def linkClick(self, url): # FIXME

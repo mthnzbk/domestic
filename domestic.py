@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 from PyQt5.QtCore import *
 from PyQt5.QtGui import QIcon
+from PyQt5.QtMultimedia import QMediaPlayer, QMediaContent
 from PyQt5.QtWidgets import *
 from widgets import *
 from dialogs import *
@@ -76,20 +77,20 @@ class MainWindow(QMainWindow):
         self.menuFeeds.actionDelete.triggered.connect(self.feedDelete)
         self.menuFeeds.actionStoreAdd.triggered.connect(self.feedStore)
         self.menuFeeds.actionAllUpdate.triggered.connect(self.allUpdate)
-        self.menuFeeds.actionInfo.triggered.connect(self.feedInfoDialog)
+        self.menuFeeds.actionInfo.triggered.connect(self.infoDialog)
 
         self.treeWidget.unreadFolderClicked.connect(self.page.entryList)
         self.treeWidget.deletedFolderClicked.connect(self.page.entryList)
         self.treeWidget.storeFolderClicked.connect(self.page.entryList)
 
-    def sync(self): # açılış ve sinyalle  MainWindowu güncelleme
+    def sync(self):
         self.treeWidget.clear()
         self.treeWidget.widgetInitial()
         self.treeWidget.categorySorting(treeitem=self.treeWidget.allFeedFolder)
         self.treeWidget.unreadFolderInıt()
         self.treeWidget.deletedFolderInıt()
         self.treeWidget.storeFolderInıt()
-        self.menuFeeds.actionAllUpdate.setEnabled(True)
+        #self.menuFeeds.actionAllUpdate.setEnabled(True)
 
     def closeEvent(self, event):
         Settings.setValue("MainWindow/size", self.size())
@@ -110,15 +111,33 @@ class MainWindow(QMainWindow):
         else:
             super(MainWindow, self).setWindowTitle("{} {}".format(QApplication.applicationName(),QApplication.applicationVersion()))
 
-    def allUpdate(self):
-        self.menuFeeds.actionAllUpdate.setEnabled(False)
+    def feedUpdate(self, feedurl=None):
+        #self.menuFeeds.actionAllUpdate.setEnabled(False)
         db = ReaderDb()
-        control = db.execute("select url from feeds")
-        feedList = control.fetchall()
+        control = db.execute("select feed_url from folders where type='feed' and feed_url=?", (feedurl,))
+        feed = control.fetchone()
         thread = FeedSync(self)
-        thread.feedAdd(feedList)
+        thread.feedAdd(feed)
         thread.start()
         thread.finished.connect(self.sync)
+
+    def allUpdate(self):
+        #self.menuFeeds.actionAllUpdate.setEnabled(False)
+        db = ReaderDb()
+        control = db.execute("select feed_url from folders where type='feed'")
+        feedList = control.fetchall()
+        for feedurl in feedList:
+            thread = FeedSync(self)
+            thread.feedAdd(feedurl)
+            thread.start()
+            thread.finished.connect(self.sync)
+            thread.isData.connect(self.notifySoundPlay)
+
+    def notifySoundPlay(self, datain):
+        media = QMediaPlayer()
+        media.setMedia(QMediaContent(QUrl("/home/metehan/workspace/domestic/notify.mp3")))
+        media.setVolume(100)
+        media.play()
 
     def feedDelete(self):
         if self.page.treeWidget.hasFocus():
@@ -176,8 +195,15 @@ class MainWindow(QMainWindow):
         else:
             print("Hıamına!")
 
-    def feedInfoDialog(self):
-        pass
+    def infoDialog(self):
+        items = self.treeWidget.selectedItems()
+        if items:
+            if isinstance(items[0], FeedItem):
+                info = InfoDialog(self)
+                info.addItem(items[0])
+                info.show()
+        else:
+            pass
 
     def aboutDialog(self):
         about = About(self)

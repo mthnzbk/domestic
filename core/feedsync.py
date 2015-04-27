@@ -1,4 +1,4 @@
-from PyQt5.QtCore import QThread
+from PyQt5.QtCore import QThread, pyqtSignal
 from feedparser import parse
 from core.database import ReaderDb
 import time
@@ -23,27 +23,29 @@ class FeedSync(QThread):
 
         else:
             return " "
-
+    isData = pyqtSignal(bool)
     def run(self):
-        for feed in self.feed:
-            feedData = parse(feed[0])
-            entries = feedData.entries
-            db = ReaderDb()
-            for entry in entries:
-                print(entry.link)
-                control = db.execute("select * from store where entry_url=?", (entry.link,))
-                data = control.fetchone()
-                if data:
-                    print("{} mevcut".format(feedData.feed.title))
-                elif not data:
-                    print(entry.get("tags", " "), "LAHAB")
-                    entry_publish = time.strftime("%d.%m.%Y %H:%M", entry.published_parsed)
-                    feed_url, feed_title, entry_url, entry_title = feedData.href, feedData.feed.title, entry.link, entry.title
-                    entry_author, entry_category, entry_datetime, entry_content = entry.get('author',' '), self.convert(entry.get("tags", " ")), entry_publish, self.convert(entry.get("content", entry.get("summary_detail"," ")))
-                    db.execute("insert into store (feed_url, feed_title, entry_url, entry_title, entry_author, entry_category,"
-                                        "entry_datetime, entry_content) values (?, ?, ?, ?, ?, ?, ?, ?)",
-                        (feed_url, feed_title, entry_url, entry_title, entry_author, entry_category, entry_datetime, entry_content))
-                    db.commit()
-
-                else: print("entry girilmedi.", entry.link)
-            db.close()
+        feedData = parse(self.feed["feed_url"])
+        entries = feedData.entries
+        db = ReaderDb()
+        datain = False
+        for entry in entries:
+            print(entry.link)
+            control = db.execute("select * from store where entry_url=?", (entry.link,))
+            data = control.fetchone()
+            if data:
+                print("{} mevcut".format(feedData.feed.title))
+            elif not data:
+                datain = True
+                print(entry.get("tags", " "), "LAHAB")
+                entry_publish = time.strftime("%d.%m.%Y %H:%M", entry.published_parsed)
+                feed_url, feed_title, entry_url, entry_title = feedData.href, feedData.feed.title, entry.link, entry.title
+                entry_author, entry_category = entry.get('author',' '), self.convert(entry.get("tags", " ")),
+                entry_datetime, entry_content = entry_publish, self.convert(entry.get("content", entry.get("summary_detail"," ")))
+                db.execute("insert into store (feed_url, feed_title, entry_url, entry_title, entry_author, entry_category,"
+                                    "entry_datetime, entry_content) values (?, ?, ?, ?, ?, ?, ?, ?)",
+                    (feed_url, feed_title, entry_url, entry_title, entry_author, entry_category, entry_datetime, entry_content))
+                db.commit()
+            else: print("entry girilmedi.", entry.link)
+        self.isData.emit(datain)
+        db.close()

@@ -4,7 +4,7 @@ import feedparser
 def isRSS(link):
     feed = parse(link)
     if feed.bozo:
-        if feed.bozo_exception == feedparser.CharacterEncodingOverride:
+        if type(feed.bozo_exception) == feedparser.CharacterEncodingOverride:
             return True
         else:
             return False
@@ -13,4 +13,4 @@ def isRSS(link):
 def feedInfo(link):
     rss = parse(link)
     print(rss.feed.link, rss.href, rss.feed.title, rss.feed.subtitle)
-    return rss.feed.link, rss.href, rss.feed.title, rss.feed.subtitle
+    return {"sitelink" : rss.feed.link, "feedlink" : rss.href, "title" : rss.feed.title, "description" : rss.feed.subtitle}

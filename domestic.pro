@@ -1,0 +1,13 @@
+SOURCES += domestic.py
+SOURCES += dialogs/about.py
+SOURCES += dialogs/rssadd.py
+SOURCES += dialogs/rssfolderadd.py
+SOURCES += widgets/firstPage.py
+SOURCES += widgets/lastPage.py
+SOURCES += widgets/menu.py
+SOURCES += widgets/statusBar.py
+SOURCES += widgets/toolBox.py
+SOURCES += widgets/treeitem.py
+SOURCES += widgets/treewidget.py
+SOURCES += dialogs/infodialog.py
+TRANSLATIONS += tr_TR.ts

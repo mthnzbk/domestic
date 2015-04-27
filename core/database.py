@@ -13,10 +13,10 @@ def initialDb():
         sqlcode = """create table folders (
         id integer primary key autoincrement not null,
         title text not null,
-        parent integer not null default 0,
+        parent integer default 0,
         type text not null,
-        feed_url text not null,
-        site_url text not null,
+        feed_url text,
+        site_url text,
         description text,
         favicon blob
         );
