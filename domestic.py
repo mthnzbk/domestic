@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
 from PyQt5.QtCore import *
-from PyQt5.QtGui import QIcon
 from PyQt5.QtMultimedia import QMediaPlayer, QMediaContent
 from PyQt5.QtWidgets import *
+from PyQt5.QtGui import QIcon
 from widgets import *
 from dialogs import *
 from core import ReaderDb, Settings, FeedSync, initialSettings, initialDb
+import os.path as os
 import resource
 
 class MainWindow(QMainWindow):
@@ -40,7 +41,6 @@ class MainWindow(QMainWindow):
         self.page2 = LastPage(self.toolBox)
 
         self.toolBox.addItem(self.page2, "")
-        #self.toolBox.setCurrentIndex(1) # Signal -> currentChanged(0 or 1)
         self.menubar = QMenuBar(self)
         self.setMenuBar(self.menubar)
         self.menuFile = FileMenu(self)
@@ -83,14 +83,18 @@ class MainWindow(QMainWindow):
         self.treeWidget.deletedFolderClicked.connect(self.page.entryList)
         self.treeWidget.storeFolderClicked.connect(self.page.entryList)
 
+        self.treeWidget.setFocus()
+
     def sync(self):
         self.treeWidget.clear()
         self.treeWidget.widgetInitial()
         self.treeWidget.categorySorting(treeitem=self.treeWidget.allFeedFolder)
-        self.treeWidget.unreadFolderInıt()
-        self.treeWidget.deletedFolderInıt()
-        self.treeWidget.storeFolderInıt()
-        #self.menuFeeds.actionAllUpdate.setEnabled(True)
+        self.treeWidget.unreadFolderInit()
+        self.treeWidget.deletedFolderInit()
+        self.treeWidget.storeFolderInit()
+        self.treeWidget.setCurrentItem(self.treeWidget.unreadFolder)
+        self.treeWidget.setFocus()
+        self.treeWidget.unreadFolderClick()
 
     def closeEvent(self, event):
         Settings.setValue("MainWindow/size", self.size())
@@ -112,7 +116,6 @@ class MainWindow(QMainWindow):
             super(MainWindow, self).setWindowTitle("{} {}".format(QApplication.applicationName(),QApplication.applicationVersion()))
 
     def feedUpdate(self, feedurl=None):
-        #self.menuFeeds.actionAllUpdate.setEnabled(False)
         db = ReaderDb()
         control = db.execute("select feed_url from folders where type='feed' and feed_url=?", (feedurl,))
         feed = control.fetchone()
@@ -122,7 +125,6 @@ class MainWindow(QMainWindow):
         thread.finished.connect(self.sync)
 
     def allUpdate(self):
-        #self.menuFeeds.actionAllUpdate.setEnabled(False)
         db = ReaderDb()
         control = db.execute("select feed_url from folders where type='feed'")
         feedList = control.fetchall()
@@ -134,10 +136,11 @@ class MainWindow(QMainWindow):
             thread.isData.connect(self.notifySoundPlay)
 
     def notifySoundPlay(self, datain):
-        media = QMediaPlayer()
-        media.setMedia(QMediaContent(QUrl("/home/metehan/workspace/domestic/notify.mp3")))
-        media.setVolume(100)
-        media.play()
+        if datain:
+            media = QMediaPlayer(self)
+            media.setMedia(QMediaContent(QUrl.fromLocalFile(os.join(QDir.currentPath(), "media", "notify.mp3"))))
+            media.setVolume(100)
+            media.play()
 
     def feedDelete(self):
         if self.page.treeWidget.hasFocus():
@@ -157,18 +160,16 @@ class MainWindow(QMainWindow):
                 if self.treeWidget.currentItem() == self.treeWidget.unreadFolder:
                     print(self.page.treeWidget.currentColumn())
                     self.treeWidget.unreadFolderClick()
-                    self.treeWidget.deletedFolderInıt()
+                    self.treeWidget.deletedFolderInit()
                 elif self.treeWidget.currentItem() == self.treeWidget.storeFolder:
                     self.treeWidget.storeFolderClick()
-                    self.treeWidget.deletedFolderInıt()
+                    self.treeWidget.deletedFolderInit()
                 elif self.treeWidget.currentItem() == self.treeWidget.deletedFolder:
                     self.treeWidget.deletedFolderClick()
-            else:
-                print("Seçim yapılmamış!")
-        elif self.treeWidget.hasFocus():
-            print("Yanlış yapıyorsun!")
+                else:
+                    QMessageBox.warning(self, self.tr("Uyarı!"), self.tr("Seçim yapılmamış!"))
         else:
-            print("Hıamına!")
+            QMessageBox.warning(self, self.tr("Uyarı!"), self.tr("Seçim yapılmamış!"))
 
     def feedStore(self):
         if self.page.treeWidget.hasFocus():
@@ -180,20 +181,18 @@ class MainWindow(QMainWindow):
                     db.executemany("update store set istrash=0, iscache=0, isstore=1 where entry_url=?", item_list)
                     db.commit()
                     db.close()
-                if self.treeWidget.currentItem() == self.treeWidget.storeFolder:
-                    print("Bunları saklayamazsın. Zaten saklamışsın!")
-                if self.treeWidget.currentItem() == self.treeWidget.unreadFolder:
+                if self.treeWidget.currentItem() == self.treeWidget.storeFolder and len(itemAll) > 0:
+                    QMessageBox.warning(self, self.tr("Uyarı!"), self.tr("Bunlar zaten saklı!"))
+                elif self.treeWidget.currentItem() == self.treeWidget.unreadFolder:
                     self.treeWidget.unreadFolderClick()
-                    self.treeWidget.storeFolderInıt()
+                    self.treeWidget.storeFolderInit()
                 elif self.treeWidget.currentItem() == self.treeWidget.deletedFolder:
                     self.treeWidget.deletedFolderClick()
-                    self.treeWidget.storeFolderInıt()
-            else:
-                print("Seçim yapılmamış!")
-        elif self.treeWidget.hasFocus():
-            print("Yanlış yapıyorsun!")
+                    self.treeWidget.storeFolderInit()
+                else:
+                    QMessageBox.warning(self, self.tr("Uyarı!"), self.tr("Seçim yapılmamış!"))
         else:
-            print("Hıamına!")
+            QMessageBox.warning(self, self.tr("Uyarı!"), self.tr("Seçim yapılmamış!"))
 
     def infoDialog(self):
         items = self.treeWidget.selectedItems()
@@ -227,7 +226,7 @@ def main():
     translator.load(os.path.join(QDir.currentPath(), "languages"), "{}.qm".format(LOCALE))
     app.installTranslator(translator)
     app.setApplicationName(app.tr("Domestic RSS Okuyucu"))
-    app.setApplicationVersion("0.0.3.3")
+    app.setApplicationVersion("0.0.4.4")
 
     initialSettings()
     initialDb()

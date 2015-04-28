@@ -15,11 +15,15 @@ class LastPage(QWidget):
         self.browser.resize(Settings.value("ToolWebView/size"))
         #self.browser.linkClicked.connect(self.linkClick)
         self.infoLabel = QLabel(self)
+        self.infoLabel.linkActivated.connect(self.linkClick)
         self.Layout.addWidget(self.infoLabel)
         self.Layout.addWidget(self.browser)
 
-    def addHtml(self, data):
-        self.browser.setHtml(data)
+    def insertEntry(self, item):
+        self.infoLabel.setText(self.tr("""<div><p style='font-size:13pt;'><a href='{}'>{}</a> - <strong style='text-align:right'>Tarih: {}</strong></p>
+        <p>Yazar: {} | Kategori: {}</p></div>
+        """).format(item.getEntryUrl(), item.getEntryTitle(), item.getEntryDateTime(), item.getEntryAuthor(), item.getEntryCategory()))
+        self.browser.setHtml(item.getEntryContent())
 
     def linkClick(self, url): # FIXME
         print(url)

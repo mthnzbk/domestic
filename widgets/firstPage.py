@@ -37,10 +37,10 @@ class FirstPage(QWidget):
         self.treeWidget.headerItem().setText(4, self.tr("Tarih"))
 
 
-    def feedClick(self, a, b):
+    def feedClick(self, item, b):
         self.parent.setCurrentIndex(1)
-        w = self.parent.currentWidget()
-        w.addHtml(a.getEntryContent())
+        current = self.parent.currentWidget()
+        current.insertEntry(item)
 
     def entryList(self, entryList=None):
         if len(entryList):

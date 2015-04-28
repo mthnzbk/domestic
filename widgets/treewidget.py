@@ -8,7 +8,7 @@ class TreeWidget(QTreeWidget):
     def __init__(self, parent=None):
         super(QTreeWidget, self).__init__(parent)
         self.parent = parent
-        self.setContextMenuPolicy(Qt.ActionsContextMenu)
+        #self.setContextMenuPolicy(Qt.ActionsContextMenu)
         self.setAlternatingRowColors(True)
         self.setIconSize(QSize(24, 24))
         font = QFont()
@@ -18,18 +18,20 @@ class TreeWidget(QTreeWidget):
         self.header().setVisible(False)
         self.headerItem().setText(0,"Feed")
         self.setSelectionMode(QAbstractItemView.SingleSelection)
-        self.setCurrentIndex(1)
-        #self.setDragEnabled(True)
-        #self.setDragDropMode(QAbstractItemView.InternalMove)
+
+        self.setDragEnabled(True)
+        self.setAcceptDrops(True)
+        self.setDropIndicatorShown(True)
+        self.setDragDropOverwriteMode(True)
+        self.setDragDropMode(QAbstractItemView.InternalMove)
 
         self.widgetInitial()
 
         self.itemClicked.connect(self.folderClick)
-        #self.unreadTitleSignal.emit(self.unreadFolder.text(0))
         self.categorySorting(treeitem=self.allFeedFolder)
-        self.unreadFolderInıt()
-        self.deletedFolderInıt()
-        self.storeFolderInıt()
+        self.unreadFolderInit()
+        self.deletedFolderInit()
+        self.storeFolderInit()
 
     def widgetInitial(self):
         self.unreadFolder = QTreeWidgetItem(self)
@@ -98,7 +100,7 @@ class TreeWidget(QTreeWidget):
             self.folderClicked.emit()
         self.treeWidgetTitleSignal.emit(widget.text(0))
 
-    def unreadFolderInıt(self):
+    def unreadFolderInit(self):
         db = ReaderDb()
         data = db.execute("select * from store where iscache=1")
         feedList = data.fetchall()
@@ -112,7 +114,7 @@ class TreeWidget(QTreeWidget):
             #self.deletedFolder.setIcon(0, QIcon(":/images/icons/trash_full.png"))
         return feedList
 
-    def deletedFolderInıt(self):
+    def deletedFolderInit(self):
         db = ReaderDb()
         data = db.execute("select * from store where istrash=1")
         feedList = data.fetchall()
@@ -123,9 +125,10 @@ class TreeWidget(QTreeWidget):
         if len(feedList) > 0:
             self.deletedFolder.setText(0, self.tr("Silinenler ({})").format(len(feedList)))
             self.deletedFolder.setForeground(0,QBrush(QColor(0,0,255)))
+            self.deletedFolder.setIcon(0, QIcon(":/images/icons/trash_full.png"))
         return feedList
 
-    def storeFolderInıt(self):
+    def storeFolderInit(self):
         db = ReaderDb()
         data = db.execute("select * from store where isstore=1")
         feedList = data.fetchall()
@@ -142,7 +145,7 @@ class TreeWidget(QTreeWidget):
     def unreadFolderClick(self):
         self.parent.widget(1).widget(0).treeWidget.clear()
         if not self.unreadFolder.isDisabled():
-            feedList = self.unreadFolderInıt()
+            feedList = self.unreadFolderInit()
             print(len(feedList), feedList)
             self.unreadFolderClicked.emit(feedList)
             if len(feedList) > 0:
@@ -154,7 +157,7 @@ class TreeWidget(QTreeWidget):
     deletedFolderClicked = pyqtSignal(list)
     def deletedFolderClick(self):
         self.parent.widget(1).widget(0).treeWidget.clear()
-        feedList = self.deletedFolderInıt()
+        feedList = self.deletedFolderInit()
         print(len(feedList), feedList)
         self.deletedFolderClicked.emit(feedList)
         if len(feedList) > 0:
@@ -165,7 +168,7 @@ class TreeWidget(QTreeWidget):
     storeFolderClicked = pyqtSignal(list)
     def storeFolderClick(self):
         self.parent.widget(1).widget(0).treeWidget.clear()
-        feedList = self.storeFolderInıt()
+        feedList = self.storeFolderInit()
         self.storeFolderClicked.emit(feedList)
         print(len(feedList), feedList)
         if len(feedList) > 0:
