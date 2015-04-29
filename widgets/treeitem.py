@@ -1,11 +1,9 @@
 from PyQt5.QtWidgets import QTreeWidgetItem
-from PyQt5.QtCore import Qt
 
 class FolderItem(QTreeWidgetItem):
     def __init__(self, parent=None):
         super(QTreeWidgetItem, self).__init__(parent)
         self.parent = parent
-        #self.setFlags(Qt.ItemIsDragEnabled|Qt.ItemIsSelectable|Qt.ItemIsEnabled|Qt.ItemIsTristate)
         self.id = None
         self.title = ""
         self.type = "folder"
@@ -17,7 +15,6 @@ class FeedItem(QTreeWidgetItem):
     def __init__(self, parent=None):
         super(QTreeWidgetItem, self).__init__(parent)
         self.parent = parent
-        #self.setFlags(Qt.ItemIsDragEnabled|Qt.ItemIsSelectable|Qt.ItemIsEnabled|Qt.ItemIsTristate)
         self.id = None
         self.feed_url = ""
         self.site_url = ""

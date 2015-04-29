@@ -1,6 +1,8 @@
 import sqlite3 as sql
 import os.path as os
+
 from core.settings import Settings
+
 
 def isDbExist():
     return os.isfile(os.join(os.dirname(Settings.fileName()), "Domestic.db"))

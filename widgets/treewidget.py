@@ -1,29 +1,23 @@
-from PyQt5.QtWidgets import QTreeWidget, QTreeWidgetItem, QAbstractItemView
-from PyQt5.QtCore import Qt, QSize, pyqtSignal
+from PyQt5.QtWidgets import QTreeWidget, QTreeWidgetItem
+from PyQt5.QtCore import QSize, pyqtSignal
 from PyQt5.QtGui import QIcon, QBrush, QColor, QFont
+
 from core import ReaderDb
 from widgets.treeitem import FolderItem, FeedItem
+
 
 class TreeWidget(QTreeWidget):
     def __init__(self, parent=None):
         super(QTreeWidget, self).__init__(parent)
         self.parent = parent
-        #self.setContextMenuPolicy(Qt.ActionsContextMenu)
         self.setAlternatingRowColors(True)
-        self.setIconSize(QSize(24, 24))
+        self.setIconSize(QSize(18, 18))
         font = QFont()
         font.setBold(True)
         self.setFont(font)
         self.setAnimated(True)
         self.header().setVisible(False)
         self.headerItem().setText(0,"Feed")
-        self.setSelectionMode(QAbstractItemView.SingleSelection)
-
-        self.setDragEnabled(True)
-        self.setAcceptDrops(True)
-        self.setDropIndicatorShown(True)
-        self.setDragDropOverwriteMode(True)
-        self.setDragDropMode(QAbstractItemView.InternalMove)
 
         self.widgetInitial()
 
@@ -67,7 +61,7 @@ class TreeWidget(QTreeWidget):
                 self.categorySorting(folder["id"], item)
             elif folder["type"] == "feed":
                 item = FeedItem(treeitem)
-                #item.setIcon(0, QIcon(":/images/icons/folder_grey.png"))
+                item.setIcon(0, QIcon(":/images/icons/html.png"))
                 item.id = folder["id"]
                 item.title = folder["title"]
                 item.setText(0, item.title)
@@ -83,7 +77,7 @@ class TreeWidget(QTreeWidget):
     treeWidgetTitleSignal = pyqtSignal(str)
     folderClicked = pyqtSignal()
     def folderClick(self, widget, row):
-        print(widget, widget.text(0))
+        print(widget, widget.text(0), self.indexOfTopLevelItem(widget))
 
         if widget == self.unreadFolder:
             self.parent.widget(1).setCurrentIndex(0)

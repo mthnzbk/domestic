@@ -1,4 +1,4 @@
-from core.database import ReaderDb, initialDb
-from core.rsstools import *
-from core.feedsync import *
+from core.rsstools import feedInfo, isFeed
+from core.feedsync import FeedSync
 from core.settings import Settings, initialSettings
+from core.database import ReaderDb, initialDb

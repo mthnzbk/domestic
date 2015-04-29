@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+import os.path as os
 from PyQt5.QtCore import *
 from PyQt5.QtMultimedia import QMediaPlayer, QMediaContent
 from PyQt5.QtWidgets import *
@@ -6,8 +7,8 @@ from PyQt5.QtGui import QIcon
 from widgets import *
 from dialogs import *
 from core import ReaderDb, Settings, FeedSync, initialSettings, initialDb
-import os.path as os
 import resource
+
 
 class MainWindow(QMainWindow):
     def __init__(self, parent=None):
@@ -25,7 +26,7 @@ class MainWindow(QMainWindow):
         self.splitter = QSplitter(self.widget)
         self.splitter.setOrientation(Qt.Horizontal)
         self.splitter.setOpaqueResize(True)
-        self.splitter.setHandleWidth(5)
+        self.splitter.setHandleWidth(1)
         self.splitter.setChildrenCollapsible(False)
         self.gridLayout.addWidget(self.splitter, 0, 0, 1, 1)
 
@@ -210,7 +211,7 @@ class MainWindow(QMainWindow):
 
     def feedAdd(self):
         f = RSSAddDialog(self)
-        f.rssAddFinished.connect(self.allUpdate)
+        f.feedAddFinished.connect(self.feedUpdate)
         f.show()
 
     def feedFolderAdd(self):
@@ -226,7 +227,7 @@ def main():
     translator.load(os.path.join(QDir.currentPath(), "languages"), "{}.qm".format(LOCALE))
     app.installTranslator(translator)
     app.setApplicationName(app.tr("Domestic RSS Okuyucu"))
-    app.setApplicationVersion("0.0.4.4")
+    app.setApplicationVersion("0.0.6.4")
 
     initialSettings()
     initialDb()

@@ -20,5 +20,7 @@
         <file>images/icons/button_cancel.png</file>
         <file>images/icons/info.png</file>
         <file>images/icons/web.png</file>
+        <file>images/icons/html.png</file>
+        <file>images/icons/locale.png</file>
     </qresource>
 </RCC>

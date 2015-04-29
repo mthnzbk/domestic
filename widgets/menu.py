@@ -20,8 +20,8 @@ class FileMenu(QMenu):
         self.addSeparator()
         self.addAction(self.actionExit)
 
-        self.actionImport.setText(self.tr("İçe Aktar"))
-        self.actionExport.setText(self.tr("Dışa Aktar"))
+        self.actionImport.setText(self.tr("Beslemeleri İçeri Aktar"))
+        self.actionExport.setText(self.tr("Beslemeleri Dışarı Aktar"))
         self.actionExit.setText(self.tr("Çıkış"))
         self.actionExit.setShortcut("Ctrl+W")
 
@@ -112,4 +112,4 @@ class HelpMenu(QMenu):
         self.actionAbout.setText(self.tr("Hakkında"))
 
     def openUrl(self):
-        QDesktopServices.openUrl(QUrl("https://github.com/mthnzbk/domestic/issues"))
+        QDesktopServices.openUrl(QUrl("https://github.com/mthnzbk/domestic-reader/issues"))

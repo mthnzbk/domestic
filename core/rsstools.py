@@ -1,7 +1,7 @@
 from feedparser import parse
 import feedparser
 
-def isRSS(link):
+def isFeed(link):
     feed = parse(link)
     if feed.bozo:
         if type(feed.bozo_exception) == feedparser.CharacterEncodingOverride:

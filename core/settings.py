@@ -4,8 +4,8 @@ from PyQt5.QtCore import QSettings, QFile, QDir, QPoint, QSize
 
 
 if sys.platform == "win32":
-    QDir(QDir.homePath()).mkdir(".domestic")
-    Settings = QSettings(os.join(QDir.homePath(), ".domestic","Domestic.ini"), QSettings.IniFormat)
+    QDir(QDir.homePath()).mkdir(".domestic-reader")
+    Settings = QSettings(os.join(QDir.homePath(), ".domestic-reader","Domestic.ini"), QSettings.IniFormat)
 else:
     Settings = QSettings("Domestic", "Domestic")
 
