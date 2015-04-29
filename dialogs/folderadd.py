@@ -6,7 +6,7 @@ from PyQt5.QtWidgets import QTreeWidget, QTreeWidgetItem, QDialogButtonBox
 from core.database import ReaderDb
 
 
-class RSSFolderDialog(QDialog):
+class FolderDialog(QDialog):
     def __init__(self, parent=None):
         super(QDialog, self).__init__(parent)
         self.resize(400, 300)
@@ -39,8 +39,8 @@ class RSSFolderDialog(QDialog):
 
         self.buttonBox = QDialogButtonBox(self)
         self.buttonBox.setStandardButtons(QDialogButtonBox.Cancel|QDialogButtonBox.Save)
-        self.buttonBox.button(QDialogButtonBox.Cancel).setText(self.tr("Vazgeç"))
-        self.buttonBox.button(QDialogButtonBox.Save).setText(self.tr("Kaydet"))
+        self.buttonBox.button(QDialogButtonBox.Cancel).setText(self.tr("Cancel"))
+        self.buttonBox.button(QDialogButtonBox.Save).setText(self.tr("Save"))
         self.verticalLayout.addWidget(self.buttonBox)
 
         self.buttonBox.button(QDialogButtonBox.Save).clicked.connect(self.folderAdd)
@@ -48,11 +48,11 @@ class RSSFolderDialog(QDialog):
         self.lineEditFolder.returnPressed.connect(self.buttonBox.button(QDialogButtonBox.Save).toggle)
         self.lineEditFolder.textChanged.connect(self.labelWarning.hide)
 
-        self.setWindowTitle(self.tr("Dizin Ekle"))
-        self.labelName.setText(self.tr("İsim:"))
-        self.labelFolder.setText(self.tr("Yerleşim:"))
-        self.treeWidget.headerItem().setText(0, self.tr("Dizin"))
-        self.treeWidget.setIconSize(QSize(24, 24))
+        self.setWindowTitle(self.tr("Add Folder"))
+        self.labelName.setText(self.tr("Name:"))
+        self.labelFolder.setText(self.tr("Insert:"))
+        self.treeWidget.headerItem().setText(0, self.tr("Folder"))
+        self.treeWidget.setIconSize(QSize(18, 18))
 
         self.categorySorting(treeitem=self.treeWidget)
 
@@ -90,9 +90,9 @@ class RSSFolderDialog(QDialog):
                 self.folderAddFinished.emit()
                 self.close()
             else:
-                self.labelWarning.setText(self.tr("<span style='color:red; font-size:15px; font-weight:bold;'>Aynı kategori ismi eklenemiyor :(</span>"))
+                self.labelWarning.setText(self.tr("<span style='color:red; font-size:15px; font-weight:bold;'>Same category name cannot add!</span>"))
                 self.labelWarning.show()
         else:
-            self.labelWarning.setText(self.tr("<span style='color:red; font-size:15px; font-weight:bold; align:'center';'>Dizin adı girmediniz!</span>"))
+            self.labelWarning.setText(self.tr("<span style='color:red; font-size:15px; font-weight:bold; align:'center';'>You didn't write folder's name!</span>"))
             self.labelWarning.show()
 

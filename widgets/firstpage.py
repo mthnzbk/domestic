@@ -32,10 +32,10 @@ class FirstPage(QWidget):
         self.treeWidget.itemDoubleClicked.connect(self.feedClick)
 
         self.treeWidget.headerItem().setText(0, self.tr("Site"))
-        self.treeWidget.headerItem().setText(1, self.tr("Başlık"))
-        self.treeWidget.headerItem().setText(2, self.tr("Yazar"))
-        self.treeWidget.headerItem().setText(3, self.tr("Kategori"))
-        self.treeWidget.headerItem().setText(4, self.tr("Tarih"))
+        self.treeWidget.headerItem().setText(1, self.tr("Title"))
+        self.treeWidget.headerItem().setText(2, self.tr("Author"))
+        self.treeWidget.headerItem().setText(3, self.tr("Category"))
+        self.treeWidget.headerItem().setText(4, self.tr("Date"))
 
 
     def feedClick(self, item, b):

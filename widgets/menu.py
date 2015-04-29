@@ -5,7 +5,7 @@ from PyQt5.QtCore import QUrl
 class FileMenu(QMenu):
     def __init__(self, parent = None):
         super(QMenu, self).__init__(parent)
-        self.setTitle(self.tr("Dosya"))
+        self.setTitle(self.tr("File"))
         self.menuAdd = AddMenu(self)
         self.actionImport = QAction(self)
         self.actionImport.setDisabled(True)
@@ -20,15 +20,15 @@ class FileMenu(QMenu):
         self.addSeparator()
         self.addAction(self.actionExit)
 
-        self.actionImport.setText(self.tr("Beslemeleri İçeri Aktar"))
-        self.actionExport.setText(self.tr("Beslemeleri Dışarı Aktar"))
-        self.actionExit.setText(self.tr("Çıkış"))
+        self.actionImport.setText(self.tr("Import Feeds"))
+        self.actionExport.setText(self.tr("Export Feeds"))
+        self.actionExit.setText(self.tr("Exit"))
         self.actionExit.setShortcut("Ctrl+W")
 
 class AddMenu(QMenu):
     def __init__(self, parent = None):
         super(QMenu, self).__init__(parent)
-        self.setTitle(self.tr("Ekle"))
+        self.setTitle(self.tr("Add"))
         self.actionFeedAdd = QAction(self)
         self.actionFeedAdd.setIcon(QIcon(":/images/icons/edit_add.png"))
         self.actionFolderAdd = QAction(self)
@@ -37,15 +37,15 @@ class AddMenu(QMenu):
         self.addAction(self.actionFeedAdd)
         self.addAction(self.actionFolderAdd)
 
-        self.actionFeedAdd.setText(self.tr("Besleme Ekle"))
+        self.actionFeedAdd.setText(self.tr("Add Feed"))
         self.actionFeedAdd.setShortcut("Ctrl+N")
-        self.actionFolderAdd.setText(self.tr("Dizin Ekle"))
+        self.actionFolderAdd.setText(self.tr("Add Folder"))
         self.actionFolderAdd.setShortcut("Ctrl+Shift+N")
 
 class FeedMenu(QMenu):
     def __init__(self, parent = None):
         super(QMenu, self).__init__(parent)
-        self.setTitle(self.tr("Beslemeler"))
+        self.setTitle(self.tr("Feeds"))
         self.actionAllUpdate = QAction(self)
         self.actionAllUpdate.setIcon(QIcon(":/images/icons/reload.png"))
         self.actionDelete = QAction(self)
@@ -62,17 +62,17 @@ class FeedMenu(QMenu):
         self.addSeparator()
         self.addAction(self.actionInfo)
 
-        self.actionAllUpdate.setText(self.tr("Tümünü güncelle"))
+        self.actionAllUpdate.setText(self.tr("All Update"))
         self.actionAllUpdate.setShortcut("F5")
-        self.actionDelete.setText(self.tr("Sil"))
+        self.actionDelete.setText(self.tr("Delete"))
         self.actionDelete.setShortcut("Delete")
-        self.actionInfo.setText(self.tr("Özellikler"))
-        self.actionStoreAdd.setText(self.tr("Sakla"))
+        self.actionInfo.setText(self.tr("Info"))
+        self.actionStoreAdd.setText(self.tr("Store"))
 
 class ToolsMenu(QMenu):
     def __init__(self, parent = None):
         super(QMenu, self).__init__(parent)
-        self.setTitle(self.tr("Araçlar"))
+        self.setTitle(self.tr("Tools"))
         self.actionSettings = QAction(self)
         self.actionSettings.setIcon(QIcon(":/images/icons/configure.png"))
         self.actionDownloaded = QAction(self)
@@ -83,14 +83,14 @@ class ToolsMenu(QMenu):
         self.actionDownloaded.setEnabled(False)
         self.actionSettings.setEnabled(False)
 
-        self.actionSettings.setText(self.tr("Seçenekler"))
+        self.actionSettings.setText(self.tr("Options"))
         self.actionSettings.setShortcut("Ctrl+O")
-        self.actionDownloaded.setText(self.tr("İndirilenler"))
+        self.actionDownloaded.setText(self.tr("Downloads"))
 
 class HelpMenu(QMenu):
     def __init__(self, parent = None):
         super(QMenu, self).__init__(parent)
-        self.setTitle(self.tr("Yardım"))
+        self.setTitle(self.tr("Help"))
         self.actionUpdateControl = QAction(self)
         self.actionUpdateControl.setDisabled(True)
         self.actionReport = QAction(self)
@@ -106,10 +106,10 @@ class HelpMenu(QMenu):
         self.addAction(self.actionQtAbout)
         self.addAction(self.actionAbout)
 
-        self.actionUpdateControl.setText(self.tr("Güncellemeyi kontrol et"))
-        self.actionReport.setText(self.tr("Sorun bildir"))
-        self.actionQtAbout.setText(self.tr("Qt Hakkında"))
-        self.actionAbout.setText(self.tr("Hakkında"))
+        self.actionUpdateControl.setText(self.tr("Check for update"))
+        self.actionReport.setText(self.tr("Submit Feedback"))
+        self.actionQtAbout.setText(self.tr("About Qt"))
+        self.actionAbout.setText(self.tr("About"))
 
     def openUrl(self):
-        QDesktopServices.openUrl(QUrl("https://github.com/mthnzbk/domestic-reader/issues"))
+        QDesktopServices.openUrl(QUrl("https://github.com/mthnzbk/domestic/issues"))

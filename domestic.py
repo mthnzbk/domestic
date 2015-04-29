@@ -65,8 +65,8 @@ class MainWindow(QMainWindow):
         self.toolBar.addAction(self.menuFeeds.actionInfo)
         self.addToolBar(Qt.TopToolBarArea, self.toolBar)
 
-        self.toolBox.setItemText(self.toolBox.indexOf(self.page), "Yazılar")
-        self.toolBox.setItemText(self.toolBox.indexOf(self.page2), "İçerik")
+        self.toolBox.setItemText(self.toolBox.indexOf(self.page), self.tr("Entries"))
+        self.toolBox.setItemText(self.toolBox.indexOf(self.page2), self.tr("Content"))
 
         self.treeWidget.treeWidgetTitleSignal.connect(self.setWindowTitle)
 
@@ -168,9 +168,9 @@ class MainWindow(QMainWindow):
                 elif self.treeWidget.currentItem() == self.treeWidget.deletedFolder:
                     self.treeWidget.deletedFolderClick()
                 else:
-                    QMessageBox.warning(self, self.tr("Uyarı!"), self.tr("Seçim yapılmamış!"))
+                    QMessageBox.warning(self, self.tr("Warning!"), self.tr("Selection has not done!"))
         else:
-            QMessageBox.warning(self, self.tr("Uyarı!"), self.tr("Seçim yapılmamış!"))
+            QMessageBox.warning(self, self.tr("Warning!"), self.tr("Selection has not done!"))
 
     def feedStore(self):
         if self.page.treeWidget.hasFocus():
@@ -183,7 +183,7 @@ class MainWindow(QMainWindow):
                     db.commit()
                     db.close()
                 if self.treeWidget.currentItem() == self.treeWidget.storeFolder and len(itemAll) > 0:
-                    QMessageBox.warning(self, self.tr("Uyarı!"), self.tr("Bunlar zaten saklı!"))
+                    QMessageBox.warning(self, self.tr("Warning!"), self.tr("These are already stored."))
                 elif self.treeWidget.currentItem() == self.treeWidget.unreadFolder:
                     self.treeWidget.unreadFolderClick()
                     self.treeWidget.storeFolderInit()
@@ -191,9 +191,9 @@ class MainWindow(QMainWindow):
                     self.treeWidget.deletedFolderClick()
                     self.treeWidget.storeFolderInit()
                 else:
-                    QMessageBox.warning(self, self.tr("Uyarı!"), self.tr("Seçim yapılmamış!"))
+                    QMessageBox.warning(self, self.tr("Warning!"), self.tr("Selection has not done!"))
         else:
-            QMessageBox.warning(self, self.tr("Uyarı!"), self.tr("Seçim yapılmamış!"))
+            QMessageBox.warning(self, self.tr("Warning!"), self.tr("Selection has not done!"))
 
     def infoDialog(self):
         items = self.treeWidget.selectedItems()
@@ -210,12 +210,12 @@ class MainWindow(QMainWindow):
         about.show()
 
     def feedAdd(self):
-        f = RSSAddDialog(self)
+        f = FeedAddDialog(self)
         f.feedAddFinished.connect(self.feedUpdate)
         f.show()
 
     def feedFolderAdd(self):
-        f = RSSFolderDialog(self)
+        f = FolderDialog(self)
         f.folderAddFinished.connect(self.sync)
         f.show()
 
@@ -224,9 +224,9 @@ def main():
     app = QApplication(sys.argv)
     LOCALE = QLocale.system().name()
     translator = QTranslator()
-    translator.load(os.path.join(QDir.currentPath(), "languages"), "{}.qm".format(LOCALE))
+    translator.load(os.path.join(QDir.currentPath(), "languages", "{}.qm".format(LOCALE)))
     app.installTranslator(translator)
-    app.setApplicationName(app.tr("Domestic RSS Okuyucu"))
+    app.setApplicationName(app.tr("Domestic RSS Reader"))
     app.setApplicationVersion("0.0.6.4")
 
     initialSettings()

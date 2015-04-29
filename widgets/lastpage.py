@@ -20,8 +20,8 @@ class LastPage(QWidget):
         self.Layout.addWidget(self.browser)
 
     def insertEntry(self, item):
-        self.infoLabel.setText(self.tr("""<div><p style='font-size:13pt;'><a style='font-weight:bold' href='{}'>{}</a> - <span style='text-align:right'>Tarih: {}</span></p>
-        <p>Yazar: {} | Kategori: {}</p></div>
+        self.infoLabel.setText(self.tr("""<div><p style='font-size:13pt;'><a style='font-weight:bold' href='{}'>{}</a> - <span style='text-align:right'>Date: {}</span></p>
+        <p>Author: {} | Category: {}</p></div>
         """).format(item.getEntryUrl(), item.getEntryTitle(), item.getEntryDateTime(), item.getEntryAuthor(), item.getEntryCategory()))
         self.browser.setHtml(item.getEntryContent())
 

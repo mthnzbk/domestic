@@ -10,4 +10,4 @@ SOURCES += widgets/toolbox.py
 SOURCES += widgets/treeitem.py
 SOURCES += widgets/treewidget.py
 SOURCES += dialogs/infodialog.py
-TRANSLATIONS += tr_TR.ts
+TRANSLATIONS += en_US.ts

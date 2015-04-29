@@ -39,11 +39,11 @@ class InfoDialog(QDialog):
         self.buttonBox.accepted.connect(self.saveInfo)
         self.labelMainURL.linkActivated.connect(self.openURL)
 
-        self.labelTitle.setText(self.tr("Başlık:"))
-        self.labelFeed.setText(self.tr("Besleme URL:"))
-        self.labelMain.setText(self.tr("Ana Sayfa:"))
-        self.labelCategory.setText(self.tr("Kategori:"))
-        self.comboBox.addItem(self.tr("Tüm Beslemeler"))
+        self.labelTitle.setText(self.tr("Title:"))
+        self.labelFeed.setText(self.tr("Feed URL:"))
+        self.labelMain.setText(self.tr("Main Page:"))
+        self.labelCategory.setText(self.tr("Category:"))
+        self.comboBox.addItem(self.tr("All Feeds"))
 
     def saveInfo(self):
         print("Seçili ComboBox", self.comboBox.currentText())
@@ -62,7 +62,7 @@ class InfoDialog(QDialog):
 
     def addItem(self, item):
         self.item = item
-        self.setWindowTitle(self.tr("{} - Özellikleri").format(self.item.title))
+        self.setWindowTitle(self.tr("{} - Info").format(self.item.title))
         self.lineEditFeed.setText(self.item.feed_url)
         self.lineEditTitle.setText(self.item.title)
         self.labelMainURL.setText("<a href='{0}'>{0}</a>".format(self.item.site_url))

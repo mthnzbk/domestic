@@ -4,7 +4,7 @@ from PyQt5.QtCore import pyqtSignal
 from core import isFeed, feedInfo, ReaderDb
 
 
-class RSSAddDialog(QDialog):
+class FeedAddDialog(QDialog):
     def __init__(self, parent=None):
         super(QDialog, self).__init__(parent)
         self.resize(400, 150)
@@ -22,11 +22,11 @@ class RSSAddDialog(QDialog):
         self.vLayout.addWidget(self.labelWarning)
 
         self.labelCategory = QLabel(self)
-        self.labelCategory.setText(self.tr("Kategori:"))
+        self.labelCategory.setText(self.tr("Category:"))
         self.labelCategory.hide()
         self.vLayout.addWidget(self.labelCategory)
         self.comboBox = QComboBox(self)
-        self.comboBox.addItem(self.tr("Tüm Beslemeler"))
+        self.comboBox.addItem(self.tr("All Feeds"))
         self.comboBox.hide()
         self.vLayout.addWidget(self.comboBox)
 
@@ -36,20 +36,20 @@ class RSSAddDialog(QDialog):
         self.vLayout.addWidget(self.line)
         self.buttonBox = QDialogButtonBox(self)
         self.buttonBox.setStandardButtons(QDialogButtonBox.Cancel|QDialogButtonBox.Save|QDialogButtonBox.Ok)
-        self.buttonBox.button(QDialogButtonBox.Cancel).setText(self.tr("Vazgeç"))
-        self.buttonBox.button(QDialogButtonBox.Save).setText(self.tr("Kaydet"))
+        self.buttonBox.button(QDialogButtonBox.Cancel).setText(self.tr("Cancel"))
+        self.buttonBox.button(QDialogButtonBox.Save).setText(self.tr("Save"))
         self.buttonBox.button(QDialogButtonBox.Save).clicked.connect(self.feedAdd)
         self.buttonBox.button(QDialogButtonBox.Save).hide()
-        self.buttonBox.button(QDialogButtonBox.Ok).setText(self.tr("Tamam"))
+        self.buttonBox.button(QDialogButtonBox.Ok).setText(self.tr("Ok"))
         self.buttonBox.button(QDialogButtonBox.Ok).clicked.connect(self.feedControl)
         self.buttonBox.button(QDialogButtonBox.Cancel).clicked.connect(self.reject)
 
         self.vLayout.addWidget(self.buttonBox)
         self.lineEditURI.textChanged.connect(self.changeText)
 
-        self.setWindowTitle(self.tr("Yeni Besleme"))
-        self.labelTitle.setText(self.tr("<span style='font-size:16pt; font-weight:bold;'>Yeni Besleme Ekle</span>"))
-        self.labelRSS.setText(self.tr("Besleme bağlantısı veya kaynağını girin:"))
+        self.setWindowTitle(self.tr("New Feed"))
+        self.labelTitle.setText(self.tr("<span style='font-size:16pt; font-weight:bold;'>Add New Feed</span>"))
+        self.labelRSS.setText(self.tr("Enter link or source of feed:"))
 
         url = QApplication.clipboard().text()
         if url.startswith("http://") or url.startswith("https://"):
@@ -80,10 +80,10 @@ class RSSAddDialog(QDialog):
                 self.buttonBox.button(QDialogButtonBox.Save).show()
                 self.buttonBox.button(QDialogButtonBox.Ok).hide()
             else:
-                self.labelWarning.setText(self.tr("<span style='color:red; font-size:15px; font-weight:bold;'>Bu besleme zaten mevcut!</span>"))
+                self.labelWarning.setText(self.tr("<span style='color:red; font-size:15px; font-weight:bold;'>That feed is already exist!</span>"))
                 self.labelWarning.show()
         else:
-            self.labelWarning.setText(self.tr("<span style='color:red; font-size:15px; font-weight:bold;'>Yanlış bağlantı adı girdiniz!</span>"))
+            self.labelWarning.setText(self.tr("<span style='color:red; font-size:15px; font-weight:bold;'>Wrong link name!</span>"))
             self.labelWarning.show()
 
     feedAddFinished = pyqtSignal(str)
