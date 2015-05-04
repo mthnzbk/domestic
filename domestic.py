@@ -169,6 +169,20 @@ class MainWindow(QMainWindow):
                     self.treeWidget.deletedFolderClick()
                 else:
                     QMessageBox.warning(self, self.tr("Warning!"), self.tr("Selection has not done!"))
+        elif self.treeWidget.hasFocus():
+            items = self.treeWidget.selectedItems()
+            if len(items):
+                for item in items:
+                    if isinstance(item, FeedItem):
+                        sor = QMessageBox.question(self, self.tr("Emin misin!"),
+                                                   self.tr("{} beslemesini silmek istiyor musun?").format(item.title))
+                        if sor == 16384:
+                            db = ReaderDb()
+                            db.execute("delete from folders where feed_url=?", (item.feed_url,))
+                            db.commit()
+                            db.close()
+                            self.sync()
+                            print(item, sor)
         else:
             QMessageBox.warning(self, self.tr("Warning!"), self.tr("Selection has not done!"))
 
@@ -220,14 +234,14 @@ class MainWindow(QMainWindow):
         f.show()
 
 def main():
-    import sys, os
+    import sys, os.path as os
     app = QApplication(sys.argv)
     LOCALE = QLocale.system().name()
     translator = QTranslator()
-    translator.load(os.path.join(QDir.currentPath(), "languages", "{}.qm".format(LOCALE)))
+    translator.load(os.join(QDir.currentPath(), "languages", "{}.qm".format(LOCALE)))
     app.installTranslator(translator)
     app.setApplicationName(app.tr("Domestic RSS Reader"))
-    app.setApplicationVersion("0.0.6.4")
+    app.setApplicationVersion("0.0.8.6")
 
     initialSettings()
     initialDb()

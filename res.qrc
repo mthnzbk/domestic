@@ -22,5 +22,6 @@
         <file>images/icons/web.png</file>
         <file>images/icons/html.png</file>
         <file>images/icons/locale.png</file>
+        <file>images/loading.gif</file>
     </qresource>
 </RCC>

@@ -1,9 +1,20 @@
 from PyQt5.QtWidgets import QDialog, QVBoxLayout, QLabel, QLineEdit, QFrame, QDialogButtonBox, QApplication, QComboBox
-from PyQt5.QtCore import pyqtSignal, QSize
-from PyQt5.QtGui import QMovie
+from PyQt5.QtCore import pyqtSignal
+from core import ReaderDb
+import feedparser
 
-from core import isFeed, feedInfo, ReaderDb
+def isFeed(link):
+    feed = feedparser.parse(link)
+    if feed.bozo:
+        if type(feed.bozo_exception) == feedparser.CharacterEncodingOverride:
+            return True
+        else:
+            return False
+    else: return True
 
+def feedInfo(link):
+    rss = feedparser.parse(link)
+    return {"sitelink" : rss.feed.link, "feedlink" : rss.href, "title" : rss.feed.title, "description" : rss.feed.get("subtitle","")}
 
 class FeedAddDialog(QDialog):
     def __init__(self, parent=None):
@@ -58,20 +69,6 @@ class FeedAddDialog(QDialog):
         else: self.lineEditURI.setText("http://")
         self.lineEditURI.selectAll()
 
-        self.frame = QFrame(self)
-        self.frame.hide()
-        self.frame.setStyleSheet("background-color: rgba(0, 0, 0, 180)")
-        self.frame.resize(self.size())
-        self.labelLoading = QLabel(self.frame)
-        self.labelLoading.setStyleSheet("background-color: rgba(0, 0, 0, 0)")
-        self.movieLoading = QMovie(":/images/loading.gif")
-        self.labelLoading.move(self.size().width()/2-32, self.size().height()/2-32)
-        self.labelLoading.setMovie(self.movieLoading)
-        self.movieLoading.start()
-
-    def resizeEvent(self, event):
-        self.frame.resize(self.size())
-
     def changeText(self):
         self.labelWarning.hide()
         self.labelCategory.hide()
@@ -81,7 +78,6 @@ class FeedAddDialog(QDialog):
         self.resize(400, 150)
 
     def feedControl(self):
-        self.frame.show()
         feed = isFeed(self.lineEditURI.text())
         if feed:
             data = feedInfo(self.lineEditURI.text())
@@ -95,14 +91,12 @@ class FeedAddDialog(QDialog):
                 self.comboBox.show()
                 self.buttonBox.button(QDialogButtonBox.Save).show()
                 self.buttonBox.button(QDialogButtonBox.Ok).hide()
-                #self.frame.hide()
             else:
                 self.labelWarning.setText(self.tr("<span style='color:red; font-size:15px; font-weight:bold;'>That feed is already exist!</span>"))
                 self.labelWarning.show()
         else:
             self.labelWarning.setText(self.tr("<span style='color:red; font-size:15px; font-weight:bold;'>Wrong link name!</span>"))
             self.labelWarning.show()
-        self.frame.hide()
 
     feedAddFinished = pyqtSignal(str)
     def feedAdd(self):
