@@ -8,9 +8,8 @@ class FileMenu(QMenu):
         self.setTitle(self.tr("File"))
         self.menuAdd = AddMenu(self)
         self.actionImport = QAction(self)
-        self.actionImport.setDisabled(True)
         self.actionExport = QAction(self)
-        self.actionExport.setDisabled(True)
+        self.actionBackUp = QAction(self)
         self.actionExit = QAction(self)
         self.actionExit.setIcon(QIcon(":/images/icons/exit.png"))
 
@@ -18,10 +17,13 @@ class FileMenu(QMenu):
         self.addSeparator()
         self.addActions((self.actionImport, self.actionExport))
         self.addSeparator()
+        self.addAction(self.actionBackUp)
+        self.addSeparator()
         self.addAction(self.actionExit)
 
         self.actionImport.setText(self.tr("Import Feeds"))
         self.actionExport.setText(self.tr("Export Feeds"))
+        self.actionBackUp.setText(self.tr("Store Backup"))
         self.actionExit.setText(self.tr("Exit"))
         self.actionExit.setShortcut("Ctrl+W")
 

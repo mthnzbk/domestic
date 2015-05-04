@@ -6,7 +6,7 @@ from PyQt5.QtWidgets import *
 from PyQt5.QtGui import QIcon
 from widgets import *
 from dialogs import *
-from core import ReaderDb, Settings, FeedSync, initialSettings, initialDb
+from core import ReaderDb, Settings, FeedSync, initialSettings, initialDb, feedInfo, isFeed
 import resource
 
 
@@ -71,6 +71,8 @@ class MainWindow(QMainWindow):
         self.treeWidget.treeWidgetTitleSignal.connect(self.setWindowTitle)
 
         self.menuFile.actionExit.triggered.connect(self.close)
+        self.menuFile.actionExport.triggered.connect(self.exportFileDialog)
+        self.menuFile.actionImport.triggered.connect(self.importFileDialog)
         self.menuFile.menuAdd.actionFeedAdd.triggered.connect(self.feedAdd)
         self.menuFile.menuAdd.actionFolderAdd.triggered.connect(self.feedFolderAdd)
 
@@ -174,7 +176,7 @@ class MainWindow(QMainWindow):
             if len(items):
                 for item in items:
                     if isinstance(item, FeedItem):
-                        sor = QMessageBox.question(self, self.tr("Emin misin!"),
+                        sor = QMessageBox.question(self, self.tr("Are you sure?"),
                                                    self.tr("{} beslemesini silmek istiyor musun?").format(item.title))
                         if sor == 16384:
                             db = ReaderDb()
@@ -208,6 +210,55 @@ class MainWindow(QMainWindow):
                     QMessageBox.warning(self, self.tr("Warning!"), self.tr("Selection has not done!"))
         else:
             QMessageBox.warning(self, self.tr("Warning!"), self.tr("Selection has not done!"))
+
+    def exportFileDialog(self):
+        file = QFileDialog.getSaveFileName(self, self.tr("Domestic File"), Settings.value("FileDialog/path") or "", self.tr("Domestic file (*.dfx)"))
+        print(file)
+        if not file[0] == "":
+            db = ReaderDb()
+            db.execute("select feed_url from folders where type='feed'")
+            allFeed = db.cursor.fetchall()
+            xmlCreate = "<domestic>\r\n"
+            for feed in allFeed:
+                xmlCreate += "\t<feed>{}</feed>\r\n".format(feed["feed_url"])
+            xmlCreate += "</domestic>"
+            fileW = QFile(file[0])
+            fileW.open(QIODevice.WriteOnly|QIODevice.Text)
+            fileW.write(xmlCreate)
+            fileW.close()
+            Settings.setValue("FileDialog/path", os.dirname(file[0]))
+            Settings.sync()
+
+    def importFileDialog(self):
+        from xml.etree import cElementTree
+        file = QFileDialog.getOpenFileName(self, self.tr("Domestic File"), Settings.value("FileDialog/path") or "", self.tr("Domestic file (*.dfx)"))
+        print(file)
+        if not file[0] == "":
+            fileR = QFile(file[0])
+            fileR.open(QIODevice.ReadOnly|QIODevice.Text)
+            etree = cElementTree.XML(fileR.readAll())
+            feedList = etree.findall("feed")
+            db = ReaderDb()
+            for feed in feedList:
+                db.execute("select * from folders where feed_url=?", (feed.text,))
+                if not db.cursor.fetchone():
+                    try:
+                        fInfo = feedInfo(feed.text)
+                        print(fInfo)
+                        db.execute("insert into folders (title, type, feed_url, site_url, description) values (?, 'feed', ?, ?, ?)",
+                        (fInfo["title"], fInfo["feedlink"], fInfo["sitelink"], fInfo["description"]))
+                        db.commit()
+                    except AttributeError:
+                        pass
+                print(feed.text)
+            db.close()
+            fileR.close()
+            self.sync()
+            Settings.setValue("FileDialog/path", os.dirname(file[0]))
+            Settings.sync()
+
+    def storeBackup(self):
+        pass
 
     def infoDialog(self):
         items = self.treeWidget.selectedItems()
