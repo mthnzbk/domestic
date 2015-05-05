@@ -6,7 +6,8 @@ from PyQt5.QtWidgets import *
 from PyQt5.QtGui import QIcon
 from widgets import *
 from dialogs import *
-from core import ReaderDb, Settings, FeedSync, initialSettings, initialDb, feedInfo, isFeed
+from core import ReaderDb, Settings, FeedSync, initialSettings, initialDb
+from xml.etree import cElementTree
 import resource
 
 
@@ -218,13 +219,14 @@ class MainWindow(QMainWindow):
             db = ReaderDb()
             db.execute("select feed_url from folders where type='feed'")
             allFeed = db.cursor.fetchall()
-            xmlCreate = "<domestic>\r\n"
+            root = cElementTree.Element("domestic")
             for feed in allFeed:
-                xmlCreate += "  <feed>{}</feed>\r\n".format(feed["feed_url"])
-            xmlCreate += "</domestic>"
+                child = cElementTree.SubElement(root, "feed")
+                child.text = feed["feed_url"]
+
             fileW = QFile(file[0])
             fileW.open(QIODevice.WriteOnly|QIODevice.Text)
-            fileW.write(xmlCreate)
+            fileW.write(cElementTree.tostring(root, "unicode"))
             fileW.close()
             Settings.setValue("FileDialog/path", os.dirname(file[0]))
             Settings.sync()
@@ -240,10 +242,6 @@ class MainWindow(QMainWindow):
 
         Settings.setValue("FileDialog/path", os.dirname(file[0]))
         Settings.sync()
-
-
-    def storeBackup(self):
-        pass
 
     def infoDialog(self):
         items = self.treeWidget.selectedItems()

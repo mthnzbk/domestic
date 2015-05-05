@@ -1,8 +1,7 @@
 from PyQt5.QtWidgets import QDialog, QVBoxLayout, QLabel, QDialogButtonBox, QFrame, QProgressBar
 from PyQt5.QtCore import QThread, QFile, QIODevice, pyqtSignal, Qt
-from core import ReaderDb, isFeed, feedInfo, Settings
+from core import ReaderDb, feedInfo
 from xml.etree import cElementTree
-import os.path as os
 
 class Thread(QThread):
     def __init__(self, parent=None):
@@ -31,7 +30,6 @@ class Thread(QThread):
                         self.parent.labelFeed.setStyleSheet("color:green; font-weight:bold;")
                         self.parent.labelFeed.setText("{} ekleniyor.".format(feed.text))
                         fInfo = feedInfo(feed.text)
-                        print(fInfo)
                         db.execute("insert into folders (title, type, feed_url, site_url, description) values (?, 'feed', ?, ?, ?)",
                         (fInfo["title"], fInfo["feedlink"], fInfo["sitelink"], fInfo["description"]))
                         db.commit()
@@ -44,7 +42,6 @@ class Thread(QThread):
                     self.parent.labelFeed.setStyleSheet("color:blue; font-weight:bold;")
                     self.parent.labelFeed.setText("{} ekli.".format(feed.text))
                     self.msleep(500)
-            self.parent.buttonBox.button(QDialogButtonBox.Ok).setEnabled(True)
             db.close()
             fileR.close()
 
@@ -74,7 +71,6 @@ class ProgressDialog(QDialog):
         self.verticalLayout.addWidget(self.buttonBox)
 
         self.buttonBox.accepted.connect(self.accept)
-        self.buttonBox.rejected.connect(self.reject)
 
         self.setWindowTitle(self.tr("Beslemeler içe aktarılıyor..."))
         self.labelInfo.setText("<span style='font-size:11pt; font-weight:bold;'>İçe aktarılan:</span>")
@@ -85,6 +81,14 @@ class ProgressDialog(QDialog):
     def keyPressEvent(self, event):
         pass
 
+    def accept(self):
+        self.parent.sync()
+        self.close()
+
+    def finish(self):
+        self.buttonBox.button(QDialogButtonBox.Ok).setEnabled(True)
+        self.buttonBox.button(QDialogButtonBox.Ok).setFocus()
+
     def addFile(self, file):
         self.file = file
 
@@ -94,4 +98,4 @@ class ProgressDialog(QDialog):
     def start(self):
         self.thread.addFile(self.getFile())
         self.thread.start()
-        self.thread.finished.connect(self.parent.sync)
+        self.thread.finished.connect(self.finish)
