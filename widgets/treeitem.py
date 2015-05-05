@@ -42,6 +42,7 @@ class EntryItem(QTreeWidgetItem):
     def feedTitle(self, title):
         self.feedtitle = title
         self.setText(0, title)
+        self.setToolTip(0, title)
 
     def getFeedTitle(self):
         return  self.feedtitle
@@ -55,6 +56,7 @@ class EntryItem(QTreeWidgetItem):
     def entryTitle(self, title):
         self.entrytitle = title
         self.setText(1, title)
+        self.setToolTip(1, title)
 
     def getEntryTitle(self):
         return self.entrytitle
@@ -62,6 +64,7 @@ class EntryItem(QTreeWidgetItem):
     def entryAuthor(self, author):
         self.entryauthor = author
         self.setText(2, author)
+        self.setToolTip(2, author)
 
     def getEntryAuthor(self):
         return self.entryauthor
@@ -69,6 +72,7 @@ class EntryItem(QTreeWidgetItem):
     def entryCategory(self, category):
         self.entrycategory = category
         self.setText(3, category)
+        self.setToolTip(3, category)
 
     def getEntryCategory(self):
         return  self.entrycategory
@@ -76,6 +80,7 @@ class EntryItem(QTreeWidgetItem):
     def entryDateTime(self, datetime):
         self.entrydatetime = datetime
         self.setText(4, datetime)
+        self.setToolTip(4, datetime)
 
     def getEntryDateTime(self):
         return self.entrydatetime

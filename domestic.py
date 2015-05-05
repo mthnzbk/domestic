@@ -220,7 +220,7 @@ class MainWindow(QMainWindow):
             allFeed = db.cursor.fetchall()
             xmlCreate = "<domestic>\r\n"
             for feed in allFeed:
-                xmlCreate += "\t<feed>{}</feed>\r\n".format(feed["feed_url"])
+                xmlCreate += "  <feed>{}</feed>\r\n".format(feed["feed_url"])
             xmlCreate += "</domestic>"
             fileW = QFile(file[0])
             fileW.open(QIODevice.WriteOnly|QIODevice.Text)
@@ -230,32 +230,17 @@ class MainWindow(QMainWindow):
             Settings.sync()
 
     def importFileDialog(self):
-        from xml.etree import cElementTree
         file = QFileDialog.getOpenFileName(self, self.tr("Domestic File"), Settings.value("FileDialog/path") or "", self.tr("Domestic file (*.dfx)"))
         print(file)
         if not file[0] == "":
-            fileR = QFile(file[0])
-            fileR.open(QIODevice.ReadOnly|QIODevice.Text)
-            etree = cElementTree.XML(fileR.readAll())
-            feedList = etree.findall("feed")
-            db = ReaderDb()
-            for feed in feedList:
-                db.execute("select * from folders where feed_url=?", (feed.text,))
-                if not db.cursor.fetchone():
-                    try:
-                        fInfo = feedInfo(feed.text)
-                        print(fInfo)
-                        db.execute("insert into folders (title, type, feed_url, site_url, description) values (?, 'feed', ?, ?, ?)",
-                        (fInfo["title"], fInfo["feedlink"], fInfo["sitelink"], fInfo["description"]))
-                        db.commit()
-                    except AttributeError:
-                        pass
-                print(feed.text)
-            db.close()
-            fileR.close()
-            self.sync()
-            Settings.setValue("FileDialog/path", os.dirname(file[0]))
-            Settings.sync()
+            progressDialog = ProgressDialog(self)
+            progressDialog.addFile(file[0])
+            progressDialog.show()
+            progressDialog.start()
+
+        Settings.setValue("FileDialog/path", os.dirname(file[0]))
+        Settings.sync()
+
 
     def storeBackup(self):
         pass
@@ -292,7 +277,7 @@ def main():
     translator.load(os.join(QDir.currentPath(), "languages", "{}.qm".format(LOCALE)))
     app.installTranslator(translator)
     app.setApplicationName(app.tr("Domestic RSS Reader"))
-    app.setApplicationVersion("0.1.0.7")
+    app.setApplicationVersion("0.1.2.9")
 
     initialSettings()
     initialDb()
