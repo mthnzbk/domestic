@@ -91,7 +91,7 @@ class MainWindow(QMainWindow):
     def sync(self):
         self.treeWidget.clear()
         self.treeWidget.widgetInitial()
-        self.treeWidget.categorySorting(treeitem=self.treeWidget.allFeedFolder)
+        self.treeWidget.categorySorting(treeitem=self.treeWidget)
         self.treeWidget.unreadFolderInit()
         self.treeWidget.deletedFolderInit()
         self.treeWidget.storeFolderInit()
@@ -292,7 +292,7 @@ def main():
     translator.load(os.join(QDir.currentPath(), "languages", "{}.qm".format(LOCALE)))
     app.installTranslator(translator)
     app.setApplicationName(app.tr("Domestic RSS Reader"))
-    app.setApplicationVersion("0.0.8.6")
+    app.setApplicationVersion("0.1.0.7")
 
     initialSettings()
     initialDb()

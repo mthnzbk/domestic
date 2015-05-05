@@ -2,7 +2,7 @@ from PyQt5.QtWidgets import QTreeWidget, QTreeWidgetItem
 from PyQt5.QtCore import QSize, pyqtSignal
 from PyQt5.QtGui import QIcon, QBrush, QColor, QFont
 
-from core import ReaderDb
+from core import ReaderDb, Settings
 from widgets.treeitem import FolderItem, FeedItem
 
 
@@ -18,14 +18,28 @@ class TreeWidget(QTreeWidget):
         self.setAnimated(True)
         self.header().setVisible(False)
         self.headerItem().setText(0,"Feed")
+        self.itemExpanded.connect(self.expandSignal)
+        self.itemCollapsed.connect(self.collapseSignal)
 
         self.widgetInitial()
 
         self.itemClicked.connect(self.folderClick)
-        self.categorySorting(treeitem=self.allFeedFolder)
+        self.categorySorting(treeitem=self)
         self.unreadFolderInit()
         self.deletedFolderInit()
         self.storeFolderInit()
+
+    def collapseSignal(self, item):
+        key = "TreeWidget/{}".format(item.text(0).replace(" ", "-"))
+        Settings.setValue(key, 0)
+        Settings.sync()
+        print(item.text(0))
+
+    def expandSignal(self, item):
+        key = "TreeWidget/{}".format(item.text(0).replace(" ", "-"))
+        Settings.setValue(key, 1)
+        Settings.sync()
+        print(item.text(0))
 
     def widgetInitial(self):
         self.unreadFolder = QTreeWidgetItem(self)
@@ -37,11 +51,6 @@ class TreeWidget(QTreeWidget):
         self.storeFolder = QTreeWidgetItem(self)
         self.storeFolder.setIcon(0, QIcon(":/images/icons/folder_tar.png"))
         self.storeFolder.setText(0, self.tr("Stored"))
-        self.allFeedFolder = QTreeWidgetItem(self)
-        self.allFeedFolder.setIcon(0, QIcon(":/images/icons/folder_grey_open.png"))
-        self.allFeedFolder.setText(0, self.tr("All Feeds"))
-
-        self.expandItem(self.allFeedFolder)
 
     def categorySorting(self, id=0, treeitem=None):
         db = ReaderDb()
@@ -50,15 +59,17 @@ class TreeWidget(QTreeWidget):
         for folder in folders:
             if folder["type"] == "folder":
                 item = FolderItem(treeitem)
-                item.setExpanded(True)
                 item.setIcon(0, QIcon(":/images/icons/folder_grey.png"))
                 item.id = folder["id"]
                 item.title = folder["title"]
                 item.type = folder["type"]
                 item.setText(0, item.title)
                 item.parent = folder["parent"]
-                print(folder["id"], folder["title"], folder["parent"])
+                key = "TreeWidget/{}".format(item.text(0).replace(" ", "-"))
+                if Settings.value(key) != None:
+                    item.setExpanded(int(Settings.value(key)))
                 self.categorySorting(folder["id"], item)
+
             elif folder["type"] == "feed":
                 item = FeedItem(treeitem)
                 item.setIcon(0, QIcon(":/images/icons/html.png"))
@@ -77,8 +88,6 @@ class TreeWidget(QTreeWidget):
     treeWidgetTitleSignal = pyqtSignal(str)
     folderClicked = pyqtSignal()
     def folderClick(self, widget, row):
-        print(widget, widget.text(0), self.indexOfTopLevelItem(widget))
-
         if widget == self.unreadFolder:
             self.parent.widget(1).setCurrentIndex(0)
             self.unreadFolderClick()
@@ -88,8 +97,6 @@ class TreeWidget(QTreeWidget):
         elif widget == self.storeFolder:
             self.parent.widget(1).setCurrentIndex(0)
             self.storeFolderClick()
-        elif widget == self.allFeedFolder:
-            self.allFeedFolderClick()
         else:
             self.folderClicked.emit()
         self.treeWidgetTitleSignal.emit(widget.text(0))
@@ -100,12 +107,10 @@ class TreeWidget(QTreeWidget):
         feedList = data.fetchall()
         db.close()
         print(len(feedList), feedList)
-        #self.unreadFolderClicked.emit(feedList)
         self.unreadFolder.setForeground(0,QBrush(QColor(0,0,0,255)))
         if len(feedList) > 0:
             self.unreadFolder.setText(0, self.tr("Unread ({})").format(len(feedList)))
             self.unreadFolder.setForeground(0,QBrush(QColor(0,0,255)))
-            #self.deletedFolder.setIcon(0, QIcon(":/images/icons/trash_full.png"))
         return feedList
 
     def deletedFolderInit(self):
@@ -166,9 +171,3 @@ class TreeWidget(QTreeWidget):
             self.storeFolder.setText(0, self.tr("Stored ({})").format(len(feedList)))
         else: self.storeFolder.setText(0, self.tr("Stored"))
         self.treeWidgetTitleSignal.emit(self.storeFolder.text(0))
-
-    def allFeedFolderClick(self):
-        if self.allFeedFolder.isExpanded():
-            self.allFeedFolder.setExpanded(False)
-        else:
-            self.allFeedFolder.setExpanded(True)

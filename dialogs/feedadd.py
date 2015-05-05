@@ -89,8 +89,9 @@ class FeedAddDialog(QDialog):
         data = feedInfo(self.lineEditURI.text())
         db = ReaderDb()
         db.execute("select id from folders where type='folder' and title=?", (self.comboBox.currentText(),))
-        if db.cursor.fetchone():
-            category = db.cursor.fetchone()["id"]
+        folder = db.cursor.fetchone()
+        if folder:
+            category = folder["id"]
         else: category = 0
         print("Feedin yeni kategorisi ", category)
         db.execute("insert into folders (title, parent, type, feed_url, site_url, description) values (?, ?, 'feed', ?, ?, ?)",

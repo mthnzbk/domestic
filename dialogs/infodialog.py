@@ -48,9 +48,10 @@ class InfoDialog(QDialog):
     def saveInfo(self):
         print("Seçili ComboBox", self.comboBox.currentText())
         db = ReaderDb()
-        db.execute("select id from folders where type='folder' and title=?", (self.comboBox.currentText(),))
-        if db.cursor.fetchone():
-            category = db.cursor.fetchone()["id"]
+        db.execute("select * from folders where type='folder' and title=?", (self.comboBox.currentText(),))
+        data = db.cursor.fetchone()
+        if data:
+            category = data["id"]
         else: category = 0
         db.execute("update folders set parent=? where id=?", (category, self.item.id))
         db.commit()
