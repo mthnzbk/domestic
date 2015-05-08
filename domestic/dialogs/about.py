@@ -39,16 +39,14 @@ class About(QDialog):
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tabLicense), self.tr("License"))
         self.labelAbout.setText(self.tr("""
         <p align="center"><img src=":/images/rss-icon-128.png"/></p>
-        <p align="center"><span style=" font-size:20pt; font-weight:bold;">{}</span></p>
-        <p align="center">Version: {}</p><p align="center"></p>
-        <p>Domestic RSS Reader, cross platform, free and free is a RSS/Atom reader.</p>
+        <p align="center"><span style=" font-size:20pt; font-weight:bold;">{0}</span></p>
+        <p align="center">Version: {1}</p><p align="center"></p>
+        <p>{0}, cross platform, free and free is a RSS/Atom reader.</p>
         <p>PyQt5(Qt5), Python3.4, BeautifulSoup4, feedparser and sqlite3 was created with.</p>
         <p>License: Gpl v3</p>
         <p align="center">Copyright © 2015 Metehan Özbek - <a href="http://metehan.us">
             <span style=" color:#0000ff;">metehan.us </span></a> - <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=M9BAR7J2SQWZC">
-          <img src=":/images/donate-button.png" /></a></p>
-
-        """).format(app.applicationName(), app.applicationVersion()))
+          <img src=":/images/donate-button.png" /></a></p>""").format(app.applicationName(), app.applicationVersion()))
 
         self.labelAbout.linkActivated.connect(self.openUrl)
 

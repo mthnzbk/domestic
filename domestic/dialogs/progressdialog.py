@@ -29,7 +29,7 @@ class Thread(QThread):
                 if not db.cursor.fetchone():
                     try:
                         self.parent.labelFeed.setStyleSheet("color:green; font-weight:bold;")
-                        self.parent.labelFeed.setText("{} ekleniyor.".format(feed.text))
+                        self.parent.labelFeed.setText("{} adding.".format(feed.text))
                         fInfo = feedInfo(feed.text)
                         db.execute("insert into folders (title, type, feed_url, site_url, description) values (?, 'feed', ?, ?, ?)",
                         (fInfo["title"], fInfo["feedlink"], fInfo["sitelink"], fInfo["description"]))
@@ -37,11 +37,11 @@ class Thread(QThread):
                         self.msleep(100)
                     except AttributeError:
                         self.parent.labelFeed.setStyleSheet("color:red; font-weight:bold;")
-                        self.parent.labelFeed.setText("{} eklenemiyor.".format(feed.text))
+                        self.parent.labelFeed.setText("{} unable to add.".format(feed.text))
                         self.msleep(500)
                 else:
                     self.parent.labelFeed.setStyleSheet("color:blue; font-weight:bold;")
-                    self.parent.labelFeed.setText("{} ekli.".format(feed.text))
+                    self.parent.labelFeed.setText("{} added.".format(feed.text))
                     self.msleep(500)
             db.close()
             fileR.close()
@@ -73,8 +73,8 @@ class ProgressDialog(QDialog):
 
         self.buttonBox.accepted.connect(self.accept)
 
-        self.setWindowTitle(self.tr("Beslemeler içe aktarılıyor..."))
-        self.labelInfo.setText("<span style='font-size:11pt; font-weight:bold;'>İçe aktarılan:</span>")
+        self.setWindowTitle(self.tr("Importing Feeds..."))
+        self.labelInfo.setText(self.tr("<span style='font-size:11pt; font-weight:bold;'>Imported:</span>"))
 
         self.thread = Thread(self)
         self.thread.progress.connect(self.progressBar.setValue)

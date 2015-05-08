@@ -19,9 +19,9 @@ class LastPage(QWidget):
         self.Layout.addWidget(self.browser)
 
     def insertEntry(self, item):
-        self.infoLabel.setText(self.tr("""<div><p style='font-size:13pt;'><a style='font-weight:bold' href='{}'>{}</a> - <span style='text-align:right'>Date: {}</span></p>
-        <p>Author: {} | Category: {}</p></div>
-        """).format(item.getEntryUrl(), item.getEntryTitle(), item.getEntryDateTime(), item.getEntryAuthor(), item.getEntryCategory()))
+        self.infoLabel.setText(self.tr("""<p><a style='font-size:13pt; font-weight:bold' href='{}'>{}</a> - <span>Date: {}</span></p>
+        <p>Author: {} | Category: {}</p>""").format(item.getEntryUrl(), item.getEntryTitle(), item.getEntryDateTime(),
+            item.getEntryAuthor(), item.getEntryCategory()))
         self.browser.setHtml(item.getEntryContent())
 
     def linkClick(self, url): # FIXME

@@ -176,7 +176,7 @@ class MainWindow(QMainWindow):
                 for item in items:
                     if isinstance(item, FeedItem):
                         sor = QMessageBox.question(self, self.tr("Are you sure?"),
-                                                   self.tr("{} beslemesini silmek istiyor musun?").format(item.title))
+                                                   self.tr("Do you want to delete the {} feed?").format(item.title))
                         if sor == 16384:
                             db = ReaderDb()
                             db.execute("delete from folders where feed_url=?", (item.feed_url,))
@@ -268,7 +268,7 @@ def main():
     translator = QTranslator()
     translator.load(os.join(mainPath, "languages", "{}.qm".format(LOCALE)))
     app.installTranslator(translator)
-    app.setApplicationName(app.tr("Domestic RSS Reader"))
+    app.setApplicationName(app.tr("Domestic Reader"))
     app.setApplicationVersion("0.1.4.0")
 
     initialSettings()
