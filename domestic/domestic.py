@@ -1,15 +1,16 @@
 #!/usr/bin/env python3
-import os.path as os
+import sys, os.path as os
+from xml.etree import cElementTree
 from PyQt5.QtCore import *
 from PyQt5.QtMultimedia import QMediaPlayer, QMediaContent
 from PyQt5.QtWidgets import *
 from PyQt5.QtGui import QIcon
-from widgets import *
-from dialogs import *
-from core import ReaderDb, Settings, FeedSync, initialSettings, initialDb
-from xml.etree import cElementTree
-import resource
+from domestic.widgets import *
+from domestic.dialogs import *
+from domestic.core import ReaderDb, Settings, FeedSync, initialSettings, initialDb
+from domestic import resource
 
+mainPath = os.abspath(os.dirname(__file__))
 
 class MainWindow(QMainWindow):
     def __init__(self, parent=None):
@@ -142,7 +143,7 @@ class MainWindow(QMainWindow):
     def notifySoundPlay(self, datain):
         if datain:
             media = QMediaPlayer(self)
-            media.setMedia(QMediaContent(QUrl.fromLocalFile(os.join(QDir.currentPath(), "media", "notify.mp3"))))
+            media.setMedia(QMediaContent(QUrl.fromLocalFile(os.join(mainPath, "media", "notify.mp3"))))
             media.setVolume(100)
             media.play()
 
@@ -150,7 +151,6 @@ class MainWindow(QMainWindow):
         if self.page.treeWidget.hasFocus():
             itemAll = self.page.treeWidget.selectedItems()
             item_list = [(item.getEntryUrl(),) for item in itemAll]
-            print(item_list)
             db = ReaderDb()
             if itemAll != None:
                 if self.treeWidget.currentItem() == self.treeWidget.unreadFolder or self.treeWidget.currentItem() == self.treeWidget.storeFolder:
@@ -158,11 +158,10 @@ class MainWindow(QMainWindow):
                     db.commit()
                     db.close()
                 if self.treeWidget.currentItem() == self.treeWidget.deletedFolder:
-                    db.executemany("update store set istrash=-1, iscache=0, isstore=0 where entry_url=?", item_list)
+                    db.executemany("update store set istrash=-1, iscache=0, isstore=0, entry_content='' where entry_url=?", item_list)
                     db.commit()
                     db.close()
                 if self.treeWidget.currentItem() == self.treeWidget.unreadFolder:
-                    print(self.page.treeWidget.currentColumn())
                     self.treeWidget.unreadFolderClick()
                     self.treeWidget.deletedFolderInit()
                 elif self.treeWidget.currentItem() == self.treeWidget.storeFolder:
@@ -185,7 +184,6 @@ class MainWindow(QMainWindow):
                             db.commit()
                             db.close()
                             self.sync()
-                            print(item, sor)
         else:
             QMessageBox.warning(self, self.tr("Warning!"), self.tr("Selection has not done!"))
 
@@ -214,7 +212,6 @@ class MainWindow(QMainWindow):
 
     def exportFileDialog(self):
         file = QFileDialog.getSaveFileName(self, self.tr("Domestic File"), Settings.value("FileDialog/path") or "", self.tr("Domestic file (*.dfx)"))
-        print(file)
         if not file[0] == "":
             db = ReaderDb()
             db.execute("select feed_url from folders where type='feed'")
@@ -233,7 +230,6 @@ class MainWindow(QMainWindow):
 
     def importFileDialog(self):
         file = QFileDialog.getOpenFileName(self, self.tr("Domestic File"), Settings.value("FileDialog/path") or "", self.tr("Domestic file (*.dfx)"))
-        print(file)
         if not file[0] == "":
             progressDialog = ProgressDialog(self)
             progressDialog.addFile(file[0])
@@ -268,11 +264,10 @@ class MainWindow(QMainWindow):
         f.show()
 
 def main():
-    import sys, os.path as os
     app = QApplication(sys.argv)
     LOCALE = QLocale.system().name()
     translator = QTranslator()
-    translator.load(os.join(QDir.currentPath(), "languages", "{}.qm".format(LOCALE)))
+    translator.load(os.join(mainPath, "languages", "{}.qm".format(LOCALE)))
     app.installTranslator(translator)
     app.setApplicationName(app.tr("Domestic RSS Reader"))
     app.setApplicationVersion("0.1.2.9")

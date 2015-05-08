@@ -1,2 +1,2 @@
-include media/* images/* images/icons/* languages/*
-global-include domestic.pro AUTHORS CHANGELOG README LICENSE TODO res.qrc
+include domestic/media/* domestic/images/* domestic/images/icons/* domestic/languages/*
+global-include domestic/domestic.pro AUTHORS README LICENSE domestic/res.qrc
