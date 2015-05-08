@@ -1,7 +1,8 @@
 from PyQt5.QtWidgets import QDialog, QVBoxLayout, QLabel, QLineEdit, QFrame, QDialogButtonBox, QApplication, QComboBox
 from PyQt5.QtCore import pyqtSignal
 from domestic.core import ReaderDb, isFeed, feedInfo
-
+from bs4 import BeautifulSoup
+from urllib.request import urlopen
 
 class FeedAddDialog(QDialog):
     def __init__(self, parent=None):
@@ -64,6 +65,25 @@ class FeedAddDialog(QDialog):
         self.buttonBox.button(QDialogButtonBox.Save).hide()
         self.resize(400, 150)
 
+    def faviconUrl(self, url):
+        with urlopen(url) as html:
+            html = BeautifulSoup(html.read())
+            try:
+                favicon_url = html.find(rel="shortcut icon")["href"]
+                if favicon_url.startswith("http://") or favicon_url.startswith("https://"):
+                    return favicon_url
+                elif favicon_url.startswith("/"):
+                    return url + favicon_url
+            except TypeError:
+                return None
+
+    def getFavicon(self, url):
+        import sqlite3 as sql
+        if not url is None:
+            with urlopen(url) as favicon:
+                return sql.Binary(favicon.read())
+        else: None
+
     def feedControl(self):
         feed = isFeed(self.lineEditURI.text())
         if feed:
@@ -89,13 +109,14 @@ class FeedAddDialog(QDialog):
     def feedAdd(self):
         data = feedInfo(self.lineEditURI.text())
         db = ReaderDb()
+        fav = self.faviconUrl(data["sitelink"])
         db.execute("select id from folders where type='folder' and title=?", (self.comboBox.currentText(),))
         folder = db.cursor.fetchone()
         if folder:
             category = folder["id"]
         else: category = 0
-        db.execute("insert into folders (title, parent, type, feed_url, site_url, description) values (?, ?, 'feed', ?, ?, ?)",
-                    (data["title"], category, data["feedlink"], data["sitelink"], data["description"]))
+        db.execute("insert into folders (title, parent, type, feed_url, site_url, description, favicon) values (?, ?, 'feed', ?, ?, ?, ?)",
+                    (data["title"], category, data["feedlink"], data["sitelink"], data["description"], self.getFavicon(fav)))
         db.commit()
         db.close()
         self.feedAddFinished.emit(self.lineEditURI.text())

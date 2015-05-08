@@ -1,6 +1,6 @@
 from PyQt5.QtWidgets import QTreeWidget, QTreeWidgetItem
 from PyQt5.QtCore import QSize, pyqtSignal
-from PyQt5.QtGui import QIcon, QBrush, QColor, QFont
+from PyQt5.QtGui import QIcon, QBrush, QColor, QFont, QPixmap
 from domestic.core import ReaderDb, Settings
 from domestic.widgets.treeitem import FolderItem, FeedItem
 
@@ -69,7 +69,6 @@ class TreeWidget(QTreeWidget):
 
             elif folder["type"] == "feed":
                 item = FeedItem(treeitem)
-                item.setIcon(0, QIcon(":/images/icons/html.png"))
                 item.id = folder["id"]
                 item.title = folder["title"]
                 item.setText(0, item.title)
@@ -79,6 +78,14 @@ class TreeWidget(QTreeWidget):
                 item.type = folder["type"]
                 item.description = folder["description"]
                 item.favicon = folder["favicon"]
+                if not item.favicon is None:
+                    icon = QIcon()
+                    pix = QPixmap()
+                    pix.loadFromData(item.favicon)
+                    icon.addPixmap(pix)
+                    item.setIcon(0, icon)
+                else:
+                    item.setIcon(0, QIcon(":/images/icons/html.png"))
                 self.categorySorting(folder["id"], item)
 
     treeWidgetTitleSignal = pyqtSignal(str)

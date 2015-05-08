@@ -40,10 +40,9 @@ class MainWindow(QMainWindow):
         self.toolBox.resize(Settings.value("ToolBox/size"))
         self.page = FirstPage(self.toolBox)
         self.toolBox.addItem(self.page, "")
-
         self.page2 = LastPage(self.toolBox)
-
         self.toolBox.addItem(self.page2, "")
+
         self.menubar = QMenuBar(self)
         self.setMenuBar(self.menubar)
         self.menuFile = FileMenu(self)
@@ -270,7 +269,7 @@ def main():
     translator.load(os.join(mainPath, "languages", "{}.qm".format(LOCALE)))
     app.installTranslator(translator)
     app.setApplicationName(app.tr("Domestic RSS Reader"))
-    app.setApplicationVersion("0.1.2.9")
+    app.setApplicationVersion("0.1.4.0")
 
     initialSettings()
     initialDb()
