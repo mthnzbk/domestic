@@ -3,6 +3,7 @@ from PyQt5.QtCore import pyqtSignal
 from domestic.core import ReaderDb, isFeed, feedInfo
 from bs4 import BeautifulSoup
 from urllib.request import urlopen
+from urllib.parse import urljoin
 
 class FeedAddDialog(QDialog):
     def __init__(self, parent=None):
@@ -69,11 +70,11 @@ class FeedAddDialog(QDialog):
         with urlopen(url) as html:
             html = BeautifulSoup(html.read())
             try:
-                favicon_url = html.find(rel="shortcut icon")["href"]
-                if favicon_url.startswith("http://") or favicon_url.startswith("https://"):
-                    return favicon_url
-                elif favicon_url.startswith("/"):
-                    return url + favicon_url
+                if not html.find(rel="shortcut icon") is None:
+                    favicon_url = html.find(rel="shortcut icon")["href"]
+                elif not html.find(rel="icon")["href"] is None:
+                    favicon_url = html.find(rel="icon")["href"]
+                return urljoin(url, favicon_url)
             except TypeError:
                 return None
 
