@@ -2,6 +2,9 @@ from xml.etree import cElementTree
 from PyQt5.QtWidgets import QDialog, QVBoxLayout, QLabel, QDialogButtonBox, QFrame, QProgressBar
 from PyQt5.QtCore import QThread, QFile, QIODevice, pyqtSignal, Qt
 from domestic.core import ReaderDb, feedInfo
+from bs4 import BeautifulSoup
+from urllib.request import urlopen
+from urllib.parse import urljoin
 
 
 class Thread(QThread):
@@ -11,6 +14,25 @@ class Thread(QThread):
 
     def addFile(self, file):
         self.file = file
+
+    def faviconUrl(self, url):
+        with urlopen(url) as html:
+            html = BeautifulSoup(html.read())
+            try:
+                if not html.find(rel="shortcut icon") is None:
+                    favicon_url = html.find(rel="shortcut icon")["href"]
+                elif not html.find(rel="icon")["href"] is None:
+                    favicon_url = html.find(rel="icon")["href"]
+                return urljoin(url, favicon_url)
+            except TypeError:
+                return None
+
+    def getFavicon(self, url):
+        import sqlite3 as sql
+        if not url is None:
+            with urlopen(url) as favicon:
+                return sql.Binary(favicon.read())
+        else: None
 
     progress = pyqtSignal(int)
     def run(self):
@@ -29,19 +51,20 @@ class Thread(QThread):
                 if not db.cursor.fetchone():
                     try:
                         self.parent.labelFeed.setStyleSheet("color:green; font-weight:bold;")
-                        self.parent.labelFeed.setText("{} adding.".format(feed.text))
+                        self.parent.labelFeed.setText(self.tr("{} adding...").format(feed.text))
                         fInfo = feedInfo(feed.text)
-                        db.execute("insert into folders (title, type, feed_url, site_url, description) values (?, 'feed', ?, ?, ?)",
-                        (fInfo["title"], fInfo["feedlink"], fInfo["sitelink"], fInfo["description"]))
+                        fav = self.faviconUrl(fInfo["sitelink"])
+                        db.execute("insert into folders (title, type, feed_url, site_url, description, favicon) values (?, 'feed', ?, ?, ?, ?)",
+                        (fInfo["title"], fInfo["feedlink"], fInfo["sitelink"], fInfo["description"], self.getFavicon(fav)))
                         db.commit()
                         self.msleep(100)
                     except AttributeError:
                         self.parent.labelFeed.setStyleSheet("color:red; font-weight:bold;")
-                        self.parent.labelFeed.setText("{} unable to add.".format(feed.text))
+                        self.parent.labelFeed.setText(self.tr("{} unable to add.").format(feed.text))
                         self.msleep(500)
                 else:
                     self.parent.labelFeed.setStyleSheet("color:blue; font-weight:bold;")
-                    self.parent.labelFeed.setText("{} added.".format(feed.text))
+                    self.parent.labelFeed.setText(self.tr("{} added.").format(feed.text))
                     self.msleep(500)
             db.close()
             fileR.close()
