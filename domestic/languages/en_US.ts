@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS><TS version="2.0" language="en_US" sourcelanguage="en_US">
+<!DOCTYPE TS>
+<TS version="2.0" language="en_US" sourcelanguage="en_US">
 <context>
     <name>About</name>
     <message>
@@ -31,7 +32,7 @@
         &lt;p&gt;Domestic RSS Reader, cross platform, free and free is a RSS/Atom reader.&lt;/p&gt;
         &lt;p&gt;PyQt5(Qt5), Python3.4 and sqlite3 was created with.&lt;/p&gt;
         &lt;p&gt;License: Gpl v3&lt;/p&gt;
-        &lt;p align=&quot;center&quot;&gt;Copyright &#xc2;&#xa9; 2015 Metehan &#xc3;&#x96;zbek - &lt;a href=&quot;http://metehan.us&quot;&gt;
+        &lt;p align=&quot;center&quot;&gt;Copyright Â© 2015 Metehan Ãzbek - &lt;a href=&quot;http://metehan.us&quot;&gt;
             &lt;span style=&quot; color:#0000ff;&quot;&gt;metehan.us &lt;/span&gt;&lt;/a&gt; - &lt;a href=&quot;https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&amp;hosted_button_id=M9BAR7J2SQWZC&quot;&gt;
           &lt;img src=&quot;:/images/donate-button.png&quot; /&gt;&lt;/a&gt;&lt;/p&gt;
 
@@ -58,7 +59,7 @@
         &lt;p&gt;{0}, cross platform, free and free is a RSS/Atom reader.&lt;/p&gt;
         &lt;p&gt;PyQt5(Qt5), Python3.4, BeautifulSoup4, feedparser and sqlite3 was created with.&lt;/p&gt;
         &lt;p&gt;License: Gpl v3&lt;/p&gt;
-        &lt;p align=&quot;center&quot;&gt;Copyright &#xc2;&#xa9; 2015 Metehan &#xc3;&#x96;zbek - &lt;a href=&quot;http://metehan.us&quot;&gt;
+        &lt;p align=&quot;center&quot;&gt;Copyright Â© 2015 Metehan Ãzbek - &lt;a href=&quot;http://metehan.us&quot;&gt;
             &lt;span style=&quot; color:#0000ff;&quot;&gt;metehan.us &lt;/span&gt;&lt;/a&gt; - &lt;a href=&quot;https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&amp;hosted_button_id=M9BAR7J2SQWZC&quot;&gt;
           &lt;img src=&quot;:/images/donate-button.png&quot; /&gt;&lt;/a&gt;&lt;/p&gt;</source>
         <translation>        &lt;p align=&quot;center&quot;&gt;&lt;img src=&quot;:/images/rss-icon-128.png&quot;/&gt;&lt;/p&gt;
@@ -93,52 +94,52 @@
 <context>
     <name>FeedAddDialog</name>
     <message>
-        <location filename="dialogs/feedadd.py" line="25"/>
+        <location filename="dialogs/feedadd.py" line="26"/>
         <source>Category:</source>
         <translation>Category:</translation>
     </message>
     <message>
-        <location filename="dialogs/feedadd.py" line="29"/>
+        <location filename="dialogs/feedadd.py" line="30"/>
         <source>All Feeds</source>
         <translation>All Feeds</translation>
     </message>
     <message>
-        <location filename="dialogs/feedadd.py" line="39"/>
+        <location filename="dialogs/feedadd.py" line="40"/>
         <source>Cancel</source>
         <translation>Cancel</translation>
     </message>
     <message>
-        <location filename="dialogs/feedadd.py" line="40"/>
+        <location filename="dialogs/feedadd.py" line="41"/>
         <source>Save</source>
         <translation>Save</translation>
     </message>
     <message>
-        <location filename="dialogs/feedadd.py" line="43"/>
+        <location filename="dialogs/feedadd.py" line="44"/>
         <source>Ok</source>
         <translation>Ok</translation>
     </message>
     <message>
-        <location filename="dialogs/feedadd.py" line="50"/>
+        <location filename="dialogs/feedadd.py" line="51"/>
         <source>New Feed</source>
         <translation>New Feed</translation>
     </message>
     <message>
-        <location filename="dialogs/feedadd.py" line="51"/>
+        <location filename="dialogs/feedadd.py" line="52"/>
         <source>&lt;span style=&apos;font-size:16pt; font-weight:bold;&apos;&gt;Add New Feed&lt;/span&gt;</source>
         <translation>&lt;span style=&apos;font-size:16pt; font-weight:bold;&apos;&gt;Add New Feed&lt;/span&gt;</translation>
     </message>
     <message>
-        <location filename="dialogs/feedadd.py" line="52"/>
+        <location filename="dialogs/feedadd.py" line="53"/>
         <source>Enter link or source of feed:</source>
         <translation>Enter link or source of feed:</translation>
     </message>
     <message>
-        <location filename="dialogs/feedadd.py" line="102"/>
+        <location filename="dialogs/feedadd.py" line="103"/>
         <source>&lt;span style=&apos;color:red; font-size:15px; font-weight:bold;&apos;&gt;That feed is already exist!&lt;/span&gt;</source>
         <translation>&lt;span style=&apos;color:red; font-size:15px; font-weight:bold;&apos;&gt;That feed is already exist!&lt;/span&gt;</translation>
     </message>
     <message>
-        <location filename="dialogs/feedadd.py" line="105"/>
+        <location filename="dialogs/feedadd.py" line="106"/>
         <source>&lt;span style=&apos;color:red; font-size:15px; font-weight:bold;&apos;&gt;Wrong link name!&lt;/span&gt;</source>
         <translation>&lt;span style=&apos;color:red; font-size:15px; font-weight:bold;&apos;&gt;Wrong link name!&lt;/span&gt;</translation>
     </message>
@@ -396,14 +397,32 @@
 <context>
     <name>ProgressDialog</name>
     <message>
-        <location filename="dialogs/progressdialog.py" line="76"/>
+        <location filename="dialogs/progressdialog.py" line="99"/>
         <source>Importing Feeds...</source>
         <translation>Importing Feeds...</translation>
     </message>
     <message>
-        <location filename="dialogs/progressdialog.py" line="77"/>
+        <location filename="dialogs/progressdialog.py" line="100"/>
         <source>&lt;span style=&apos;font-size:11pt; font-weight:bold;&apos;&gt;Imported:&lt;/span&gt;</source>
         <translation>&lt;span style=&apos;font-size:11pt; font-weight:bold;&apos;&gt;Imported:&lt;/span&gt;</translation>
+    </message>
+</context>
+<context>
+    <name>Thread</name>
+    <message>
+        <location filename="dialogs/progressdialog.py" line="54"/>
+        <source>{} adding...</source>
+        <translation>{} adding...</translation>
+    </message>
+    <message>
+        <location filename="dialogs/progressdialog.py" line="63"/>
+        <source>{} unable to add.</source>
+        <translation>{} unable to add.</translation>
+    </message>
+    <message>
+        <location filename="dialogs/progressdialog.py" line="67"/>
+        <source>{} added.</source>
+        <translation>{} added.</translation>
     </message>
 </context>
 <context>

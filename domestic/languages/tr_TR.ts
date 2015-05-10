@@ -92,52 +92,52 @@
 <context>
     <name>FeedAddDialog</name>
     <message>
-        <location filename="dialogs/feedadd.py" line="25"/>
+        <location filename="dialogs/feedadd.py" line="26"/>
         <source>Category:</source>
         <translation>Kategori:</translation>
     </message>
     <message>
-        <location filename="dialogs/feedadd.py" line="29"/>
+        <location filename="dialogs/feedadd.py" line="30"/>
         <source>All Feeds</source>
         <translation>Tüm Beslemeler</translation>
     </message>
     <message>
-        <location filename="dialogs/feedadd.py" line="39"/>
+        <location filename="dialogs/feedadd.py" line="40"/>
         <source>Cancel</source>
         <translation>İptal</translation>
     </message>
     <message>
-        <location filename="dialogs/feedadd.py" line="40"/>
+        <location filename="dialogs/feedadd.py" line="41"/>
         <source>Save</source>
         <translation>Kaydet</translation>
     </message>
     <message>
-        <location filename="dialogs/feedadd.py" line="43"/>
+        <location filename="dialogs/feedadd.py" line="44"/>
         <source>Ok</source>
         <translation>Tamam</translation>
     </message>
     <message>
-        <location filename="dialogs/feedadd.py" line="50"/>
+        <location filename="dialogs/feedadd.py" line="51"/>
         <source>New Feed</source>
         <translation>Yeni Besleme</translation>
     </message>
     <message>
-        <location filename="dialogs/feedadd.py" line="51"/>
+        <location filename="dialogs/feedadd.py" line="52"/>
         <source>&lt;span style=&apos;font-size:16pt; font-weight:bold;&apos;&gt;Add New Feed&lt;/span&gt;</source>
         <translation>&lt;span style=&apos;font-size:16pt; font-weight:bold;&apos;&gt;Yeni Besleme Ekle&lt;/span&gt;</translation>
     </message>
     <message>
-        <location filename="dialogs/feedadd.py" line="52"/>
+        <location filename="dialogs/feedadd.py" line="53"/>
         <source>Enter link or source of feed:</source>
         <translation>Besleme bağlantısı veya kaynağını girin:</translation>
     </message>
     <message>
-        <location filename="dialogs/feedadd.py" line="102"/>
+        <location filename="dialogs/feedadd.py" line="103"/>
         <source>&lt;span style=&apos;color:red; font-size:15px; font-weight:bold;&apos;&gt;That feed is already exist!&lt;/span&gt;</source>
         <translation>&lt;span style=&apos;color:red; font-size:15px; font-weight:bold;&apos;&gt;Bu besleme zaten mevcut!&lt;/span&gt;</translation>
     </message>
     <message>
-        <location filename="dialogs/feedadd.py" line="105"/>
+        <location filename="dialogs/feedadd.py" line="106"/>
         <source>&lt;span style=&apos;color:red; font-size:15px; font-weight:bold;&apos;&gt;Wrong link name!&lt;/span&gt;</source>
         <translation>&lt;span style=&apos;color:red; font-size:15px; font-weight:bold;&apos;&gt;Yanlış bağlantı adı girdiniz!&lt;/span&gt;</translation>
     </message>
@@ -394,14 +394,32 @@
 <context>
     <name>ProgressDialog</name>
     <message>
-        <location filename="dialogs/progressdialog.py" line="76"/>
+        <location filename="dialogs/progressdialog.py" line="99"/>
         <source>Importing Feeds...</source>
         <translation>Beslemeler Ekleniyor...</translation>
     </message>
     <message>
-        <location filename="dialogs/progressdialog.py" line="77"/>
+        <location filename="dialogs/progressdialog.py" line="100"/>
         <source>&lt;span style=&apos;font-size:11pt; font-weight:bold;&apos;&gt;Imported:&lt;/span&gt;</source>
         <translation>&lt;span style=&apos;font-size:11pt; font-weight:bold;&apos;&gt;İçe aktarılan:&lt;/span&gt;</translation>
+    </message>
+</context>
+<context>
+    <name>Thread</name>
+    <message>
+        <location filename="dialogs/progressdialog.py" line="54"/>
+        <source>{} adding...</source>
+        <translation>{} ekleniyor...</translation>
+    </message>
+    <message>
+        <location filename="dialogs/progressdialog.py" line="63"/>
+        <source>{} unable to add.</source>
+        <translation>{} eklenemiyor.</translation>
+    </message>
+    <message>
+        <location filename="dialogs/progressdialog.py" line="67"/>
+        <source>{} added.</source>
+        <translation>{} ekli.</translation>
     </message>
 </context>
 <context>
