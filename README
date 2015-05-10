@@ -3,7 +3,3 @@ Arayüz kütüphanesi olarak PyQt5 ve rss parse etmek için feedparser kullanır
 
 Uygulamayı çalıştırabilmek için Python3.4 üzerine PyQt5, BeautifulSoup4 ve feedparser modülünü kurmalısınız.
 Domestic RSS Okuyucu hala geliştirilme aşamasındadır, ama kullanılabilir durumdadır.
-
-Translate - Çeviri:
-
-https://www.transifex.com/projects/p/domesticreader/

@@ -93,7 +93,6 @@ class MainWindow(QMainWindow):
         self.treeWidget.clear()
         self.treeWidget.widgetInitial()
         self.treeWidget.categorySorting(treeitem=self.treeWidget)
-        self.treeWidget.unreadFolderInit()
         self.treeWidget.deletedFolderInit()
         self.treeWidget.storeFolderInit()
         self.treeWidget.setCurrentItem(self.treeWidget.unreadFolder)
@@ -269,7 +268,7 @@ def main():
     translator.load(os.join(mainPath, "languages", "{}.qm".format(LOCALE)))
     app.installTranslator(translator)
     app.setApplicationName(app.tr("Domestic Reader"))
-    app.setApplicationVersion("0.1.4.0")
+    app.setApplicationVersion("0.1.5.3")
 
     initialSettings()
     initialDb()

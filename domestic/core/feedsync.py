@@ -67,6 +67,7 @@ class FeedSync(QThread):
             data = control.fetchone()
             if data:
                 print("{} mevcut".format(feedData.feed.title))
+                break
             elif not data:
                 print(entry.link, "eklendi.")
                 datain = True
