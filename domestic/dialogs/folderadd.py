@@ -67,7 +67,7 @@ class FolderDialog(QDialog):
             item.subcategory = folder["parent"]
             self.categorySorting(folder["id"], item)
 
-    folderAddFinished = pyqtSignal()
+    folderAddFinished = pyqtSignal(bool)
     def folderAdd(self):
         text = self.lineEditFolder.text()
         db = ReaderDb()
@@ -82,7 +82,7 @@ class FolderDialog(QDialog):
                     db.execute("insert into folders (title, parent, type) values (?, ?, 'folder')", (text, self.treeWidget.currentItem().id))
                     db.commit()
                     db.close()
-                self.folderAddFinished.emit()
+                self.folderAddFinished.emit(True)
                 self.close()
             else:
                 self.labelWarning.setText(self.tr("<span style='color:red; font-size:15px; font-weight:bold;'>Same category name cannot add!</span>"))

@@ -106,7 +106,7 @@ class ProgressDialog(QDialog):
         pass
 
     def accept(self):
-        self.parent.sync()
+        self.parent.sync(True)
         self.close()
 
     def finish(self):

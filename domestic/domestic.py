@@ -89,15 +89,16 @@ class MainWindow(QMainWindow):
 
         self.treeWidget.setFocus()
 
-    def sync(self):
-        self.treeWidget.clear()
-        self.treeWidget.widgetInitial()
-        self.treeWidget.categorySorting(treeitem=self.treeWidget)
-        self.treeWidget.deletedFolderInit()
-        self.treeWidget.storeFolderInit()
-        self.treeWidget.setCurrentItem(self.treeWidget.unreadFolder)
-        self.treeWidget.setFocus()
-        self.treeWidget.unreadFolderClick()
+    def sync(self, sync=False):
+        if sync:
+            self.treeWidget.clear()
+            self.treeWidget.widgetInitial()
+            self.treeWidget.categorySorting(treeitem=self.treeWidget)
+            self.treeWidget.deletedFolderInit()
+            self.treeWidget.storeFolderInit()
+            self.treeWidget.setCurrentItem(self.treeWidget.unreadFolder)
+            self.treeWidget.setFocus()
+            self.treeWidget.unreadFolderClick()
 
     def closeEvent(self, event):
         Settings.setValue("MainWindow/size", self.size())
@@ -125,7 +126,7 @@ class MainWindow(QMainWindow):
         thread = FeedSync(self)
         thread.feedAdd(feed)
         thread.start()
-        thread.finished.connect(self.sync)
+        thread.isData.connect(self.sync)
 
     def allUpdate(self):
         db = ReaderDb()
@@ -135,8 +136,8 @@ class MainWindow(QMainWindow):
             thread = FeedSync(self)
             thread.feedAdd(feedurl)
             thread.start()
-            thread.finished.connect(self.sync)
             thread.isData.connect(self.notifySoundPlay)
+            thread.isData.connect(self.sync)
 
     def notifySoundPlay(self, datain):
         if datain:
@@ -181,7 +182,7 @@ class MainWindow(QMainWindow):
                             db.execute("delete from folders where feed_url=?", (item.feed_url,))
                             db.commit()
                             db.close()
-                            self.sync()
+                            self.sync(True)
         else:
             QMessageBox.warning(self, self.tr("Warning!"), self.tr("Selection has not done!"))
 
@@ -268,7 +269,7 @@ def main():
     translator.load(os.join(mainPath, "languages", "{}.qm".format(LOCALE)))
     app.installTranslator(translator)
     app.setApplicationName(app.tr("Domestic Reader"))
-    app.setApplicationVersion("0.1.5.3")
+    app.setApplicationVersion("0.1.5.4")
 
     initialSettings()
     initialDb()

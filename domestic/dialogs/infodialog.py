@@ -54,9 +54,8 @@ class InfoDialog(QDialog):
         db.execute("update folders set parent=? where id=?", (category, self.item.id))
         db.commit()
         db.close()
-        self.parent.sync()
+        self.parent.sync(True)
         self.accept()
-        pass
 
     def openURL(self, text):
         QDesktopServices.openUrl(QUrl(text))

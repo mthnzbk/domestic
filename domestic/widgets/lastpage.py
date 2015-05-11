@@ -12,7 +12,6 @@ class LastPage(QWidget):
         self.Layout.setContentsMargins(0, 0, 0, 0)
         self.browser = QWebView(self)
         self.browser.resize(Settings.value("ToolWebView/size"))
-        #self.browser.linkClicked.connect(self.linkClick)
         self.infoLabel = QLabel(self)
         self.infoLabel.linkActivated.connect(self.linkClick)
         self.Layout.addWidget(self.infoLabel)
@@ -23,6 +22,3 @@ class LastPage(QWidget):
         <p>Author: {} | Category: {}</p>""").format(item.getEntryUrl(), item.getEntryTitle(), item.getEntryDateTime(),
             item.getEntryAuthor(), item.getEntryCategory()))
         self.browser.setHtml(item.getEntryContent())
-
-    def linkClick(self, url): # FIXME
-        QDesktopServices.openUrl(QUrl(url))
