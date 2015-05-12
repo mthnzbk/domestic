@@ -1,3 +1,8 @@
+Domestic Reader, cross platform, free and free is a RSS/Atom reader.
+PyQt5(Qt5), Python3.4, BeautifulSoup4, feedparser and sqlite3 was created with.
+
+-
+
 Domestic RSS Okuyucu, Python kullanılarak yazılmış bir uygulamadır. Python'un 3.4 sürümünü kullanır.
 Arayüz kütüphanesi olarak PyQt5 ve rss parse etmek için feedparser kullanır.
 

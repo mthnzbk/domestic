@@ -1,5 +1,5 @@
 import time
-
+from PyQt5.QtWidgets import QApplication
 from PyQt5.QtCore import QThread, pyqtSignal
 from feedparser import parse
 
@@ -69,6 +69,7 @@ class FeedSync(QThread):
                 print("{} mevcut".format(feedData.feed.title))
                 break
             elif not data:
+                QApplication.processEvents()
                 print(entry.link, "eklendi.")
                 datain = True
                 getEntry = GetEntry(entry, feedData)
