@@ -117,7 +117,7 @@ class MainWindow(QMainWindow):
         if title != None:
             super(MainWindow, self).setWindowTitle("{} - {} {}".format(title, QApplication.applicationName(),QApplication.applicationVersion()))
         else:
-            super(MainWindow, self).setWindowTitle("{} {}".format(QApplication.applicationName(),QApplication.applicationVersion()))
+            super(MainWindow, self).setWindowTitle("{} {}".format(QApplication.applicationName(), QApplication.applicationVersion()))
 
     def feedUpdate(self, feedurl=None):
         db = ReaderDb()
@@ -132,12 +132,14 @@ class MainWindow(QMainWindow):
         db = ReaderDb()
         control = db.execute("select feed_url from folders where type='feed'")
         feedList = control.fetchall()
+        self.statusbar.progress.setMaximum(len(feedList))
         for feedurl in feedList:
             thread = FeedSync(self)
             thread.feedAdd(feedurl)
             thread.start()
             thread.isData.connect(self.notifySoundPlay)
             thread.isData.connect(self.sync)
+            thread.isData.connect(self.statusbar.setProgress)
 
     def notifySoundPlay(self, datain):
         if datain:
@@ -175,14 +177,24 @@ class MainWindow(QMainWindow):
             if len(items):
                 for item in items:
                     if isinstance(item, FeedItem):
-                        sor = QMessageBox.question(self, self.tr("Are you sure?"),
+                        box = QMessageBox.question(self, self.tr("Are you sure?"),
                                                    self.tr("Do you want to delete the {} feed?").format(item.title))
-                        if sor == 16384:
+                        if box == 16384:
                             db = ReaderDb()
                             db.execute("delete from folders where feed_url=?", (item.feed_url,))
                             db.commit()
                             db.close()
                             self.sync(True)
+                    if isinstance(item, FolderItem):
+                        db = ReaderDb()
+                        db.execute("select * from folders where parent=?", (item.id,))
+                        if db.cursor.fetchone():
+                            QMessageBox.warning(self, self.tr("Warning!"), self.tr("Before, you empty for the directory!"))
+                        else:
+                            db.execute("delete from folders where id=?", (item.id,))
+                            db.commit()
+                            self.sync(True)
+                        db.close()
         else:
             QMessageBox.warning(self, self.tr("Warning!"), self.tr("Selection has not done!"))
 
@@ -269,7 +281,7 @@ def main():
     translator.load(os.join(mainPath, "languages", "{}.qm".format(LOCALE)))
     app.installTranslator(translator)
     app.setApplicationName(app.tr("Domestic Reader"))
-    app.setApplicationVersion("0.1.5.4")
+    app.setApplicationVersion("0.1.7.5")
 
     initialSettings()
     initialDb()

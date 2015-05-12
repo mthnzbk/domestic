@@ -22,3 +22,6 @@ class LastPage(QWidget):
         <p>Author: {} | Category: {}</p>""").format(item.getEntryUrl(), item.getEntryTitle(), item.getEntryDateTime(),
             item.getEntryAuthor(), item.getEntryCategory()))
         self.browser.setHtml(item.getEntryContent())
+
+    def linkClick(self, url):
+        QDesktopServices.openUrl(QUrl(url))

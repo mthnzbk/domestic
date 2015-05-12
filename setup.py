@@ -5,7 +5,7 @@ setup(
     packages = find_packages(),
     package_data = {"domestic" : ["languages/*", "images/icons/*" ,"images/*.png"]},
     scripts = ["domestic-reader"],
-    version = "0.1.5.4",
+    version = "0.1.7.5",
     license = "GPL v3",
     description = "Rss reader",
     author = "Metehan Özbek",
