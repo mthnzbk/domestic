@@ -129,6 +129,7 @@ class MainWindow(QMainWindow):
         thread.isData.connect(self.sync)
 
     def allUpdate(self):
+        QApplication.setOverrideCursor(Qt.BusyCursor)
         db = ReaderDb()
         control = db.execute("select feed_url from folders where type='feed'")
         feedList = control.fetchall()
@@ -281,7 +282,7 @@ def main():
     translator.load(os.join(mainPath, "languages", "{}.qm".format(LOCALE)))
     app.installTranslator(translator)
     app.setApplicationName(app.tr("Domestic Reader"))
-    app.setApplicationVersion("0.1.7.7")
+    app.setApplicationVersion("0.1.7.8")
 
     initialSettings()
     initialDb()
