@@ -320,7 +320,7 @@
         <translation>Tüm Beslemeler</translation>
     </message>
     <message>
-        <location filename="dialogs/infodialog.py" line="66"/>
+        <location filename="dialogs/infodialog.py" line="65"/>
         <source>{} - Info</source>
         <translation>{} - Özellikler</translation>
     </message>
@@ -336,7 +336,7 @@
 &lt;p&gt;Yazar: {} | Kategori: {}&lt;/p&gt;&lt;/div&gt;</translation>
     </message>
     <message>
-        <location filename="widgets/lastpage.py" line="22"/>
+        <location filename="widgets/lastpage.py" line="21"/>
         <source>&lt;p&gt;&lt;a style=&apos;font-size:13pt; font-weight:bold&apos; href=&apos;{}&apos;&gt;{}&lt;/a&gt; - &lt;span&gt;Date: {}&lt;/span&gt;&lt;/p&gt;
         &lt;p&gt;Author: {} | Category: {}&lt;/p&gt;</source>
         <translation>&lt;p&gt;&lt;a style=&apos;font-size:13pt; font-weight:bold&apos; href=&apos;{}&apos;&gt;{}&lt;/a&gt; - &lt;span&gt;Tarih: {}&lt;/span&gt;&lt;/p&gt;
@@ -356,39 +356,44 @@
         <translation>İçerik</translation>
     </message>
     <message>
-        <location filename="domestic.py" line="210"/>
+        <location filename="domestic.py" line="223"/>
         <source>Warning!</source>
         <translation>Uyarı!</translation>
     </message>
     <message>
-        <location filename="domestic.py" line="210"/>
+        <location filename="domestic.py" line="223"/>
         <source>Selection has not done!</source>
         <translation>Seçim yapılmamış!</translation>
     </message>
     <message>
-        <location filename="domestic.py" line="200"/>
+        <location filename="domestic.py" line="213"/>
         <source>These are already stored.</source>
         <translation>Bunlar zaten saklı.</translation>
     </message>
     <message>
-        <location filename="domestic.py" line="178"/>
+        <location filename="domestic.py" line="181"/>
         <source>Are you sure?</source>
         <translation>Emin misin?</translation>
     </message>
     <message>
-        <location filename="domestic.py" line="178"/>
+        <location filename="domestic.py" line="181"/>
         <source>Do you want to delete the {} feed?</source>
         <translation>{} beslemesini silmek istiyor musunuz?</translation>
     </message>
     <message>
-        <location filename="domestic.py" line="231"/>
+        <location filename="domestic.py" line="244"/>
         <source>Domestic File</source>
         <translation>Domestic dosyası</translation>
     </message>
     <message>
-        <location filename="domestic.py" line="231"/>
+        <location filename="domestic.py" line="244"/>
         <source>Domestic file (*.dfx)</source>
         <translation>Domestic dosyası (*.dfx)</translation>
+    </message>
+    <message>
+        <location filename="domestic.py" line="193"/>
+        <source>Before, you empty for the directory!</source>
+        <translation>Önce dizin içini boşaltın!</translation>
     </message>
 </context>
 <context>
@@ -486,7 +491,7 @@
         <translation type="obsolete">Domestic RSS Okuyucu</translation>
     </message>
     <message>
-        <location filename="domestic.py" line="271"/>
+        <location filename="domestic.py" line="284"/>
         <source>Domestic Reader</source>
         <translation>Domestic Okuyuyu</translation>
     </message>
