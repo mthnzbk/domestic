@@ -356,44 +356,54 @@
         <translation>İçerik</translation>
     </message>
     <message>
-        <location filename="domestic.py" line="223"/>
+        <location filename="domestic.py" line="271"/>
         <source>Warning!</source>
         <translation>Uyarı!</translation>
     </message>
     <message>
-        <location filename="domestic.py" line="223"/>
+        <location filename="domestic.py" line="271"/>
         <source>Selection has not done!</source>
         <translation>Seçim yapılmamış!</translation>
     </message>
     <message>
-        <location filename="domestic.py" line="213"/>
+        <location filename="domestic.py" line="261"/>
         <source>These are already stored.</source>
         <translation>Bunlar zaten saklı.</translation>
     </message>
     <message>
-        <location filename="domestic.py" line="181"/>
+        <location filename="domestic.py" line="228"/>
         <source>Are you sure?</source>
         <translation>Emin misin?</translation>
     </message>
     <message>
-        <location filename="domestic.py" line="181"/>
+        <location filename="domestic.py" line="228"/>
         <source>Do you want to delete the {} feed?</source>
         <translation>{} beslemesini silmek istiyor musunuz?</translation>
     </message>
     <message>
-        <location filename="domestic.py" line="244"/>
+        <location filename="domestic.py" line="292"/>
         <source>Domestic File</source>
         <translation>Domestic dosyası</translation>
     </message>
     <message>
-        <location filename="domestic.py" line="244"/>
+        <location filename="domestic.py" line="292"/>
         <source>Domestic file (*.dfx)</source>
         <translation>Domestic dosyası (*.dfx)</translation>
     </message>
     <message>
-        <location filename="domestic.py" line="193"/>
+        <location filename="domestic.py" line="240"/>
         <source>Before, you empty for the directory!</source>
         <translation>Önce dizin içini boşaltın!</translation>
+    </message>
+    <message>
+        <location filename="domestic.py" line="109"/>
+        <source>Recent News</source>
+        <translation>Yeni Haberler</translation>
+    </message>
+    <message>
+        <location filename="domestic.py" line="109"/>
+        <source>{} fresh news.</source>
+        <translation>{} yeni haber.</translation>
     </message>
 </context>
 <context>
@@ -491,7 +501,7 @@
         <translation type="obsolete">Domestic RSS Okuyucu</translation>
     </message>
     <message>
-        <location filename="domestic.py" line="284"/>
+        <location filename="domestic.py" line="332"/>
         <source>Domestic Reader</source>
         <translation>Domestic Okuyuyu</translation>
     </message>

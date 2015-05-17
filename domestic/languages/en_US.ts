@@ -359,44 +359,54 @@
         <translation>Content</translation>
     </message>
     <message>
-        <location filename="domestic.py" line="223"/>
+        <location filename="domestic.py" line="271"/>
         <source>Warning!</source>
         <translation>Warning!</translation>
     </message>
     <message>
-        <location filename="domestic.py" line="223"/>
+        <location filename="domestic.py" line="271"/>
         <source>Selection has not done!</source>
         <translation>Selection has not done!</translation>
     </message>
     <message>
-        <location filename="domestic.py" line="213"/>
+        <location filename="domestic.py" line="261"/>
         <source>These are already stored.</source>
         <translation>These are already stored.</translation>
     </message>
     <message>
-        <location filename="domestic.py" line="181"/>
+        <location filename="domestic.py" line="228"/>
         <source>Are you sure?</source>
         <translation>Are you sure?</translation>
     </message>
     <message>
-        <location filename="domestic.py" line="181"/>
+        <location filename="domestic.py" line="228"/>
         <source>Do you want to delete the {} feed?</source>
         <translation>Do you want to delete the {} feed?</translation>
     </message>
     <message>
-        <location filename="domestic.py" line="244"/>
+        <location filename="domestic.py" line="292"/>
         <source>Domestic File</source>
         <translation>Domestic File</translation>
     </message>
     <message>
-        <location filename="domestic.py" line="244"/>
+        <location filename="domestic.py" line="292"/>
         <source>Domestic file (*.dfx)</source>
         <translation>Domestic file (*.dfx)</translation>
     </message>
     <message>
-        <location filename="domestic.py" line="193"/>
+        <location filename="domestic.py" line="240"/>
         <source>Before, you empty for the directory!</source>
         <translation>Before, you empty for the directory!</translation>
+    </message>
+    <message>
+        <location filename="domestic.py" line="109"/>
+        <source>Recent News</source>
+        <translation>Recent News</translation>
+    </message>
+    <message>
+        <location filename="domestic.py" line="109"/>
+        <source>{} fresh news.</source>
+        <translation>{} fresh news.</translation>
     </message>
 </context>
 <context>
@@ -494,7 +504,7 @@
         <translation type="obsolete">Domestic RSS Reader</translation>
     </message>
     <message>
-        <location filename="domestic.py" line="284"/>
+        <location filename="domestic.py" line="332"/>
         <source>Domestic Reader</source>
         <translation>Domestic Reader</translation>
     </message>
