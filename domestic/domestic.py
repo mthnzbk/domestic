@@ -96,7 +96,7 @@ class MainWindow(QMainWindow):
         self.threadControlTimer.start(1000)
 
         self.upTimer = QTimer(self)
-        self.upTimer.start(1000*60)
+        self.upTimer.start(1000*60*3)
         self.upTimer.timeout.connect(self.allUpdateTimer)
 
     def allUpdateTimer(self):
@@ -108,9 +108,10 @@ class MainWindow(QMainWindow):
             if self.newscount:
                 self.systemTray.showMessage(self.tr("Recent News"), self.tr("{} fresh news.").format(self.newscount),
                                             QSystemTrayIcon.Information, 5000)
-                self.counter = 0
-                self.newscount = 0
-                self.threadControlTimer.timeout.disconnect()
+                self.notifySoundPlay()
+            self.counter = 0
+            self.newscount = 0
+            self.threadControlTimer.timeout.disconnect()
         else:
             print("Thread devam ediyor.")
 
@@ -153,9 +154,11 @@ class MainWindow(QMainWindow):
 
     def setWindowTitle(self, title=None):
         if title != None:
-            super(MainWindow, self).setWindowTitle("{} - {} {}".format(title, QApplication.applicationName(),QApplication.applicationVersion()))
+            super(MainWindow, self).setWindowTitle("{} - {} {}".format(title, QApplication.applicationName(),
+                                                                       QApplication.applicationVersion()))
         else:
-            super(MainWindow, self).setWindowTitle("{} {}".format(QApplication.applicationName(), QApplication.applicationVersion()))
+            super(MainWindow, self).setWindowTitle("{} {}".format(QApplication.applicationName(),
+                                                                  QApplication.applicationVersion()))
 
     def feedUpdate(self, feedurl=None):
         db = ReaderDb()
@@ -178,7 +181,6 @@ class MainWindow(QMainWindow):
             thread = FeedSync(self)
             thread.feedAdd(feedurl)
             thread.start()
-            thread.isData.connect(self.notifySoundPlay)
             thread.isData.connect(self.sync)
             thread.isData.connect(self.statusbar.setProgress)
             thread.lenSignal.connect(self.lenNews)
@@ -188,12 +190,11 @@ class MainWindow(QMainWindow):
     def lenNews(self, len):
         self.newscount += len
 
-    def notifySoundPlay(self, datain):
-        if datain:
-            media = QMediaPlayer(self)
-            media.setMedia(QMediaContent(QUrl.fromLocalFile(os.join(mainPath, "media", "notify.mp3"))))
-            media.setVolume(100)
-            media.play()
+    def notifySoundPlay(self):
+        media = QMediaPlayer(self)
+        media.setMedia(QMediaContent(QUrl.fromLocalFile(os.join(mainPath, "media", "notify.mp3"))))
+        media.setVolume(100)
+        media.play()
 
     def feedDelete(self):
         if self.page.treeWidget.hasFocus():
@@ -329,7 +330,7 @@ def main():
     translator.load(os.join(mainPath, "languages", "{}.qm".format(LOCALE)))
     app.installTranslator(translator)
     app.setApplicationName(app.tr("Domestic Reader"))
-    app.setApplicationVersion("0.2.3.3")
+    app.setApplicationVersion("0.2.3.5")
 
     initialSettings()
     initialDb()

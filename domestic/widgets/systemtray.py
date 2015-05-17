@@ -14,6 +14,10 @@ class SystemTray(QSystemTrayIcon):
         self.updateToolTip()
 
         self.activated.connect(self.parentShow)
+        self.messageClicked.connect(self.messageClick)
+
+    def messageClick(self):
+        self.parent.showNormal()
 
     def updateToolTip(self):
         db = ReaderDb()
