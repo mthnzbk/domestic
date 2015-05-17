@@ -9,6 +9,7 @@ SOURCES += widgets/statusbar.py
 SOURCES += widgets/toolbox.py
 SOURCES += widgets/treeitem.py
 SOURCES += widgets/treewidget.py
+SOURCES += widgets/systemtray.py
 SOURCES += dialogs/infodialog.py
 SOURCES += dialogs/progressdialog.py
 TRANSLATIONS += languages/en_US.ts

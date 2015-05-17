@@ -420,6 +420,20 @@
     </message>
 </context>
 <context>
+    <name>SystemTray</name>
+    <message>
+        <location filename="widgets/systemtray.py" line="30"/>
+        <source>&lt;span style=&apos;font-size:14pt&apos;&gt;{} - {}&lt;/span&gt;
+        &lt;br/&gt;&lt;span style=&apos;font-size:10pt&apos;&gt;Unread: {}&lt;/span&gt;
+        &lt;br/&gt;&lt;span style=&apos;font-size:10pt&apos;&gt;Stored: {}&lt;/span&gt;
+        &lt;br/&gt;&lt;span style=&apos;font-size:10pt&apos;&gt;Deleted: {}&lt;/span&gt;</source>
+        <translation>&lt;span style=&apos;font-size:14pt&apos;&gt;{} - {}&lt;/span&gt;
+        &lt;br/&gt;&lt;span style=&apos;font-size:10pt&apos;&gt;Okunmamış: {}&lt;/span&gt;
+        &lt;br/&gt;&lt;span style=&apos;font-size:10pt&apos;&gt;Saklanan: {}&lt;/span&gt;
+        &lt;br/&gt;&lt;span style=&apos;font-size:10pt&apos;&gt;Silinmiş: {}&lt;/span&gt;</translation>
+    </message>
+</context>
+<context>
     <name>Thread</name>
     <message>
         <location filename="dialogs/progressdialog.py" line="54"/>
@@ -504,6 +518,20 @@
         <location filename="domestic.py" line="332"/>
         <source>Domestic Reader</source>
         <translation>Domestic Okuyuyu</translation>
+    </message>
+</context>
+<context>
+    <name>self.self</name>
+    <message>
+        <location filename="widgets/systemtray.py" line="30"/>
+        <source>&lt;span style=&apos;font-size:14pt&apos;&gt;{} - {}&lt;/span&gt;
+        &lt;br/&gt;&lt;span style=&apos;font-size:10pt&apos;&gt;Unread: {}&lt;/span&gt;
+        &lt;br/&gt;&lt;span style=&apos;font-size:10pt&apos;&gt;Stored: {}&lt;/span&gt;
+        &lt;br/&gt;&lt;span style=&apos;font-size:10pt&apos;&gt;Deleted: {}&lt;/span&gt;</source>
+        <translation type="obsolete">&lt;span style=&apos;font-size:14pt&apos;&gt;{} - {}&lt;/span&gt;
+        &lt;br/&gt;&lt;span style=&apos;font-size:10pt&apos;&gt;Okunmamış: {}&lt;/span&gt;
+        &lt;br/&gt;&lt;span style=&apos;font-size:10pt&apos;&gt;Saklanan: {}&lt;/span&gt;
+        &lt;br/&gt;&lt;span style=&apos;font-size:10pt&apos;&gt;Silinmiş: {}&lt;/span&gt;</translation>
     </message>
 </context>
 </TS>

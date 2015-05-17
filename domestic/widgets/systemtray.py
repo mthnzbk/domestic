@@ -30,8 +30,8 @@ class SystemTray(QSystemTrayIcon):
         self.setToolTip(self.tr('''<span style='font-size:14pt'>{} - {}</span>
         <br/><span style='font-size:10pt'>Unread: {}</span>
         <br/><span style='font-size:10pt'>Stored: {}</span>
-        <br/><span style='font-size:10pt'>Deleted: {}</span>'''.format(QApplication.applicationName(),
-        QApplication.applicationVersion(), len(unread), len(store), len(trash))))
+        <br/><span style='font-size:10pt'>Deleted: {}</span>''').format(QApplication.applicationName(),
+        QApplication.applicationVersion(), len(unread), len(store), len(trash)))
 
     def parentShow(self):
         self.parent.showNormal()
