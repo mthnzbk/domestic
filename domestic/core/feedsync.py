@@ -56,6 +56,7 @@ class FeedSync(QThread):
         self.feed = feed
 
     isData = pyqtSignal(bool)
+    lenSignal = pyqtSignal(int)
     def run(self):
         feedData = parse(self.feed["feed_url"])
         entries = feedData.entries
@@ -81,4 +82,5 @@ class FeedSync(QThread):
                            entry_datetime, entry_content) values (?, ?, ?, ?, ?, ?, ?, ?)""", entryDataList)
         db.commit()
         self.isData.emit(datain)
+        self.lenSignal.emit(len(entryDataList))
         db.close()

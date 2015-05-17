@@ -89,6 +89,42 @@ class MainWindow(QMainWindow):
 
         self.treeWidget.setFocus()
 
+        self.systemTray = SystemTray(self)
+        self.syncSignal.connect(self.systemTray.updateToolTip)
+
+        self.threadControlTimer = QTimer(self)
+        self.threadControlTimer.start(1000)
+
+        self.upTimer = QTimer(self)
+        self.upTimer.start(1000*60)
+        self.upTimer.timeout.connect(self.allUpdateTimer)
+
+    def allUpdateTimer(self):
+        self.allUpdate()
+        self.threadControlTimer.timeout.connect(self.newsControl)
+
+    def newsControl(self):
+        if self.lenFeeds <= self.counter:
+            if self.newscount:
+                self.systemTray.showMessage(self.tr("Recent News"), self.tr("{} fresh news.").format(self.newscount),
+                                            QSystemTrayIcon.Information, 5000)
+                self.counter = 0
+                self.newscount = 0
+                self.threadControlTimer.timeout.disconnect()
+        else:
+            print("Thread devam ediyor.")
+
+    counter = 0
+    def threadProgress(self):
+        self.counter += 1
+
+    def changeEvent(self, event):
+        if event.type() == event.WindowStateChange:
+            if self.windowState() == Qt.WindowMinimized:
+                self.hide()
+        event.accept()
+
+    syncSignal = pyqtSignal()
     def sync(self, sync=False):
         if sync:
             self.treeWidget.clear()
@@ -99,6 +135,7 @@ class MainWindow(QMainWindow):
             self.treeWidget.setCurrentItem(self.treeWidget.unreadFolder)
             self.treeWidget.setFocus()
             self.treeWidget.unreadFolderClick()
+            self.syncSignal.emit()
 
     def closeEvent(self, event):
         Settings.setValue("MainWindow/size", self.size())
@@ -112,6 +149,7 @@ class MainWindow(QMainWindow):
         Settings.setValue("TreeWidgetHeader/size4",self.page.treeWidget.header().sectionSize(4))
         Settings.setValue("ToolTreeWidget/size", self.page.treeWidget.size())
         Settings.setValue("ToolWebView/size", self.page2.browser.size())
+        sys.exit()
 
     def setWindowTitle(self, title=None):
         if title != None:
@@ -128,11 +166,13 @@ class MainWindow(QMainWindow):
         thread.start()
         thread.isData.connect(self.sync)
 
+    lenFeeds = 0
     def allUpdate(self):
         QApplication.setOverrideCursor(Qt.BusyCursor)
         db = ReaderDb()
         control = db.execute("select feed_url from folders where type='feed'")
         feedList = control.fetchall()
+        self.lenFeeds = len(feedList)
         self.statusbar.progress.setMaximum(len(feedList))
         for feedurl in feedList:
             thread = FeedSync(self)
@@ -141,6 +181,12 @@ class MainWindow(QMainWindow):
             thread.isData.connect(self.notifySoundPlay)
             thread.isData.connect(self.sync)
             thread.isData.connect(self.statusbar.setProgress)
+            thread.lenSignal.connect(self.lenNews)
+            thread.isData.connect(self.threadProgress)
+
+    newscount = 0
+    def lenNews(self, len):
+        self.newscount += len
 
     def notifySoundPlay(self, datain):
         if datain:
@@ -198,6 +244,7 @@ class MainWindow(QMainWindow):
                         db.close()
         else:
             QMessageBox.warning(self, self.tr("Warning!"), self.tr("Selection has not done!"))
+        self.syncSignal.emit()
 
     def feedStore(self):
         if self.page.treeWidget.hasFocus():
@@ -282,13 +329,13 @@ def main():
     translator.load(os.join(mainPath, "languages", "{}.qm".format(LOCALE)))
     app.installTranslator(translator)
     app.setApplicationName(app.tr("Domestic Reader"))
-    app.setApplicationVersion("0.1.8.0")
+    app.setApplicationVersion("0.2.3.3")
 
     initialSettings()
     initialDb()
 
-    """sharedMemory = QSharedMemory("f33a4b06-72f5-4b72-90f4-90d606cdf98c")
-    if sharedMemory.create(512, QSharedMemory.ReadWrite) == False:
+    """sharedMemory = QSharedMemory("f37a4b06-72f5-4b72-90f4-90d606cdf98c")
+    if not sharedMemory.create(512, QSharedMemory.ReadWrite):
         sys.exit()"""
 
     mainWindow = MainWindow()

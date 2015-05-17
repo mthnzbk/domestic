@@ -3,6 +3,7 @@ from PyQt5.QtWidgets import QStatusBar, QProgressBar, QApplication
 class StatusBar(QStatusBar):
     def __init__(self, parent=None):
         super(QStatusBar, self).__init__(parent)
+        self.parent = parent
         self.progress = QProgressBar(self)
         self.progress.setFormat("%v/%m")
         self.progress.setTextVisible(False)

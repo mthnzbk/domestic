@@ -5,3 +5,4 @@ from domestic.widgets.firstpage import FirstPage
 from domestic.widgets.lastpage import LastPage
 from domestic.widgets.toolbox import ToolBox
 from domestic.widgets.treewidget import TreeWidget
+from domestic.widgets.systemtray import SystemTray
