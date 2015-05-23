@@ -1,6 +1,6 @@
 from PyQt5.QtWidgets import QTreeWidget, QTreeWidgetItem
 from PyQt5.QtCore import QSize, pyqtSignal
-from PyQt5.QtGui import QIcon, QBrush, QColor, QFont, QPixmap
+from PyQt5.QtGui import QIcon, QBrush, QColor, QFont
 from domestic.core import ReaderDb, Settings
 from domestic.widgets.treeitem import FolderItem, FeedItem
 
@@ -28,6 +28,15 @@ class TreeWidget(QTreeWidget):
         self.deletedFolderInit()
         self.storeFolderInit()
 
+        self.parent.syncSignal.connect(self.unreadFolderClick)
+        self.parent.syncSignal.connect(self.deletedFolderClick)
+        self.parent.syncSignal.connect(self.storeFolderClick)
+        self.parent.syncSignal.connect(self.titleSignal)
+
+    def titleSignal(self):
+        if not self.currentItem() is None:
+            self.treeWidgetTitleSignal.emit(self.currentItem().text(0))
+
     def collapseSignal(self, item):
         key = "TreeWidget/{}".format(item.text(0).replace(" ", "-"))
         Settings.setValue(key, 0)
@@ -40,12 +49,15 @@ class TreeWidget(QTreeWidget):
 
     def widgetInitial(self):
         self.unreadFolder = QTreeWidgetItem(self)
+        self.unreadFolder.type = "static"
         self.unreadFolder.setIcon(0, QIcon(":/images/icons/folder_home.png"))
         self.unreadFolder.setText(0, self.tr("Unread"))
         self.deletedFolder = QTreeWidgetItem(self)
+        self.deletedFolder.type = "static"
         self.deletedFolder.setIcon(0, QIcon(":/images/icons/trash_empty.png"))
         self.deletedFolder.setText(0, self.tr("Deleted"))
         self.storeFolder = QTreeWidgetItem(self)
+        self.storeFolder.type = "static"
         self.storeFolder.setIcon(0, QIcon(":/images/icons/folder_tar.png"))
         self.storeFolder.setText(0, self.tr("Stored"))
 
@@ -56,12 +68,8 @@ class TreeWidget(QTreeWidget):
         for folder in folders:
             if folder["type"] == "folder":
                 item = FolderItem(treeitem)
-                item.setIcon(0, QIcon(":/images/icons/folder_grey.png"))
-                item.id = folder["id"]
-                item.title = folder["title"]
-                item.type = folder["type"]
-                item.setText(0, item.title)
-                item.parent = folder["parent"]
+                item.addOptions(folder)
+                self.parent.syncSignal.connect(item.folderClick)
                 key = "TreeWidget/{}".format(item.text(0).replace(" ", "-"))
                 if Settings.value(key) != None:
                     item.setExpanded(int(Settings.value(key)))
@@ -69,39 +77,31 @@ class TreeWidget(QTreeWidget):
 
             elif folder["type"] == "feed":
                 item = FeedItem(treeitem)
-                item.id = folder["id"]
-                item.title = folder["title"]
-                item.setText(0, item.title)
-                item.parent = folder["parent"]
-                item.feed_url = folder["feed_url"]
-                item.site_url = folder["site_url"]
-                item.type = folder["type"]
-                item.description = folder["description"]
-                item.favicon = folder["favicon"]
-                if not item.favicon is None:
-                    icon = QIcon()
-                    pix = QPixmap()
-                    pix.loadFromData(item.favicon)
-                    icon.addPixmap(pix)
-                    item.setIcon(0, icon)
-                else:
-                    item.setIcon(0, QIcon(":/images/icons/html.png"))
+                item.addOptions(folder)
+                self.parent.syncSignal.connect(item.feedClick)
                 self.categorySorting(folder["id"], item)
 
     treeWidgetTitleSignal = pyqtSignal(str)
-    folderClicked = pyqtSignal()
+    folderClicked = pyqtSignal(list)
     def folderClick(self, widget, row):
+        self.parent.toolBox.widget(0).treeWidget.clear()
+        self.parent.toolBox.setCurrentIndex(0)
         if widget == self.unreadFolder:
-            self.parent.widget(1).setCurrentIndex(0)
+            self.folderClicked.emit(self.unreadFolderInit())
             self.unreadFolderClick()
         elif widget == self.deletedFolder:
-            self.parent.widget(1).setCurrentIndex(0)
+            self.folderClicked.emit(self.deletedFolderInit())
             self.deletedFolderClick()
         elif widget == self.storeFolder:
-            self.parent.widget(1).setCurrentIndex(0)
+            self.folderClicked.emit(self.storeFolderInit())
             self.storeFolderClick()
-        else:
-            self.folderClicked.emit()
+        elif widget.type == "feed":
+            self.folderClicked.emit(widget.feedInit())
+            widget.feedClick()
+        elif widget.type == "folder":
+            self.folderClicked.emit(widget.folderInit())
+            widget.folderClick()
+        self.parent.syncSignal.emit()
         self.treeWidgetTitleSignal.emit(widget.text(0))
 
     def unreadFolderInit(self):
@@ -111,9 +111,15 @@ class TreeWidget(QTreeWidget):
         db.close()
         self.unreadFolder.setForeground(0,QBrush(QColor(0,0,0,255)))
         if len(feedList) > 0:
-            self.unreadFolder.setText(0, self.tr("Unread ({})").format(len(feedList)))
+            self.unreadFolder.setText(0, self.tr("({}) Unread").format(len(feedList)))
             self.unreadFolder.setForeground(0,QBrush(QColor(0,0,255)))
         return feedList
+
+    def unreadFolderClick(self):
+        feedList = self.unreadFolderInit()
+        if len(feedList) > 0:
+            self.unreadFolder.setText(0, self.tr("({}) Unread").format(len(feedList)))
+        else: self.unreadFolder.setText(0, self.tr("Unread"))
 
     def deletedFolderInit(self):
         db = ReaderDb()
@@ -122,10 +128,16 @@ class TreeWidget(QTreeWidget):
         db.close()
         self.deletedFolder.setForeground(0,QBrush(QColor(0,0,0,255)))
         if len(feedList) > 0:
-            self.deletedFolder.setText(0, self.tr("Deleted ({})").format(len(feedList)))
+            self.deletedFolder.setText(0, self.tr("({}) Deleted").format(len(feedList)))
             self.deletedFolder.setForeground(0,QBrush(QColor(0,0,255)))
             self.deletedFolder.setIcon(0, QIcon(":/images/icons/trash_full.png"))
         return feedList
+
+    def deletedFolderClick(self):
+        feedList = self.deletedFolderInit()
+        if len(feedList) > 0:
+            self.deletedFolder.setText(0, self.tr("({}) Deleted").format(len(feedList)))
+        else: self.deletedFolder.setText(0, self.tr("Deleted"))
 
     def storeFolderInit(self):
         db = ReaderDb()
@@ -134,37 +146,13 @@ class TreeWidget(QTreeWidget):
         db.close()
         self.storeFolder.setForeground(0,QBrush(QColor(0,0,0,255)))
         if len(feedList) > 0:
-            self.storeFolder.setText(0, self.tr("Stored ({})").format(len(feedList)))
+            self.storeFolder.setText(0, self.tr("({}) Stored").format(len(feedList)))
             self.storeFolder.setForeground(0,QBrush(QColor(0,0,255)))
+        self.treeWidgetTitleSignal.emit(self.storeFolder.text(0))
         return feedList
 
-    unreadFolderClicked = pyqtSignal(list)
-    def unreadFolderClick(self):
-        self.parent.widget(1).widget(0).treeWidget.clear()
-        if not self.unreadFolder.isDisabled():
-            feedList = self.unreadFolderInit()
-            self.unreadFolderClicked.emit(feedList)
-            if len(feedList) > 0:
-                self.unreadFolder.setText(0, self.tr("Unread ({})").format(len(feedList)))
-            else: self.unreadFolder.setText(0, self.tr("Unread"))
-            self.treeWidgetTitleSignal.emit(self.unreadFolder.text(0))
-
-    deletedFolderClicked = pyqtSignal(list)
-    def deletedFolderClick(self):
-        self.parent.widget(1).widget(0).treeWidget.clear()
-        feedList = self.deletedFolderInit()
-        self.deletedFolderClicked.emit(feedList)
-        if len(feedList) > 0:
-            self.deletedFolder.setText(0, self.tr("Deleted ({})").format(len(feedList)))
-        else: self.deletedFolder.setText(0, self.tr("Deleted"))
-        self.treeWidgetTitleSignal.emit(self.deletedFolder.text(0))
-
-    storeFolderClicked = pyqtSignal(list)
     def storeFolderClick(self):
-        self.parent.widget(1).widget(0).treeWidget.clear()
         feedList = self.storeFolderInit()
-        self.storeFolderClicked.emit(feedList)
         if len(feedList) > 0:
-            self.storeFolder.setText(0, self.tr("Stored ({})").format(len(feedList)))
+            self.storeFolder.setText(0, self.tr("({}) Stored").format(len(feedList)))
         else: self.storeFolder.setText(0, self.tr("Stored"))
-        self.treeWidgetTitleSignal.emit(self.storeFolder.text(0))

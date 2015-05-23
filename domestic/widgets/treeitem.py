@@ -1,30 +1,79 @@
 from PyQt5.QtWidgets import QTreeWidgetItem
+from PyQt5.QtGui import QIcon, QPixmap, QColor, QBrush
+from domestic.core import ReaderDb
 
 class FolderItem(QTreeWidgetItem):
     def __init__(self, parent=None):
         super(QTreeWidgetItem, self).__init__(parent)
-        self.parent = parent
-        self.id = None
-        self.title = ""
-        self.type = "folder"
-        self.parent = 0
-        self.isFolder = True
+        self._parent = parent
+        self.setIcon(0, QIcon(":/images/icons/folder_grey.png"))
 
+    def folderClick(self):
+        if not self.isDisabled():
+            feedList = self.folderInit()
+            if len(feedList) > 0:
+                self.setText(0, "({}) {}".format(len(feedList), self.title))
+            else: self.setText(0, self.title)
+
+    def folderInit(self): #FIXME
+        db = ReaderDb()
+        data = db.execute("select * from store where iscache=1")
+        feedList = data.fetchall()
+        db.close()
+        self.setForeground(0,QBrush(QColor(0,0,0,255)))
+        if len(feedList) > 0:
+            self.setText(0, "({}) {}".format(len(feedList)))
+            self.setForeground(0,QBrush(QColor(0,0,255)))
+        return feedList
+
+    def addOptions(self, options):
+        self.id = options["id"]
+        self.title = options["title"]
+        self.type = options["type"]
+        self.setText(0, self.title)
+        self.parent = options["parent"]
 
 class FeedItem(QTreeWidgetItem):
     def __init__(self, parent=None):
         super(QTreeWidgetItem, self).__init__(parent)
-        self.parent = parent
-        self.id = None
-        self.feed_url = ""
-        self.site_url = ""
-        self.title = ""
-        self.type = "feed"
-        self.isFeed = True
-        self.parent = 0
-        self.description = ""
-        self.favicon = None
+        self._parent = parent
 
+    def feedClick(self):
+        feedList = self.feedInit()
+        if len(feedList) > 0:
+            self.setText(0, "({}) {}".format(len(feedList), self.title))
+        else: self.setText(0, self.title)
+
+    def feedInit(self):
+        db = ReaderDb()
+        data = db.execute("select * from store where iscache=1 and feed_url=?", (self.feed_url,))
+        feedList = data.fetchall()
+        db.close()
+        self.setForeground(0,QBrush(QColor(0,0,0,255)))
+        if len(feedList) > 0:
+            self.setText(0, "({}) {}".format(len(feedList), self.title))
+            self.setForeground(0,QBrush(QColor(0,0,255)))
+        return feedList
+
+    def addOptions(self, options):
+        self.id = options["id"]
+        self.title = options["title"]
+        self.setText(0, self.title)
+        self.parent = options["parent"]
+        self.feed_url = options["feed_url"]
+        self.site_url = options["site_url"]
+        self.type = options["type"]
+        self.description = options["description"]
+        self.favicon = options["favicon"]
+        if not self.favicon is None:
+            icon = QIcon()
+            pix = QPixmap()
+            pix.loadFromData(self.favicon)
+            icon.addPixmap(pix)
+            self.setIcon(0, icon)
+        else:
+            self.setIcon(0, QIcon(":/images/icons/html.png"))
+        self.feedInit()
 
 class EntryItem(QTreeWidgetItem):
     def __init__(self, parent=None):
