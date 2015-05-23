@@ -8,6 +8,7 @@ from urllib.parse import urljoin
 class FeedAddDialog(QDialog):
     def __init__(self, parent=None):
         super(QDialog, self).__init__(parent)
+        self.parent = parent
         self.resize(400, 150)
         self.vLayout = QVBoxLayout(self)
         self.vLayout.setSpacing(5)
@@ -121,4 +122,6 @@ class FeedAddDialog(QDialog):
         db.commit()
         db.close()
         self.feedAddFinished.emit(self.lineEditURI.text())
+        self.parent.syncSignal.emit()
+        self.parent.categorySync()
         self.close()

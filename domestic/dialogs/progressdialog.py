@@ -32,7 +32,7 @@ class Thread(QThread):
         if not url is None:
             with urlopen(url) as favicon:
                 return sql.Binary(favicon.read())
-        else: None
+        else: return None
 
     progress = pyqtSignal(int)
     def run(self):
@@ -102,11 +102,13 @@ class ProgressDialog(QDialog):
         self.thread = Thread(self)
         self.thread.progress.connect(self.progressBar.setValue)
 
+
     def keyPressEvent(self, event):
         pass
 
     def accept(self):
-        self.parent.sync(True)
+        self.parent.syncSignal.emit()
+        self.parent.categorySync()
         self.close()
 
     def finish(self):

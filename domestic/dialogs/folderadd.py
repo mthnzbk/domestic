@@ -1,4 +1,4 @@
-from PyQt5.QtCore import QSize, pyqtSignal
+from PyQt5.QtCore import QSize
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QDialog, QVBoxLayout, QLabel, QLineEdit, QFrame
 from PyQt5.QtWidgets import QTreeWidget, QTreeWidgetItem, QDialogButtonBox
@@ -8,6 +8,7 @@ from domestic.core.database import ReaderDb
 class FolderDialog(QDialog):
     def __init__(self, parent=None):
         super(QDialog, self).__init__(parent)
+        self.parent = parent
         self.resize(400, 300)
         self.verticalLayout = QVBoxLayout(self)
         self.verticalLayout.setSpacing(5)
@@ -67,7 +68,6 @@ class FolderDialog(QDialog):
             item.subcategory = folder["parent"]
             self.categorySorting(folder["id"], item)
 
-    folderAddFinished = pyqtSignal(bool)
     def folderAdd(self):
         text = self.lineEditFolder.text()
         db = ReaderDb()
@@ -82,7 +82,8 @@ class FolderDialog(QDialog):
                     db.execute("insert into folders (title, parent, type) values (?, ?, 'folder')", (text, self.treeWidget.currentItem().id))
                     db.commit()
                     db.close()
-                self.folderAddFinished.emit(True)
+                self.parent.syncSignal.emit()
+                self.parent.categorySync()
                 self.close()
             else:
                 self.labelWarning.setText(self.tr("<span style='color:red; font-size:15px; font-weight:bold;'>Same category name cannot add!</span>"))
