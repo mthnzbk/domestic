@@ -32,7 +32,7 @@
         &lt;p&gt;Domestic RSS Reader, cross platform, free and free is a RSS/Atom reader.&lt;/p&gt;
         &lt;p&gt;PyQt5(Qt5), Python3.4 and sqlite3 was created with.&lt;/p&gt;
         &lt;p&gt;License: Gpl v3&lt;/p&gt;
-        &lt;p align=&quot;center&quot;&gt;Copyright Â© 2015 Metehan Ãzbek - &lt;a href=&quot;http://metehan.us&quot;&gt;
+        &lt;p align=&quot;center&quot;&gt;Copyright © 2015 Metehan Özbek - &lt;a href=&quot;http://metehan.us&quot;&gt;
             &lt;span style=&quot; color:#0000ff;&quot;&gt;metehan.us &lt;/span&gt;&lt;/a&gt; - &lt;a href=&quot;https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&amp;hosted_button_id=M9BAR7J2SQWZC&quot;&gt;
           &lt;img src=&quot;:/images/donate-button.png&quot; /&gt;&lt;/a&gt;&lt;/p&gt;
 
@@ -44,7 +44,7 @@
 &lt;p&gt;Domestic RSS Okuyucu, çapraz platform, özgür ve bedava bir RSS okuyucudur.&lt;/p&gt;
 &lt;p&gt;PyQt5(Qt5), Python3.4 ve sqlite3 ile oluşturulmuştur.&lt;/p&gt;
 &lt;p&gt;Lisans: Gpl v3&lt;/p&gt;
-&lt;p align=&quot;center&quot;&gt;Copyright Â© 2015 Metehan Özbek - &lt;a href=&quot;http://metehan.us&quot;&gt;
+&lt;p align=&quot;center&quot;&gt;Copyright © 2015 Metehan Özbek - &lt;a href=&quot;http://metehan.us&quot;&gt;
 &lt;span style=&quot; color:#0000ff;&quot;&gt;metehan.us &lt;/span&gt;&lt;/a&gt; - &lt;a href=&quot;https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&amp;hosted_button_id=M9BAR7J2SQWZC&quot;&gt;
 &lt;img src=&quot;:/images/donate-button.png&quot; /&gt;&lt;/a&gt;&lt;/p&gt;</translation>
     </message>
@@ -57,7 +57,7 @@
         &lt;p&gt;{0}, cross platform, free and free is a RSS/Atom reader.&lt;/p&gt;
         &lt;p&gt;PyQt5(Qt5), Python3.4, BeautifulSoup4, feedparser and sqlite3 was created with.&lt;/p&gt;
         &lt;p&gt;License: Gpl v3&lt;/p&gt;
-        &lt;p align=&quot;center&quot;&gt;Copyright Â© 2015 Metehan Ãzbek - &lt;a href=&quot;http://metehan.us&quot;&gt;
+        &lt;p align=&quot;center&quot;&gt;Copyright © 2015 Metehan Özbek - &lt;a href=&quot;http://metehan.us&quot;&gt;
             &lt;span style=&quot; color:#0000ff;&quot;&gt;metehan.us &lt;/span&gt;&lt;/a&gt; - &lt;a href=&quot;https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&amp;hosted_button_id=M9BAR7J2SQWZC&quot;&gt;
           &lt;img src=&quot;:/images/donate-button.png&quot; /&gt;&lt;/a&gt;&lt;/p&gt;</source>
         <translation>        &lt;p align=&quot;center&quot;&gt;&lt;img src=&quot;:/images/rss-icon-128.png&quot;/&gt;&lt;/p&gt;
@@ -66,7 +66,7 @@
         &lt;p&gt;{0}, çapraz platform, özgür ve bedava bir RSS/Atam okuyucusudur.&lt;/p&gt;
         &lt;p&gt;PyQt5(Qt5), Python3.4, BeautifulSoup4, feedparser ve sqlite3 ile oluşturulmuştur.&lt;/p&gt;
         &lt;p&gt;Lisans: Gpl v3&lt;/p&gt;
-        &lt;p align=&quot;center&quot;&gt;Copyright Â© 2015 Metehan Özbek - &lt;a href=&quot;http://metehan.us&quot;&gt;
+        &lt;p align=&quot;center&quot;&gt;Copyright © 2015 Metehan Özbek - &lt;a href=&quot;http://metehan.us&quot;&gt;
             &lt;span style=&quot; color:#0000ff;&quot;&gt;metehan.us &lt;/span&gt;&lt;/a&gt; - &lt;a href=&quot;https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&amp;hosted_button_id=M9BAR7J2SQWZC&quot;&gt;
           &lt;img src=&quot;:/images/donate-button.png&quot; /&gt;&lt;/a&gt;&lt;/p&gt;</translation>
     </message>
