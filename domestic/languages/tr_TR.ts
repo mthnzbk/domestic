@@ -346,52 +346,52 @@
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="domestic.py" line="69"/>
+        <location filename="domestic.py" line="72"/>
         <source>Entries</source>
         <translation>Yazılar</translation>
     </message>
     <message>
-        <location filename="domestic.py" line="70"/>
+        <location filename="domestic.py" line="73"/>
         <source>Content</source>
         <translation>İçerik</translation>
     </message>
     <message>
-        <location filename="domestic.py" line="271"/>
+        <location filename="domestic.py" line="262"/>
         <source>Warning!</source>
         <translation>Uyarı!</translation>
     </message>
     <message>
-        <location filename="domestic.py" line="271"/>
+        <location filename="domestic.py" line="262"/>
         <source>Selection has not done!</source>
         <translation>Seçim yapılmamış!</translation>
     </message>
     <message>
-        <location filename="domestic.py" line="261"/>
+        <location filename="domestic.py" line="260"/>
         <source>These are already stored.</source>
         <translation>Bunlar zaten saklı.</translation>
     </message>
     <message>
-        <location filename="domestic.py" line="228"/>
+        <location filename="domestic.py" line="222"/>
         <source>Are you sure?</source>
         <translation>Emin misin?</translation>
     </message>
     <message>
-        <location filename="domestic.py" line="228"/>
+        <location filename="domestic.py" line="222"/>
         <source>Do you want to delete the {} feed?</source>
         <translation>{} beslemesini silmek istiyor musunuz?</translation>
     </message>
     <message>
-        <location filename="domestic.py" line="292"/>
+        <location filename="domestic.py" line="284"/>
         <source>Domestic File</source>
         <translation>Domestic dosyası</translation>
     </message>
     <message>
-        <location filename="domestic.py" line="292"/>
+        <location filename="domestic.py" line="284"/>
         <source>Domestic file (*.dfx)</source>
         <translation>Domestic dosyası (*.dfx)</translation>
     </message>
     <message>
-        <location filename="domestic.py" line="240"/>
+        <location filename="domestic.py" line="236"/>
         <source>Before, you empty for the directory!</source>
         <translation>Önce dizin içini boşaltın!</translation>
     </message>
@@ -427,10 +427,21 @@
         &lt;br/&gt;&lt;span style=&apos;font-size:10pt&apos;&gt;Unread: {}&lt;/span&gt;
         &lt;br/&gt;&lt;span style=&apos;font-size:10pt&apos;&gt;Stored: {}&lt;/span&gt;
         &lt;br/&gt;&lt;span style=&apos;font-size:10pt&apos;&gt;Deleted: {}&lt;/span&gt;</source>
-        <translation>&lt;span style=&apos;font-size:14pt&apos;&gt;{} - {}&lt;/span&gt;
+        <translation type="obsolete">&lt;span style=&apos;font-size:14pt&apos;&gt;{} - {}&lt;/span&gt;
         &lt;br/&gt;&lt;span style=&apos;font-size:10pt&apos;&gt;Okunmamış: {}&lt;/span&gt;
         &lt;br/&gt;&lt;span style=&apos;font-size:10pt&apos;&gt;Saklanan: {}&lt;/span&gt;
         &lt;br/&gt;&lt;span style=&apos;font-size:10pt&apos;&gt;Silinmiş: {}&lt;/span&gt;</translation>
+    </message>
+    <message>
+        <location filename="widgets/systemtray.py" line="25"/>
+        <source>&lt;span style=&apos;font-size:14pt&apos;&gt;{} - {}&lt;/span&gt;
+        &lt;br&gt;&lt;span style=&apos;font-size:10pt&apos;&gt;Unread: {}&lt;/span&gt;
+        &lt;br&gt;&lt;span style=&apos;font-size:10pt&apos;&gt;Stored: {}&lt;/span&gt;
+        &lt;br&gt;&lt;span style=&apos;font-size:10pt&apos;&gt;Deleted: {}&lt;/span&gt;</source>
+        <translation>&lt;span style=&apos;font-size:14pt&apos;&gt;{} - {}&lt;/span&gt;
+        &lt;br&gt;&lt;span style=&apos;font-size:10pt&apos;&gt;Okunmamış: {}&lt;/span&gt;
+        &lt;br&gt;&lt;span style=&apos;font-size:10pt&apos;&gt;Saklanan: {}&lt;/span&gt;
+        &lt;br&gt;&lt;span style=&apos;font-size:10pt&apos;&gt;Silinmiş: {}&lt;/span&gt;</translation>
     </message>
 </context>
 <context>
@@ -472,17 +483,17 @@
 <context>
     <name>TreeWidget</name>
     <message>
-        <location filename="widgets/treewidget.py" line="149"/>
+        <location filename="widgets/treewidget.py" line="118"/>
         <source>Unread</source>
         <translation>Okunmamışlar</translation>
     </message>
     <message>
-        <location filename="widgets/treewidget.py" line="159"/>
+        <location filename="widgets/treewidget.py" line="136"/>
         <source>Deleted</source>
         <translation>Silinenler</translation>
     </message>
     <message>
-        <location filename="widgets/treewidget.py" line="169"/>
+        <location filename="widgets/treewidget.py" line="153"/>
         <source>Stored</source>
         <translation>Saklananlar</translation>
     </message>
@@ -494,17 +505,32 @@
     <message>
         <location filename="widgets/treewidget.py" line="148"/>
         <source>Unread ({})</source>
-        <translation>Okunmamışlar ({})</translation>
+        <translation type="obsolete">Okunmamışlar ({})</translation>
     </message>
     <message>
         <location filename="widgets/treewidget.py" line="158"/>
         <source>Deleted ({})</source>
-        <translation>Silinenler ({})</translation>
+        <translation type="obsolete">Silinenler ({})</translation>
     </message>
     <message>
         <location filename="widgets/treewidget.py" line="168"/>
         <source>Stored ({})</source>
-        <translation>Saklananlar ({})</translation>
+        <translation type="obsolete">Saklananlar ({})</translation>
+    </message>
+    <message>
+        <location filename="widgets/treewidget.py" line="117"/>
+        <source>({}) Unread</source>
+        <translation>({}) Okunmamış  </translation>
+    </message>
+    <message>
+        <location filename="widgets/treewidget.py" line="135"/>
+        <source>({}) Deleted</source>
+        <translation>({}) Silinmiş</translation>
+    </message>
+    <message>
+        <location filename="widgets/treewidget.py" line="152"/>
+        <source>({}) Stored</source>
+        <translation>({}) Saklanmış</translation>
     </message>
 </context>
 <context>
@@ -515,7 +541,7 @@
         <translation type="obsolete">Domestic RSS Okuyucu</translation>
     </message>
     <message>
-        <location filename="domestic.py" line="332"/>
+        <location filename="domestic.py" line="324"/>
         <source>Domestic Reader</source>
         <translation>Domestic Okuyuyu</translation>
     </message>

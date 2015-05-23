@@ -349,52 +349,52 @@
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="domestic.py" line="69"/>
+        <location filename="domestic.py" line="72"/>
         <source>Entries</source>
         <translation>Entries</translation>
     </message>
     <message>
-        <location filename="domestic.py" line="70"/>
+        <location filename="domestic.py" line="73"/>
         <source>Content</source>
         <translation>Content</translation>
     </message>
     <message>
-        <location filename="domestic.py" line="271"/>
+        <location filename="domestic.py" line="262"/>
         <source>Warning!</source>
         <translation>Warning!</translation>
     </message>
     <message>
-        <location filename="domestic.py" line="271"/>
+        <location filename="domestic.py" line="262"/>
         <source>Selection has not done!</source>
         <translation>Selection has not done!</translation>
     </message>
     <message>
-        <location filename="domestic.py" line="261"/>
+        <location filename="domestic.py" line="260"/>
         <source>These are already stored.</source>
         <translation>These are already stored.</translation>
     </message>
     <message>
-        <location filename="domestic.py" line="228"/>
+        <location filename="domestic.py" line="222"/>
         <source>Are you sure?</source>
         <translation>Are you sure?</translation>
     </message>
     <message>
-        <location filename="domestic.py" line="228"/>
+        <location filename="domestic.py" line="222"/>
         <source>Do you want to delete the {} feed?</source>
         <translation>Do you want to delete the {} feed?</translation>
     </message>
     <message>
-        <location filename="domestic.py" line="292"/>
+        <location filename="domestic.py" line="284"/>
         <source>Domestic File</source>
         <translation>Domestic File</translation>
     </message>
     <message>
-        <location filename="domestic.py" line="292"/>
+        <location filename="domestic.py" line="284"/>
         <source>Domestic file (*.dfx)</source>
         <translation>Domestic file (*.dfx)</translation>
     </message>
     <message>
-        <location filename="domestic.py" line="240"/>
+        <location filename="domestic.py" line="236"/>
         <source>Before, you empty for the directory!</source>
         <translation>Before, you empty for the directory!</translation>
     </message>
@@ -430,10 +430,21 @@
         &lt;br/&gt;&lt;span style=&apos;font-size:10pt&apos;&gt;Unread: {}&lt;/span&gt;
         &lt;br/&gt;&lt;span style=&apos;font-size:10pt&apos;&gt;Stored: {}&lt;/span&gt;
         &lt;br/&gt;&lt;span style=&apos;font-size:10pt&apos;&gt;Deleted: {}&lt;/span&gt;</source>
-        <translation>&lt;span style=&apos;font-size:14pt&apos;&gt;{} - {}&lt;/span&gt;
+        <translation type="obsolete">&lt;span style=&apos;font-size:14pt&apos;&gt;{} - {}&lt;/span&gt;
         &lt;br/&gt;&lt;span style=&apos;font-size:10pt&apos;&gt;Unread: {}&lt;/span&gt;
         &lt;br/&gt;&lt;span style=&apos;font-size:10pt&apos;&gt;Stored: {}&lt;/span&gt;
         &lt;br/&gt;&lt;span style=&apos;font-size:10pt&apos;&gt;Deleted: {}&lt;/span&gt;</translation>
+    </message>
+    <message>
+        <location filename="widgets/systemtray.py" line="25"/>
+        <source>&lt;span style=&apos;font-size:14pt&apos;&gt;{} - {}&lt;/span&gt;
+        &lt;br&gt;&lt;span style=&apos;font-size:10pt&apos;&gt;Unread: {}&lt;/span&gt;
+        &lt;br&gt;&lt;span style=&apos;font-size:10pt&apos;&gt;Stored: {}&lt;/span&gt;
+        &lt;br&gt;&lt;span style=&apos;font-size:10pt&apos;&gt;Deleted: {}&lt;/span&gt;</source>
+        <translation>&lt;span style=&apos;font-size:14pt&apos;&gt;{} - {}&lt;/span&gt;
+        &lt;br&gt;&lt;span style=&apos;font-size:10pt&apos;&gt;Unread: {}&lt;/span&gt;
+        &lt;br&gt;&lt;span style=&apos;font-size:10pt&apos;&gt;Stored: {}&lt;/span&gt;
+        &lt;br&gt;&lt;span style=&apos;font-size:10pt&apos;&gt;Deleted: {}&lt;/span&gt;</translation>
     </message>
 </context>
 <context>
@@ -475,17 +486,17 @@
 <context>
     <name>TreeWidget</name>
     <message>
-        <location filename="widgets/treewidget.py" line="149"/>
+        <location filename="widgets/treewidget.py" line="118"/>
         <source>Unread</source>
         <translation>Unread</translation>
     </message>
     <message>
-        <location filename="widgets/treewidget.py" line="159"/>
+        <location filename="widgets/treewidget.py" line="136"/>
         <source>Deleted</source>
         <translation>Deleted</translation>
     </message>
     <message>
-        <location filename="widgets/treewidget.py" line="169"/>
+        <location filename="widgets/treewidget.py" line="153"/>
         <source>Stored</source>
         <translation>Stored</translation>
     </message>
@@ -497,17 +508,32 @@
     <message>
         <location filename="widgets/treewidget.py" line="148"/>
         <source>Unread ({})</source>
-        <translation>Unread ({})</translation>
+        <translation type="obsolete">Unread ({})</translation>
     </message>
     <message>
         <location filename="widgets/treewidget.py" line="158"/>
         <source>Deleted ({})</source>
-        <translation>Deleted ({})</translation>
+        <translation type="obsolete">Deleted ({})</translation>
     </message>
     <message>
         <location filename="widgets/treewidget.py" line="168"/>
         <source>Stored ({})</source>
-        <translation>Stored ({})</translation>
+        <translation type="obsolete">Stored ({})</translation>
+    </message>
+    <message>
+        <location filename="widgets/treewidget.py" line="117"/>
+        <source>({}) Unread</source>
+        <translation>({}) Unread</translation>
+    </message>
+    <message>
+        <location filename="widgets/treewidget.py" line="135"/>
+        <source>({}) Deleted</source>
+        <translation>({}) Deleted</translation>
+    </message>
+    <message>
+        <location filename="widgets/treewidget.py" line="152"/>
+        <source>({}) Stored</source>
+        <translation>({}) Stored</translation>
     </message>
 </context>
 <context>
@@ -518,7 +544,7 @@
         <translation type="obsolete">Domestic RSS Reader</translation>
     </message>
     <message>
-        <location filename="domestic.py" line="332"/>
+        <location filename="domestic.py" line="324"/>
         <source>Domestic Reader</source>
         <translation>Domestic Reader</translation>
     </message>
