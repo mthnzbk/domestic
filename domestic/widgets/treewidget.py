@@ -61,6 +61,7 @@ class TreeWidget(QTreeWidget):
         self.storeFolder.setIcon(0, QIcon(":/images/icons/folder_tar.png"))
         self.storeFolder.setText(0, self.tr("Stored"))
 
+    categoryList = []
     def categorySorting(self, id=0, treeitem=None):
         db = ReaderDb()
         db.execute("select * from folders where parent=?",(id,))
@@ -73,12 +74,14 @@ class TreeWidget(QTreeWidget):
                 key = "TreeWidget/{}".format(item.text(0).replace(" ", "-"))
                 if Settings.value(key) != None:
                     item.setExpanded(int(Settings.value(key)))
+                self.categoryList.append(item)
                 self.categorySorting(folder["id"], item)
 
             elif folder["type"] == "feed":
                 item = FeedItem(treeitem)
                 item.addOptions(folder)
                 self.parent.syncSignal.connect(item.feedClick)
+                self.categoryList.append(item)
                 self.categorySorting(folder["id"], item)
 
     treeWidgetTitleSignal = pyqtSignal(str)

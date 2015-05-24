@@ -32,12 +32,15 @@ class MainWindow(QMainWindow):
         self.splitter.setChildrenCollapsible(False)
         self.gridLayout.addWidget(self.splitter, 0, 0, 1, 1)
 
-        self.treeWidget = TreeWidget(self.splitter)
-        self.treeWidget.setFocus()
+        self.treeWidget = TreeWidget(self)
         self.treeWidget.resize(Settings.value("TreeWidget/size"))
 
-        self.toolBox = ToolBox(self.splitter)
+        self.toolBox = ToolBox(self)
         self.toolBox.resize(Settings.value("ToolBox/size"))
+
+        self.splitter.addWidget(self.treeWidget)
+        self.splitter.addWidget(self.toolBox)
+
         self.page = FirstPage(self.toolBox)
         self.toolBox.addItem(self.page, "")
         self.page2 = LastPage(self.toolBox)
@@ -83,10 +86,7 @@ class MainWindow(QMainWindow):
         self.menuFeeds.actionAllUpdate.triggered.connect(self.allUpdate)
         self.menuFeeds.actionInfo.triggered.connect(self.infoDialog)
 
-        self.treeWidget.unreadFolderClicked.connect(self.page.entryList)
-        self.treeWidget.deletedFolderClicked.connect(self.page.entryList)
-        self.treeWidget.storeFolderClicked.connect(self.page.entryList)
-
+        self.treeWidget.folderClicked.connect(self.page.entryList)
         self.treeWidget.setFocus()
 
         self.systemTray = SystemTray(self)
@@ -126,18 +126,6 @@ class MainWindow(QMainWindow):
         event.accept()
 
     syncSignal = pyqtSignal()
-    def sync(self, sync=False):
-        if sync:
-            self.treeWidget.clear()
-            self.treeWidget.widgetInitial()
-            self.treeWidget.categorySorting(treeitem=self.treeWidget)
-            self.treeWidget.deletedFolderInit()
-            self.treeWidget.storeFolderInit()
-            self.treeWidget.setCurrentItem(self.treeWidget.unreadFolder)
-            self.treeWidget.setFocus()
-            self.treeWidget.unreadFolderClick()
-            self.syncSignal.emit()
-
     def closeEvent(self, event):
         Settings.setValue("MainWindow/size", self.size())
         Settings.setValue("MainWindow/position", self.pos())
@@ -167,7 +155,7 @@ class MainWindow(QMainWindow):
         thread = FeedSync(self)
         thread.feedAdd(feed)
         thread.start()
-        thread.isData.connect(self.sync)
+        thread.finished.connect(self.syncSignal)
 
     lenFeeds = 0
     def allUpdate(self):
@@ -181,7 +169,7 @@ class MainWindow(QMainWindow):
             thread = FeedSync(self)
             thread.feedAdd(feedurl)
             thread.start()
-            thread.isData.connect(self.sync)
+            thread.finished.connect(self.syncSignal)
             thread.isData.connect(self.statusbar.setProgress)
             thread.lenSignal.connect(self.lenNews)
             thread.isData.connect(self.threadProgress)
@@ -201,74 +189,66 @@ class MainWindow(QMainWindow):
             itemAll = self.page.treeWidget.selectedItems()
             item_list = [(item.getEntryUrl(),) for item in itemAll]
             db = ReaderDb()
-            if itemAll != None:
-                if self.treeWidget.currentItem() == self.treeWidget.unreadFolder or self.treeWidget.currentItem() == self.treeWidget.storeFolder:
-                    db.executemany("update store set istrash=1, iscache=0, isstore=0 where entry_url=?", item_list)
-                    db.commit()
-                    db.close()
+            if len(itemAll):
                 if self.treeWidget.currentItem() == self.treeWidget.deletedFolder:
                     db.executemany("update store set istrash=-1, iscache=0, isstore=0, entry_content='' where entry_url=?", item_list)
                     db.commit()
                     db.close()
-                if self.treeWidget.currentItem() == self.treeWidget.unreadFolder:
-                    self.treeWidget.unreadFolderClick()
-                    self.treeWidget.deletedFolderInit()
-                elif self.treeWidget.currentItem() == self.treeWidget.storeFolder:
-                    self.treeWidget.storeFolderClick()
-                    self.treeWidget.deletedFolderInit()
-                elif self.treeWidget.currentItem() == self.treeWidget.deletedFolder:
-                    self.treeWidget.deletedFolderClick()
                 else:
-                    QMessageBox.warning(self, self.tr("Warning!"), self.tr("Selection has not done!"))
+                    db.executemany("update store set istrash=1, iscache=0, isstore=0 where entry_url=?", item_list)
+                    db.commit()
+                    db.close()
+                for item in itemAll:
+                    index = self.page.treeWidget.indexOfTopLevelItem(item)
+                    self.page.treeWidget.takeTopLevelItem(index)
+            else:
+                QMessageBox.warning(self, self.tr("Warning!"), self.tr("Selection has not done!"))
         elif self.treeWidget.hasFocus():
             items = self.treeWidget.selectedItems()
             if len(items):
-                for item in items:
-                    if isinstance(item, FeedItem):
-                        box = QMessageBox.question(self, self.tr("Are you sure?"),
-                                                   self.tr("Do you want to delete the {} feed?").format(item.title))
-                        if box == 16384:
-                            db = ReaderDb()
-                            db.execute("delete from folders where feed_url=?", (item.feed_url,))
-                            db.commit()
-                            db.close()
-                            self.sync(True)
-                    if isinstance(item, FolderItem):
+                if isinstance(items[0], FeedItem):
+                    box = QMessageBox.question(self, self.tr("Are you sure?"),
+                                               self.tr("Do you want to delete the {} feed?").format(items[0].title))
+                    print(box)
+                    if box == 16384:
                         db = ReaderDb()
-                        db.execute("select * from folders where parent=?", (item.id,))
-                        if db.cursor.fetchone():
-                            QMessageBox.warning(self, self.tr("Warning!"), self.tr("Before, you empty for the directory!"))
-                        else:
-                            db.execute("delete from folders where id=?", (item.id,))
-                            db.commit()
-                            self.sync(True)
+                        db.execute("delete from folders where feed_url=?", (items[0].feed_url,))
+                        db.commit()
                         db.close()
+                        index = self.treeWidget.indexOfTopLevelItem(items[0])
+                        self.treeWidget.takeTopLevelItem(index)
+                if isinstance(items[0], FolderItem):
+                    db = ReaderDb()
+                    db.execute("select * from folders where parent=?", (items[0].id,))
+                    if db.cursor.fetchone():
+                        QMessageBox.warning(self, self.tr("Warning!"), self.tr("Before, you empty for the directory!"))
+                    else:
+                        db.execute("delete from folders where id=?", (items[0].id,))
+                        db.commit()
+                        index = self.treeWidget.indexOfTopLevelItem(items[0])
+                        self.treeWidget.takeTopLevelItem(index)
+                    db.close()
         else:
             QMessageBox.warning(self, self.tr("Warning!"), self.tr("Selection has not done!"))
         self.syncSignal.emit()
 
     def feedStore(self):
-        if self.page.treeWidget.hasFocus():
-            itemAll = self.page.treeWidget.selectedItems()
+        itemAll = self.page.treeWidget.selectedItems()
+        db = ReaderDb()
+        if len(itemAll):
             item_list = [(item.getEntryUrl(),) for item in itemAll]
-            db = ReaderDb()
-            if itemAll != None:
-                if self.treeWidget.currentItem() == self.treeWidget.unreadFolder or self.treeWidget.currentItem() == self.treeWidget.deletedFolder:
-                    db.executemany("update store set istrash=0, iscache=0, isstore=1 where entry_url=?", item_list)
-                    db.commit()
-                    db.close()
-                if self.treeWidget.currentItem() == self.treeWidget.storeFolder and len(itemAll) > 0:
-                    QMessageBox.warning(self, self.tr("Warning!"), self.tr("These are already stored."))
-                elif self.treeWidget.currentItem() == self.treeWidget.unreadFolder:
-                    self.treeWidget.unreadFolderClick()
-                    self.treeWidget.storeFolderInit()
-                elif self.treeWidget.currentItem() == self.treeWidget.deletedFolder:
-                    self.treeWidget.deletedFolderClick()
-                    self.treeWidget.storeFolderInit()
-                else:
-                    QMessageBox.warning(self, self.tr("Warning!"), self.tr("Selection has not done!"))
+            if self.treeWidget.currentItem() != self.treeWidget.storeFolder:
+                db.executemany("update store set istrash=0, iscache=0, isstore=1 where entry_url=?", item_list)
+                db.commit()
+                db.close()
+                for item in itemAll:
+                    index = self.page.treeWidget.indexOfTopLevelItem(item)
+                    self.page.treeWidget.takeTopLevelItem(index)
+            else:
+                QMessageBox.warning(self, self.tr("Warning!"), self.tr("These are already stored."))
         else:
             QMessageBox.warning(self, self.tr("Warning!"), self.tr("Selection has not done!"))
+        self.syncSignal.emit()
 
     def exportFileDialog(self):
         file = QFileDialog.getSaveFileName(self, self.tr("Domestic File"), Settings.value("FileDialog/path") or "", self.tr("Domestic file (*.dfx)"))
@@ -287,6 +267,13 @@ class MainWindow(QMainWindow):
             fileW.close()
             Settings.setValue("FileDialog/path", os.dirname(file[0]))
             Settings.sync()
+
+    def categorySync(self):
+        if len(self.treeWidget.categoryList):
+            for category in self.treeWidget.categoryList:
+                index = self.treeWidget.indexOfTopLevelItem(category)
+                self.treeWidget.takeTopLevelItem(index)
+        self.treeWidget.categorySorting(treeitem=self.treeWidget)
 
     def importFileDialog(self):
         file = QFileDialog.getOpenFileName(self, self.tr("Domestic File"), Settings.value("FileDialog/path") or "", self.tr("Domestic file (*.dfx)"))
@@ -320,7 +307,6 @@ class MainWindow(QMainWindow):
 
     def feedFolderAdd(self):
         f = FolderDialog(self)
-        f.folderAddFinished.connect(self.sync)
         f.show()
 
 def main():

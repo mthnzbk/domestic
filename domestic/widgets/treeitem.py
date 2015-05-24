@@ -9,22 +9,41 @@ class FolderItem(QTreeWidgetItem):
         self.setIcon(0, QIcon(":/images/icons/folder_grey.png"))
 
     def folderClick(self):
-        if not self.isDisabled():
-            feedList = self.folderInit()
-            if len(feedList) > 0:
-                self.setText(0, "({}) {}".format(len(feedList), self.title))
-            else: self.setText(0, self.title)
+        feedList = self.folderInit()
+        if len(feedList) > 0:
+            self.setText(0, "({}) {}".format(len(feedList), self.title))
+        else: self.setText(0, self.title)
+        self.newsCount = 0
+        self.feedList.clear()
+        self.entryList.clear()
 
+    entryList = []
     def folderInit(self): #FIXME
         db = ReaderDb()
-        data = db.execute("select * from store where iscache=1")
-        feedList = data.fetchall()
-        db.close()
+        self.categorySorting(self.id)
+        for feed in self.feedList:
+            db.execute("select * from store where iscache=1 and feed_url=?", feed)
+            for entry in db.cursor.fetchall():
+                self.entryList.append(entry)
         self.setForeground(0,QBrush(QColor(0,0,0,255)))
-        if len(feedList) > 0:
-            self.setText(0, "({}) {}".format(len(feedList)))
+        if self.newsCount > 0:
+            self.setText(0, "({}) {}".format(self.newsCount, self.title))
             self.setForeground(0,QBrush(QColor(0,0,255)))
-        return feedList
+        return self.entryList
+
+    newsCount = 0
+    feedList = []
+    def categorySorting(self, id=0):
+        db = ReaderDb()
+        db.execute("select * from folders where parent=?",(id,))
+        folders = db.cursor.fetchall()
+        for feed in folders:
+            if feed["type"] == "feed":
+                db.execute("select * from store where iscache=1 and feed_url=?", (feed["feed_url"],))
+                data = db.cursor.fetchall()
+                self.feedList.append((feed["feed_url"],))
+                self.newsCount += len(data)
+            self.categorySorting(feed["id"])
 
     def addOptions(self, options):
         self.id = options["id"]
@@ -32,6 +51,7 @@ class FolderItem(QTreeWidgetItem):
         self.type = options["type"]
         self.setText(0, self.title)
         self.parent = options["parent"]
+        self.folderInit()
 
 class FeedItem(QTreeWidgetItem):
     def __init__(self, parent=None):
