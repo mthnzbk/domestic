@@ -18,7 +18,7 @@ class FolderItem(QTreeWidgetItem):
         self.entryList.clear()
 
     entryList = []
-    def folderInit(self): #FIXME
+    def folderInit(self):
         db = ReaderDb()
         self.categorySorting(self.id)
         for feed in self.feedList:
@@ -51,7 +51,7 @@ class FolderItem(QTreeWidgetItem):
         self.type = options["type"]
         self.setText(0, self.title)
         self.parent = options["parent"]
-        self.folderInit()
+        self.folderClick()
 
 class FeedItem(QTreeWidgetItem):
     def __init__(self, parent=None):
@@ -93,7 +93,7 @@ class FeedItem(QTreeWidgetItem):
             self.setIcon(0, icon)
         else:
             self.setIcon(0, QIcon(":/images/icons/html.png"))
-        self.feedInit()
+        self.feedClick()
 
 class EntryItem(QTreeWidgetItem):
     def __init__(self, parent=None):
