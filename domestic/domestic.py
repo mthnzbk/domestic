@@ -316,7 +316,7 @@ def main():
     translator.load(os.join(mainPath, "languages", "{}.qm".format(LOCALE)))
     app.installTranslator(translator)
     app.setApplicationName(app.tr("Domestic Reader"))
-    app.setApplicationVersion("0.2.3.5")
+    app.setApplicationVersion("0.3.1.8")
 
     initialSettings()
     initialDb()
