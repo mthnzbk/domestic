@@ -44,7 +44,7 @@ class About(QDialog):
         <p>{0}, cross platform, free and free is a RSS/Atom reader.</p>
         <p>PyQt5(Qt5), Python3.4, BeautifulSoup4, feedparser and sqlite3 was created with.</p>
         <p>License: Gpl v3</p>
-        <p align="center">Copyright © 2015 Metehan Özbek - <a href="http://metehan.us">
+        <p align="center">Copyright \u00a9 2015 Metehan Özbek - <a href="http://metehan.us">
             <span style=" color:#0000ff;">metehan.us </span></a> - <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=M9BAR7J2SQWZC">
           <img src=":/images/donate-button.png" /></a></p>""").format(app.applicationName(), app.applicationVersion()))
 

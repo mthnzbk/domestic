@@ -60,13 +60,36 @@
         &lt;p align=&quot;center&quot;&gt;Copyright © 2015 Metehan Özbek - &lt;a href=&quot;http://metehan.us&quot;&gt;
             &lt;span style=&quot; color:#0000ff;&quot;&gt;metehan.us &lt;/span&gt;&lt;/a&gt; - &lt;a href=&quot;https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&amp;hosted_button_id=M9BAR7J2SQWZC&quot;&gt;
           &lt;img src=&quot;:/images/donate-button.png&quot; /&gt;&lt;/a&gt;&lt;/p&gt;</source>
-        <translation>        &lt;p align=&quot;center&quot;&gt;&lt;img src=&quot;:/images/rss-icon-128.png&quot;/&gt;&lt;/p&gt;
+        <translation type="obsolete">        &lt;p align=&quot;center&quot;&gt;&lt;img src=&quot;:/images/rss-icon-128.png&quot;/&gt;&lt;/p&gt;
         &lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:20pt; font-weight:bold;&quot;&gt;{0}&lt;/span&gt;&lt;/p&gt;
         &lt;p align=&quot;center&quot;&gt;Version: {1}&lt;/p&gt;&lt;p align=&quot;center&quot;&gt;&lt;/p&gt;
         &lt;p&gt;{0}, çapraz platform, özgür ve bedava bir RSS/Atam okuyucusudur.&lt;/p&gt;
         &lt;p&gt;PyQt5(Qt5), Python3.4, BeautifulSoup4, feedparser ve sqlite3 ile oluşturulmuştur.&lt;/p&gt;
         &lt;p&gt;Lisans: Gpl v3&lt;/p&gt;
         &lt;p align=&quot;center&quot;&gt;Copyright © 2015 Metehan Özbek - &lt;a href=&quot;http://metehan.us&quot;&gt;
+            &lt;span style=&quot; color:#0000ff;&quot;&gt;metehan.us &lt;/span&gt;&lt;/a&gt; - &lt;a href=&quot;https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&amp;hosted_button_id=M9BAR7J2SQWZC&quot;&gt;
+          &lt;img src=&quot;:/images/donate-button.png&quot; /&gt;&lt;/a&gt;&lt;/p&gt;</translation>
+    </message>
+    <message>
+        <location filename="dialogs/about.py" line="40"/>
+        <source>
+        &lt;p align=&quot;center&quot;&gt;&lt;img src=&quot;:/images/rss-icon-128.png&quot;/&gt;&lt;/p&gt;
+        &lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:20pt; font-weight:bold;&quot;&gt;{0}&lt;/span&gt;&lt;/p&gt;
+        &lt;p align=&quot;center&quot;&gt;Version: {1}&lt;/p&gt;&lt;p align=&quot;center&quot;&gt;&lt;/p&gt;
+        &lt;p&gt;{0}, cross platform, free and free is a RSS/Atom reader.&lt;/p&gt;
+        &lt;p&gt;PyQt5(Qt5), Python3.4, BeautifulSoup4, feedparser and sqlite3 was created with.&lt;/p&gt;
+        &lt;p&gt;License: Gpl v3&lt;/p&gt;
+        &lt;p align=&quot;center&quot;&gt;Copyright u00a9 2015 Metehan Ãzbek - &lt;a href=&quot;http://metehan.us&quot;&gt;
+            &lt;span style=&quot; color:#0000ff;&quot;&gt;metehan.us &lt;/span&gt;&lt;/a&gt; - &lt;a href=&quot;https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&amp;hosted_button_id=M9BAR7J2SQWZC&quot;&gt;
+          &lt;img src=&quot;:/images/donate-button.png&quot; /&gt;&lt;/a&gt;&lt;/p&gt;</source>
+        <translation>
+        &lt;p align=&quot;center&quot;&gt;&lt;img src=&quot;:/images/rss-icon-128.png&quot;/&gt;&lt;/p&gt;
+        &lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:20pt; font-weight:bold;&quot;&gt;{0}&lt;/span&gt;&lt;/p&gt;
+        &lt;p align=&quot;center&quot;&gt;Sürüm: {1}&lt;/p&gt;&lt;p align=&quot;center&quot;&gt;&lt;/p&gt;
+        &lt;p&gt;{0}, çapraz platform, özgür ve bedava bir RSS/Atam okuyucusudur.&lt;/p&gt;
+        &lt;p&gt;PyQt5(Qt5), Python3.4, BeautifulSoup4, feedparser ve sqlite3 ile oluşturulmuştur.&lt;/p&gt;
+        &lt;p&gt;Lisans: Gpl v3&lt;/p&gt;
+        &lt;p align=&quot;center&quot;&gt;Copyright u00a9 2015 Metehan Özbek - &lt;a href=&quot;http://metehan.us&quot;&gt;
             &lt;span style=&quot; color:#0000ff;&quot;&gt;metehan.us &lt;/span&gt;&lt;/a&gt; - &lt;a href=&quot;https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&amp;hosted_button_id=M9BAR7J2SQWZC&quot;&gt;
           &lt;img src=&quot;:/images/donate-button.png&quot; /&gt;&lt;/a&gt;&lt;/p&gt;</translation>
     </message>
@@ -92,52 +115,52 @@
 <context>
     <name>FeedAddDialog</name>
     <message>
-        <location filename="dialogs/feedadd.py" line="26"/>
+        <location filename="dialogs/feedadd.py" line="27"/>
         <source>Category:</source>
         <translation>Kategori:</translation>
     </message>
     <message>
-        <location filename="dialogs/feedadd.py" line="30"/>
+        <location filename="dialogs/feedadd.py" line="31"/>
         <source>All Feeds</source>
         <translation>Tüm Beslemeler</translation>
     </message>
     <message>
-        <location filename="dialogs/feedadd.py" line="40"/>
+        <location filename="dialogs/feedadd.py" line="41"/>
         <source>Cancel</source>
         <translation>İptal</translation>
     </message>
     <message>
-        <location filename="dialogs/feedadd.py" line="41"/>
+        <location filename="dialogs/feedadd.py" line="42"/>
         <source>Save</source>
         <translation>Kaydet</translation>
     </message>
     <message>
-        <location filename="dialogs/feedadd.py" line="44"/>
+        <location filename="dialogs/feedadd.py" line="45"/>
         <source>Ok</source>
         <translation>Tamam</translation>
     </message>
     <message>
-        <location filename="dialogs/feedadd.py" line="51"/>
+        <location filename="dialogs/feedadd.py" line="52"/>
         <source>New Feed</source>
         <translation>Yeni Besleme</translation>
     </message>
     <message>
-        <location filename="dialogs/feedadd.py" line="52"/>
+        <location filename="dialogs/feedadd.py" line="53"/>
         <source>&lt;span style=&apos;font-size:16pt; font-weight:bold;&apos;&gt;Add New Feed&lt;/span&gt;</source>
         <translation>&lt;span style=&apos;font-size:16pt; font-weight:bold;&apos;&gt;Yeni Besleme Ekle&lt;/span&gt;</translation>
     </message>
     <message>
-        <location filename="dialogs/feedadd.py" line="53"/>
+        <location filename="dialogs/feedadd.py" line="54"/>
         <source>Enter link or source of feed:</source>
         <translation>Besleme bağlantısı veya kaynağını girin:</translation>
     </message>
     <message>
-        <location filename="dialogs/feedadd.py" line="103"/>
+        <location filename="dialogs/feedadd.py" line="104"/>
         <source>&lt;span style=&apos;color:red; font-size:15px; font-weight:bold;&apos;&gt;That feed is already exist!&lt;/span&gt;</source>
         <translation>&lt;span style=&apos;color:red; font-size:15px; font-weight:bold;&apos;&gt;Bu besleme zaten mevcut!&lt;/span&gt;</translation>
     </message>
     <message>
-        <location filename="dialogs/feedadd.py" line="106"/>
+        <location filename="dialogs/feedadd.py" line="107"/>
         <source>&lt;span style=&apos;color:red; font-size:15px; font-weight:bold;&apos;&gt;Wrong link name!&lt;/span&gt;</source>
         <translation>&lt;span style=&apos;color:red; font-size:15px; font-weight:bold;&apos;&gt;Yanlış bağlantı adı girdiniz!&lt;/span&gt;</translation>
     </message>
@@ -224,42 +247,42 @@
 <context>
     <name>FolderDialog</name>
     <message>
-        <location filename="dialogs/folderadd.py" line="49"/>
+        <location filename="dialogs/folderadd.py" line="50"/>
         <source>Add Folder</source>
         <translation>Dizin Ekle</translation>
     </message>
     <message>
-        <location filename="dialogs/folderadd.py" line="50"/>
+        <location filename="dialogs/folderadd.py" line="51"/>
         <source>Name:</source>
         <translation>Adı:</translation>
     </message>
     <message>
-        <location filename="dialogs/folderadd.py" line="51"/>
+        <location filename="dialogs/folderadd.py" line="52"/>
         <source>Insert:</source>
         <translation>Yerleştir:</translation>
     </message>
     <message>
-        <location filename="dialogs/folderadd.py" line="52"/>
+        <location filename="dialogs/folderadd.py" line="53"/>
         <source>Folder</source>
         <translation>Dizin</translation>
     </message>
     <message>
-        <location filename="dialogs/folderadd.py" line="88"/>
+        <location filename="dialogs/folderadd.py" line="89"/>
         <source>&lt;span style=&apos;color:red; font-size:15px; font-weight:bold;&apos;&gt;Same category name cannot add!&lt;/span&gt;</source>
         <translation>&lt;span style=&apos;color:red; font-size:15px; font-weight:bold;&apos;&gt;Aynı kategori ismi eklenemiyor &lt;/span&gt;</translation>
     </message>
     <message>
-        <location filename="dialogs/folderadd.py" line="91"/>
+        <location filename="dialogs/folderadd.py" line="92"/>
         <source>&lt;span style=&apos;color:red; font-size:15px; font-weight:bold; align:&apos;center&apos;;&apos;&gt;You didn&apos;t write folder&apos;s name!&lt;/span&gt;</source>
         <translation>&lt;span style=&apos;color:red; font-size:15px; font-weight:bold; align:&apos;center&apos;;&apos;&gt;Dizin adı girmediniz!&lt;/span&gt;</translation>
     </message>
     <message>
-        <location filename="dialogs/folderadd.py" line="40"/>
+        <location filename="dialogs/folderadd.py" line="41"/>
         <source>Cancel</source>
         <translation>İptal</translation>
     </message>
     <message>
-        <location filename="dialogs/folderadd.py" line="41"/>
+        <location filename="dialogs/folderadd.py" line="42"/>
         <source>Save</source>
         <translation>Kaydet</translation>
     </message>
@@ -320,7 +343,7 @@
         <translation>Tüm Beslemeler</translation>
     </message>
     <message>
-        <location filename="dialogs/infodialog.py" line="65"/>
+        <location filename="dialogs/infodialog.py" line="66"/>
         <source>{} - Info</source>
         <translation>{} - Özellikler</translation>
     </message>
@@ -336,7 +359,7 @@
 &lt;p&gt;Yazar: {} | Kategori: {}&lt;/p&gt;&lt;/div&gt;</translation>
     </message>
     <message>
-        <location filename="widgets/lastpage.py" line="21"/>
+        <location filename="widgets/lastpage.py" line="88"/>
         <source>&lt;p&gt;&lt;a style=&apos;font-size:13pt; font-weight:bold&apos; href=&apos;{}&apos;&gt;{}&lt;/a&gt; - &lt;span&gt;Date: {}&lt;/span&gt;&lt;/p&gt;
         &lt;p&gt;Author: {} | Category: {}&lt;/p&gt;</source>
         <translation>&lt;p&gt;&lt;a style=&apos;font-size:13pt; font-weight:bold&apos; href=&apos;{}&apos;&gt;{}&lt;/a&gt; - &lt;span&gt;Tarih: {}&lt;/span&gt;&lt;/p&gt;
@@ -356,42 +379,42 @@
         <translation>İçerik</translation>
     </message>
     <message>
-        <location filename="domestic.py" line="262"/>
+        <location filename="domestic.py" line="252"/>
         <source>Warning!</source>
         <translation>Uyarı!</translation>
     </message>
     <message>
-        <location filename="domestic.py" line="262"/>
+        <location filename="domestic.py" line="252"/>
         <source>Selection has not done!</source>
         <translation>Seçim yapılmamış!</translation>
     </message>
     <message>
-        <location filename="domestic.py" line="260"/>
+        <location filename="domestic.py" line="250"/>
         <source>These are already stored.</source>
         <translation>Bunlar zaten saklı.</translation>
     </message>
     <message>
-        <location filename="domestic.py" line="222"/>
+        <location filename="domestic.py" line="211"/>
         <source>Are you sure?</source>
         <translation>Emin misin?</translation>
     </message>
     <message>
-        <location filename="domestic.py" line="222"/>
+        <location filename="domestic.py" line="211"/>
         <source>Do you want to delete the {} feed?</source>
         <translation>{} beslemesini silmek istiyor musunuz?</translation>
     </message>
     <message>
-        <location filename="domestic.py" line="284"/>
+        <location filename="domestic.py" line="281"/>
         <source>Domestic File</source>
         <translation>Domestic dosyası</translation>
     </message>
     <message>
-        <location filename="domestic.py" line="284"/>
+        <location filename="domestic.py" line="281"/>
         <source>Domestic file (*.dfx)</source>
         <translation>Domestic dosyası (*.dfx)</translation>
     </message>
     <message>
-        <location filename="domestic.py" line="236"/>
+        <location filename="domestic.py" line="225"/>
         <source>Before, you empty for the directory!</source>
         <translation>Önce dizin içini boşaltın!</translation>
     </message>
@@ -404,6 +427,24 @@
         <location filename="domestic.py" line="109"/>
         <source>{} fresh news.</source>
         <translation>{} yeni haber.</translation>
+    </message>
+</context>
+<context>
+    <name>PodCastPlayer</name>
+    <message>
+        <location filename="widgets/lastpage.py" line="15"/>
+        <source>Play</source>
+        <translation>Oynat</translation>
+    </message>
+    <message>
+        <location filename="widgets/lastpage.py" line="17"/>
+        <source>Pause</source>
+        <translation>Duraklat</translation>
+    </message>
+    <message>
+        <location filename="widgets/lastpage.py" line="19"/>
+        <source>Stop</source>
+        <translation>Durdur</translation>
     </message>
 </context>
 <context>
@@ -483,17 +524,17 @@
 <context>
     <name>TreeWidget</name>
     <message>
-        <location filename="widgets/treewidget.py" line="118"/>
+        <location filename="widgets/treewidget.py" line="126"/>
         <source>Unread</source>
         <translation>Okunmamışlar</translation>
     </message>
     <message>
-        <location filename="widgets/treewidget.py" line="136"/>
+        <location filename="widgets/treewidget.py" line="144"/>
         <source>Deleted</source>
         <translation>Silinenler</translation>
     </message>
     <message>
-        <location filename="widgets/treewidget.py" line="153"/>
+        <location filename="widgets/treewidget.py" line="162"/>
         <source>Stored</source>
         <translation>Saklananlar</translation>
     </message>
@@ -518,17 +559,17 @@
         <translation type="obsolete">Saklananlar ({})</translation>
     </message>
     <message>
-        <location filename="widgets/treewidget.py" line="117"/>
+        <location filename="widgets/treewidget.py" line="125"/>
         <source>({}) Unread</source>
         <translation>({}) Okunmamış  </translation>
     </message>
     <message>
-        <location filename="widgets/treewidget.py" line="135"/>
+        <location filename="widgets/treewidget.py" line="143"/>
         <source>({}) Deleted</source>
         <translation>({}) Silinmiş</translation>
     </message>
     <message>
-        <location filename="widgets/treewidget.py" line="152"/>
+        <location filename="widgets/treewidget.py" line="161"/>
         <source>({}) Stored</source>
         <translation>({}) Saklanmış</translation>
     </message>
@@ -541,7 +582,7 @@
         <translation type="obsolete">Domestic RSS Okuyucu</translation>
     </message>
     <message>
-        <location filename="domestic.py" line="324"/>
+        <location filename="domestic.py" line="320"/>
         <source>Domestic Reader</source>
         <translation>Domestic Okuyuyu</translation>
     </message>
