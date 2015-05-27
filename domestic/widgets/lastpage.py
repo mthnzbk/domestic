@@ -92,6 +92,8 @@ class LastPage(QWidget):
         if not item.getEnclosureUrl() is None:
             self.player.show()
             self.player.addMedia(item.getEnclosureUrl())
+        else:
+            self.player.hide()
 
     def linkClick(self, url):
         QDesktopServices.openUrl(QUrl(url))
