@@ -1,8 +1,6 @@
 import sqlite3 as sql
 import os.path as os
-
 from domestic.core.settings import Settings
-
 
 def isDbExist():
     return os.isfile(os.join(os.dirname(Settings.fileName()), "Domestic.db"))
@@ -34,7 +32,10 @@ def initialDb():
         entry_content text not null,
         isstore integer default 0,
         istrash integer default 0,
-        iscache integer default 1
+        iscache integer default 1,
+        enclosure_length text,
+        enclosure_type text,
+        enclosure_url text,
         );"""
         createDb.executescript(sqlcode)
         createDb.commit()

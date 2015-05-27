@@ -48,6 +48,30 @@ class GetEntry(object):
         else:
             return ""
 
+    def getEnclosureLength(self):
+        if not self.entry.get("links") is None:
+            for link in self.entry.links:
+                if link["rel"] == "enclosure":
+                    return link["length"]
+        else:
+            return None
+
+    def getEnclosureType(self):
+        if not self.entry.get("links") is None:
+            for link in self.entry.links:
+                if link["rel"] == "enclosure":
+                    return link["type"]
+        else:
+            return None
+
+    def getEnclosureUrl(self):
+        if not self.entry.get("links") is None:
+            for link in self.entry.links:
+                if link["rel"] == "enclosure":
+                    return link["href"]
+        else:
+            return None
+
 class FeedSync(QThread):
     def __init__(self, parent=None):
         super(QThread, self).__init__(parent)
@@ -75,11 +99,13 @@ class FeedSync(QThread):
                 datain = True
                 getEntry = GetEntry(entry, feedData)
                 entryData = (getEntry.getFeedUrl(), getEntry.getFeedTitle(), getEntry.getLink(), getEntry.getTitle(),
-                             getEntry.getAuthor(), getEntry.getCategory(), getEntry.getPublish(), getEntry.getContent())
+                             getEntry.getAuthor(), getEntry.getCategory(), getEntry.getPublish(), getEntry.getContent(),
+                             getEntry.getEnclosureLength(), getEntry.getEnclosureType(), getEntry.getEnclosureUrl())
                 entryDataList.append(entryData)
             else: print("entry girilmedi.", entry.link)
         db.executemany("""insert into store (feed_url, feed_title, entry_url, entry_title, entry_author, entry_category,
-                           entry_datetime, entry_content) values (?, ?, ?, ?, ?, ?, ?, ?)""", entryDataList)
+                      entry_datetime, entry_content, enclosure_length, enclosure_type, enclosure_url)
+                      values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""", entryDataList)
         db.commit()
         self.isData.emit(datain)
         self.lenSignal.emit(len(entryDataList))
