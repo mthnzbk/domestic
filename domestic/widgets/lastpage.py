@@ -1,27 +1,95 @@
-from PyQt5.QtWidgets import QWidget, QVBoxLayout, QLabel
+from PyQt5.QtWidgets import QWidget, QVBoxLayout, QLabel, QHBoxLayout, QPushButton, QSlider
 from PyQt5.QtWebKitWidgets import QWebView
+from PyQt5.QtNetwork import QNetworkRequest
+from PyQt5.QtMultimedia import QMediaContent, QMediaPlayer
 from PyQt5.QtGui import QDesktopServices
-from PyQt5.QtCore import QUrl
+from PyQt5.QtCore import QUrl, Qt
 from domestic.core.settings import Settings
+import time
 
+class PodCastPlayer(QWidget):
+    def __init__(self, parent=None):
+        super().__init__()
+        self.layout = QHBoxLayout(self)
+        self.playButton = QPushButton(self)
+        self.playButton.setText("Play")
+        self.pauseButton = QPushButton(self)
+        self.pauseButton.setText("Pause")
+        self.stopButton = QPushButton(self)
+        self.stopButton.setText("Stop")
+        self.playerProgress = QSlider(self)
+        self.playerProgress.setOrientation(Qt.Horizontal)
+        self.playerProgress.setValue(0)
+        self.timeLabel = QLabel(self)
+        self.timeLabel.setText("00:00")
+        self.durationLabel = QLabel(self)
+        self.durationLabel.setText("00:00")
+
+        self.layout.addWidget(self.playButton)
+        self.layout.addWidget(self.pauseButton)
+        self.layout.addWidget(self.stopButton)
+        self.layout.addWidget(self.timeLabel)
+        self.layout.addWidget(self.playerProgress)
+        self.layout.addWidget(self.durationLabel)
+
+        self.mediaPlayer = QMediaPlayer(self)
+        self.mediaPlayer.setVolume(100)
+
+        self.playButton.clicked.connect(self.play)
+        self.pauseButton.clicked.connect(self.pause)
+        self.stopButton.clicked.connect(self.stop)
+
+        self.mediaPlayer.durationChanged.connect(self.playerProgress.setMaximum)
+        self.mediaPlayer.durationChanged.connect(self.setDurationLabel)
+        self.mediaPlayer.positionChanged.connect(self.setTimeLabel)
+        self.mediaPlayer.positionChanged.connect(self.playerProgress.setValue)
+
+    def setDurationLabel(self, duration):
+        self.durationLabel.setText(time.strftime("%H:%M:%S", time.gmtime(duration/1000)))
+
+    def setTimeLabel(self, pos):
+        self.timeLabel.setText(time.strftime("%H:%M:%S", time.gmtime(pos/1000)))
+
+    def addMedia(self, media):
+        url = QUrl(media)
+        self.playerProgress.setValue(0)
+        self.timeLabel.setText("00:00")
+        self.durationLabel.setText("00:00")
+        self.mediaPlayer.setMedia(QMediaContent(QNetworkRequest(url)))
+
+    def play(self):
+        self.mediaPlayer.play()
+
+    def pause(self):
+        self.mediaPlayer.pause()
+
+    def stop(self):
+        self.mediaPlayer.stop()
 
 class LastPage(QWidget):
     def __init__(self, parent=None):
         super(QWidget, self).__init__(parent)
-        self.Layout = QVBoxLayout(self)
-        self.Layout.setContentsMargins(0, 0, 0, 0)
+        self.layout = QVBoxLayout(self)
+        self.layout.setContentsMargins(0, 0, 0, 0)
         self.browser = QWebView(self)
         self.browser.resize(Settings.value("ToolWebView/size"))
         self.infoLabel = QLabel(self)
         self.infoLabel.linkActivated.connect(self.linkClick)
-        self.Layout.addWidget(self.infoLabel)
-        self.Layout.addWidget(self.browser)
+        self.player = PodCastPlayer(self)
+        self.player.hide()
+
+        self.layout.addWidget(self.infoLabel)
+        self.layout.addWidget(self.player)
+        self.layout.addWidget(self.browser)
 
     def insertEntry(self, item):
         self.infoLabel.setText(self.tr("""<p><a style='font-size:13pt; font-weight:bold' href='{}'>{}</a> - <span>Date: {}</span></p>
         <p>Author: {} | Category: {}</p>""").format(item.getEntryUrl(), item.getEntryTitle(), item.getEntryDateTime(),
             item.getEntryAuthor(), item.getEntryCategory()))
         self.browser.setHtml(item.getEntryContent())
+        if not item.getEnclosureUrl() is None:
+            self.player.show()
+            self.player.addMedia(item.getEnclosureUrl())
 
     def linkClick(self, url):
         QDesktopServices.openUrl(QUrl(url))
