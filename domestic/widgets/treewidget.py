@@ -38,12 +38,12 @@ class TreeWidget(QTreeWidget):
             self.treeWidgetTitleSignal.emit(self.currentItem().text(0))
 
     def collapseSignal(self, item):
-        key = "TreeWidget/{}".format(item.text(0).replace(" ", "-"))
+        key = "TreeWidget/{}".format(item.title.replace(" ", "-"))
         Settings.setValue(key, 0)
         Settings.sync()
 
     def expandSignal(self, item):
-        key = "TreeWidget/{}".format(item.text(0).replace(" ", "-"))
+        key = "TreeWidget/{}".format(item.title.replace(" ", "-"))
         Settings.setValue(key, 1)
         Settings.sync()
 

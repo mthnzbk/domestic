@@ -99,63 +99,68 @@ class EntryItem(QTreeWidgetItem):
     def __init__(self, parent=None):
         super(QTreeWidgetItem, self).__init__(parent)
 
-    def id(self, id):
-        self.id = id
+    def entryInit(self, entry):
+        self.id = entry["id"]
+        self.feedurl = entry["feed_url"]
 
-    def feedUrl(self, url):
-        self.feedurl = url
+        self.feedtitle = entry["feed_title"]
+        self.setText(0, self.feedtitle)
+        self.setToolTip(0, self.feedtitle)
+
+        self.entryurl= entry["entry_url"]
+
+        self.entrytitle = entry["entry_title"]
+        self.setText(1, self.entrytitle)
+        self.setToolTip(1, self.entrytitle)
+
+        self.entryauthor = entry["entry_author"]
+        self.setText(2, self.entryauthor)
+        self.setToolTip(2, self.entryauthor)
+
+        self.entrycategory = entry["entry_category"]
+        self.setText(3, self.entrycategory)
+        self.setToolTip(3, self.entrycategory)
+
+        self.entrydatetime = entry["entry_datetime"]
+        self.setText(4, self.entrydatetime)
+        self.setToolTip(4, self.entrydatetime)
+
+        self.entrycontent = entry["entry_content"]
+        self.enclosureUrl = entry["enclosure_url"]
+        self.enclosureType = entry["enclosure_type"]
+        self.enclosureLength = entry["enclosure_length"]
+
+        self.isstore, self.istrash, self.iscache = entry["isstore"], entry["istrash"], entry["iscache"]
 
     def getFeedUrl(self):
         return self.feedurl
 
-    def feedTitle(self, title):
-        self.feedtitle = title
-        self.setText(0, title)
-        self.setToolTip(0, title)
-
     def getFeedTitle(self):
         return  self.feedtitle
-
-    def entryUrl(self, url):
-        self.entryurl= url
 
     def getEntryUrl(self):
         return self.entryurl
 
-    def entryTitle(self, title):
-        self.entrytitle = title
-        self.setText(1, title)
-        self.setToolTip(1, title)
-
     def getEntryTitle(self):
         return self.entrytitle
-
-    def entryAuthor(self, author):
-        self.entryauthor = author
-        self.setText(2, author)
-        self.setToolTip(2, author)
 
     def getEntryAuthor(self):
         return self.entryauthor
 
-    def entryCategory(self, category):
-        self.entrycategory = category
-        self.setText(3, category)
-        self.setToolTip(3, category)
-
     def getEntryCategory(self):
         return  self.entrycategory
-
-    def entryDateTime(self, datetime):
-        self.entrydatetime = datetime
-        self.setText(4, datetime)
-        self.setToolTip(4, datetime)
 
     def getEntryDateTime(self):
         return self.entrydatetime
 
-    def entryContent(self, content):
-        self.entrycontent = content
-
     def getEntryContent(self):
         return self.entrycontent
+
+    def getEnclosureUrl(self):
+        return self.enclosureUrl
+
+    def getEnclosureType(self):
+        return self.enclosureType
+
+    def getEnclosureLength(self):
+        return self.enclosureLength

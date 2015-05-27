@@ -46,8 +46,6 @@ class FirstPage(QWidget):
         if len(entryList):
             for entry in entryList:
                 item = EntryItem(self.treeWidget)
-                item.id(entry[0]), item.feedUrl(entry[1]), item.feedTitle(entry[2]), item.entryUrl(entry[3]), item.entryTitle(entry[4])
-                item.entryAuthor(entry[5]), item.entryCategory(entry[6]), item.entryDateTime(entry[7]), item.entryContent(entry[8])
-                item.isstore, item.istrash, item.iscache = entry[9], entry[10], entry[11]
+                item.entryInit(entry)
         else:
             self.treeWidget.clear()
