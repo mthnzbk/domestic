@@ -12,11 +12,11 @@ class PodCastPlayer(QWidget):
         super().__init__()
         self.layout = QHBoxLayout(self)
         self.playButton = QPushButton(self)
-        self.playButton.setText("Play")
+        self.playButton.setText(self.tr("Play"))
         self.pauseButton = QPushButton(self)
-        self.pauseButton.setText("Pause")
+        self.pauseButton.setText(self.tr("Pause"))
         self.stopButton = QPushButton(self)
-        self.stopButton.setText("Stop")
+        self.stopButton.setText(self.tr("Stop"))
         self.playerProgress = QSlider(self)
         self.playerProgress.setOrientation(Qt.Horizontal)
         self.playerProgress.setValue(0)
@@ -38,6 +38,8 @@ class PodCastPlayer(QWidget):
         self.playButton.clicked.connect(self.play)
         self.pauseButton.clicked.connect(self.pause)
         self.stopButton.clicked.connect(self.stop)
+
+        self.playerProgress.sliderMoved.connect(self.mediaPlayer.setPosition)
 
         self.mediaPlayer.durationChanged.connect(self.playerProgress.setMaximum)
         self.mediaPlayer.durationChanged.connect(self.setDurationLabel)

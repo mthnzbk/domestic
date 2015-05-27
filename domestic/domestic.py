@@ -201,6 +201,7 @@ class MainWindow(QMainWindow):
                 for item in itemAll:
                     index = self.page.treeWidget.indexOfTopLevelItem(item)
                     self.page.treeWidget.takeTopLevelItem(index)
+                    QApplication.processEvents()
             else:
                 QMessageBox.warning(self, self.tr("Warning!"), self.tr("Selection has not done!"))
         elif self.treeWidget.hasFocus():
@@ -244,6 +245,7 @@ class MainWindow(QMainWindow):
                 for item in itemAll:
                     index = self.page.treeWidget.indexOfTopLevelItem(item)
                     self.page.treeWidget.takeTopLevelItem(index)
+                    QApplication.processEvents()
             else:
                 QMessageBox.warning(self, self.tr("Warning!"), self.tr("These are already stored."))
         else:
@@ -316,7 +318,7 @@ def main():
     translator.load(os.join(mainPath, "languages", "{}.qm".format(LOCALE)))
     app.installTranslator(translator)
     app.setApplicationName(app.tr("Domestic Reader"))
-    app.setApplicationVersion("0.3.3.2")
+    app.setApplicationVersion("0.4.3.7")
 
     initialSettings()
     initialDb()
