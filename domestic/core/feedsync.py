@@ -2,9 +2,7 @@ import time
 from PyQt5.QtWidgets import QApplication
 from PyQt5.QtCore import QThread, pyqtSignal
 from feedparser import parse
-
 from domestic.core.database import ReaderDb
-
 
 class GetEntry(object):
     def __init__(self, entry, feed):
@@ -12,7 +10,9 @@ class GetEntry(object):
         self.feed = feed
 
     def getPublish(self):
-        return time.strftime("%d.%m.%Y %H:%M", self.entry.published_parsed)
+        if self.entry.get("published_parsed"):
+            return time.strftime("%d.%m.%Y %H:%M", self.entry.published_parsed)
+        else: return ""
 
     def getFeedUrl(self):
         return self.feed.href

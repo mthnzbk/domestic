@@ -216,9 +216,15 @@ class MainWindow(QMainWindow):
                         db.execute("delete from folders where feed_url=?", (items[0].feed_url,))
                         db.commit()
                         db.close()
-                        index = self.treeWidget.indexOfTopLevelItem(items[0])
-                        self.treeWidget.takeTopLevelItem(index)
-                if isinstance(items[0], FolderItem):
+                        if isinstance(items[0]._parent, FolderItem):
+                            parent = items[0]._parent
+                            index = parent.indexOfChild(items[0])
+                            print(parent)
+                            parent.takeChild(index)
+                        else:
+                            index = self.treeWidget.indexOfTopLevelItem(items[0])
+                            self.treeWidget.takeTopLevelItem(index)
+                elif isinstance(items[0], FolderItem):
                     db = ReaderDb()
                     db.execute("select * from folders where parent=?", (items[0].id,))
                     if db.cursor.fetchone():
