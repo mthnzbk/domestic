@@ -87,7 +87,7 @@ class FeedAddDialog(QDialog):
         if not url is None:
             with urlopen(url) as favicon:
                 return sql.Binary(favicon.read())
-        else: None
+        else: return None
 
     def feedControl(self):
         feed = isFeed(self.lineEditURI.text())
