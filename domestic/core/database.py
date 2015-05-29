@@ -35,7 +35,7 @@ def initialDb():
         iscache integer default 1,
         enclosure_length text,
         enclosure_type text,
-        enclosure_url text,
+        enclosure_url text
         );"""
         createDb.executescript(sqlcode)
         createDb.commit()
