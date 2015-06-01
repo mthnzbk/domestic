@@ -9,6 +9,12 @@ class GetEntry(object):
         self.entry = entry
         self.feed = feed
 
+    def getEntryData(self):
+        entryData = (self.getFeedUrl(), self.getFeedTitle(), self.getLink(), self.getTitle(),
+                     self.getAuthor(), self.getCategory(), self.getPublish(), self.getContent(),
+                     self.getEnclosureLength(), self.getEnclosureType(), self.getEnclosureUrl())
+        return entryData
+
     def getPublish(self):
         if self.entry.get("published_parsed"):
             return time.strftime("%d.%m.%Y %H:%M", self.entry.published_parsed)
@@ -81,32 +87,25 @@ class FeedSync(QThread):
 
     isData = pyqtSignal(bool)
     lenSignal = pyqtSignal(int)
+    entryLength = 0
     def run(self):
         feedData = parse(self.feed["feed_url"])
         entries = feedData.entries
         db = ReaderDb()
         datain = False
-        entryDataList = []
         for entry in entries:
             control = db.execute("select * from store where entry_url=?", (entry.link,))
             data = control.fetchone()
             if data:
-                print("{} mevcut".format(feedData.feed.title))
                 break
             elif not data:
-                QApplication.processEvents()
-                print(entry.link, "eklendi.")
                 datain = True
                 getEntry = GetEntry(entry, feedData)
-                entryData = (getEntry.getFeedUrl(), getEntry.getFeedTitle(), getEntry.getLink(), getEntry.getTitle(),
-                             getEntry.getAuthor(), getEntry.getCategory(), getEntry.getPublish(), getEntry.getContent(),
-                             getEntry.getEnclosureLength(), getEntry.getEnclosureType(), getEntry.getEnclosureUrl())
-                entryDataList.append(entryData)
-            else: print("entry girilmedi.", entry.link)
-        db.executemany("""insert into store (feed_url, feed_title, entry_url, entry_title, entry_author, entry_category,
-                      entry_datetime, entry_content, enclosure_length, enclosure_type, enclosure_url)
-                      values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""", entryDataList)
+                self.entryLength += 1
+                db.execute("""insert into store (feed_url, feed_title, entry_url, entry_title, entry_author, entry_category,
+                          entry_datetime, entry_content, enclosure_length, enclosure_type, enclosure_url)
+                          values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""", getEntry.getEntryData())
         db.commit()
         self.isData.emit(datain)
-        self.lenSignal.emit(len(entryDataList))
+        self.lenSignal.emit(self.entryLength)
         db.close()

@@ -13,6 +13,9 @@ from domestic import resource
 mainPath = os.abspath(os.dirname(__file__))
 
 class MainWindow(QMainWindow):
+
+    syncSignal = pyqtSignal()
+
     def __init__(self, parent=None):
         super(QMainWindow, self).__init__(parent)
         self.resize(Settings.value("MainWindow/size"))
@@ -112,8 +115,6 @@ class MainWindow(QMainWindow):
             self.counter = 0
             self.newscount = 0
             self.threadControlTimer.timeout.disconnect()
-        else:
-            print("Thread devam ediyor.")
 
     counter = 0
     def threadProgress(self):
@@ -125,7 +126,6 @@ class MainWindow(QMainWindow):
                 self.hide()
         event.accept()
 
-    syncSignal = pyqtSignal()
     def closeEvent(self, event):
         Settings.setValue("MainWindow/size", self.size())
         Settings.setValue("MainWindow/position", self.pos())
@@ -154,8 +154,8 @@ class MainWindow(QMainWindow):
         feed = control.fetchone()
         thread = FeedSync(self)
         thread.feedAdd(feed)
-        thread.start()
         thread.finished.connect(self.syncSignal)
+        thread.start()
 
     lenFeeds = 0
     def allUpdate(self):
@@ -168,11 +168,11 @@ class MainWindow(QMainWindow):
         for feedurl in feedList:
             thread = FeedSync(self)
             thread.feedAdd(feedurl)
-            thread.start()
             thread.finished.connect(self.syncSignal)
             thread.isData.connect(self.statusbar.setProgress)
             thread.lenSignal.connect(self.lenNews)
             thread.isData.connect(self.threadProgress)
+            thread.start()
 
     newscount = 0
     def lenNews(self, len):
@@ -185,20 +185,16 @@ class MainWindow(QMainWindow):
         media.play()
 
     def feedDelete(self):
+        db = ReaderDb()
         if self.page.treeWidget.hasFocus():
             itemAll = self.page.treeWidget.selectedItems()
-            item_list = [(item.getEntryUrl(),) for item in itemAll]
-            db = ReaderDb()
             if len(itemAll):
-                if self.treeWidget.currentItem() == self.treeWidget.deletedFolder:
-                    db.executemany("update store set istrash=-1, iscache=0, isstore=0, entry_content='' where entry_url=?", item_list)
-                    db.commit()
-                    db.close()
-                else:
-                    db.executemany("update store set istrash=1, iscache=0, isstore=0 where entry_url=?", item_list)
-                    db.commit()
-                    db.close()
                 for item in itemAll:
+                    if self.treeWidget.currentItem() == self.treeWidget.deletedFolder:
+                        db.execute("update store set istrash=-1, iscache=0, isstore=0, entry_content='' where entry_url=?",
+                                       (item.getEntryUrl(),))
+                    else:
+                        db.execute("update store set istrash=1, iscache=0, isstore=0 where entry_url=?", (item.getEntryUrl(),))
                     index = self.page.treeWidget.indexOfTopLevelItem(item)
                     self.page.treeWidget.takeTopLevelItem(index)
                     QApplication.processEvents()
@@ -210,45 +206,36 @@ class MainWindow(QMainWindow):
                 if isinstance(items[0], FeedItem):
                     box = QMessageBox.question(self, self.tr("Are you sure?"),
                                                self.tr("Do you want to delete the {} feed?").format(items[0].title))
-                    print(box)
                     if box == 16384:
-                        db = ReaderDb()
                         db.execute("delete from folders where feed_url=?", (items[0].feed_url,))
-                        db.commit()
-                        db.close()
                         if isinstance(items[0]._parent, FolderItem):
                             parent = items[0]._parent
                             index = parent.indexOfChild(items[0])
-                            print(parent)
                             parent.takeChild(index)
                         else:
                             index = self.treeWidget.indexOfTopLevelItem(items[0])
                             self.treeWidget.takeTopLevelItem(index)
                 elif isinstance(items[0], FolderItem):
-                    db = ReaderDb()
                     db.execute("select * from folders where parent=?", (items[0].id,))
                     if db.cursor.fetchone():
                         QMessageBox.warning(self, self.tr("Warning!"), self.tr("Before, you empty for the directory!"))
                     else:
                         db.execute("delete from folders where id=?", (items[0].id,))
-                        db.commit()
                         index = self.treeWidget.indexOfTopLevelItem(items[0])
                         self.treeWidget.takeTopLevelItem(index)
-                    db.close()
         else:
             QMessageBox.warning(self, self.tr("Warning!"), self.tr("Selection has not done!"))
+        db.commit()
+        db.close()
         self.syncSignal.emit()
 
     def feedStore(self):
         itemAll = self.page.treeWidget.selectedItems()
         db = ReaderDb()
         if len(itemAll):
-            item_list = [(item.getEntryUrl(),) for item in itemAll]
             if self.treeWidget.currentItem() != self.treeWidget.storeFolder:
-                db.executemany("update store set istrash=0, iscache=0, isstore=1 where entry_url=?", item_list)
-                db.commit()
-                db.close()
                 for item in itemAll:
+                    db.execute("update store set istrash=0, iscache=0, isstore=1 where entry_url=?", (item.getEntryUrl(),))
                     index = self.page.treeWidget.indexOfTopLevelItem(item)
                     self.page.treeWidget.takeTopLevelItem(index)
                     QApplication.processEvents()
@@ -256,6 +243,8 @@ class MainWindow(QMainWindow):
                 QMessageBox.warning(self, self.tr("Warning!"), self.tr("These are already stored."))
         else:
             QMessageBox.warning(self, self.tr("Warning!"), self.tr("Selection has not done!"))
+        db.commit()
+        db.close()
         self.syncSignal.emit()
 
     def exportFileDialog(self):

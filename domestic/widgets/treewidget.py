@@ -73,7 +73,6 @@ class TreeWidget(QTreeWidget):
                 self.parent.syncSignal.connect(item.folderClick)
                 key = "TreeWidget/{}".format(item.title.replace(" ", "-"))
                 if Settings.value(key) != None:
-                    print(Settings.value(key))
                     item.setExpanded(int(Settings.value(key)))
                 self.categoryList.append(item)
                 self.categorySorting(folder["id"], item)
