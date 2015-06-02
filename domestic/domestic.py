@@ -86,7 +86,7 @@ class MainWindow(QMainWindow):
         self.menuHelp.actionAbout.triggered.connect(self.aboutDialog)
         self.menuFeeds.actionDelete.triggered.connect(self.feedDelete)
         self.menuFeeds.actionStoreAdd.triggered.connect(self.feedStore)
-        self.menuFeeds.actionAllUpdate.triggered.connect(self.allUpdate)
+        self.menuFeeds.actionAllUpdate.triggered.connect(self.allUpdateTimer)
         self.menuFeeds.actionInfo.triggered.connect(self.infoDialog)
 
         self.treeWidget.folderClicked.connect(self.page.entryList)
@@ -99,7 +99,7 @@ class MainWindow(QMainWindow):
         self.threadControlTimer.start(1000)
 
         self.upTimer = QTimer(self)
-        self.upTimer.start(1000*60*3)
+        self.upTimer.start(1000*60*4)
         self.upTimer.timeout.connect(self.allUpdateTimer)
 
     def allUpdateTimer(self):
@@ -115,6 +115,7 @@ class MainWindow(QMainWindow):
             self.counter = 0
             self.newscount = 0
             self.threadControlTimer.timeout.disconnect()
+            self.syncSignal.emit()
 
     counter = 0
     def threadProgress(self):
@@ -168,7 +169,6 @@ class MainWindow(QMainWindow):
         for feedurl in feedList:
             thread = FeedSync(self)
             thread.feedAdd(feedurl)
-            thread.finished.connect(self.syncSignal)
             thread.isData.connect(self.statusbar.setProgress)
             thread.lenSignal.connect(self.lenNews)
             thread.isData.connect(self.threadProgress)

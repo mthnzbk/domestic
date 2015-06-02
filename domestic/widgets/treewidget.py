@@ -52,14 +52,14 @@ class TreeWidget(QTreeWidget):
         self.unreadFolder.type = "static"
         self.unreadFolder.setIcon(0, QIcon(":/images/icons/folder_home.png"))
         self.unreadFolder.setText(0, self.tr("Unread"))
-        self.deletedFolder = QTreeWidgetItem(self)
-        self.deletedFolder.type = "static"
-        self.deletedFolder.setIcon(0, QIcon(":/images/icons/trash_empty.png"))
-        self.deletedFolder.setText(0, self.tr("Deleted"))
         self.storeFolder = QTreeWidgetItem(self)
         self.storeFolder.type = "static"
         self.storeFolder.setIcon(0, QIcon(":/images/icons/folder_tar.png"))
         self.storeFolder.setText(0, self.tr("Stored"))
+        self.deletedFolder = QTreeWidgetItem(self)
+        self.deletedFolder.type = "static"
+        self.deletedFolder.setIcon(0, QIcon(":/images/icons/trash_empty.png"))
+        self.deletedFolder.setText(0, self.tr("Deleted"))
 
     categoryList = []
     def categorySorting(self, id=0, treeitem=None):
