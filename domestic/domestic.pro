@@ -12,5 +12,6 @@ SOURCES += widgets/treewidget.py
 SOURCES += widgets/systemtray.py
 SOURCES += dialogs/infodialog.py
 SOURCES += dialogs/progressdialog.py
+SOURCES += dialogs/downloaddialog.py
 TRANSLATIONS += languages/en_US.ts
 TRANSLATIONS += languages/tr_TR.ts

@@ -115,6 +115,27 @@
     </message>
 </context>
 <context>
+    <name>CustomListItem</name>
+    <message>
+        <location filename="dialogs/downloaddialog.py" line="62"/>
+        <source>Downloading...</source>
+        <translation>Downloading...</translation>
+    </message>
+    <message>
+        <location filename="dialogs/downloaddialog.py" line="101"/>
+        <source>Downloaded.</source>
+        <translation>Downloaded.</translation>
+    </message>
+</context>
+<context>
+    <name>DownloaderDialog</name>
+    <message>
+        <location filename="dialogs/downloaddialog.py" line="107"/>
+        <source>Domestic Downloader</source>
+        <translation>Domestic Downloader</translation>
+    </message>
+</context>
+<context>
     <name>FeedAddDialog</name>
     <message>
         <location filename="dialogs/feedadd.py" line="27"/>
@@ -157,12 +178,12 @@
         <translation>Enter link or source of feed:</translation>
     </message>
     <message>
-        <location filename="dialogs/feedadd.py" line="104"/>
+        <location filename="dialogs/feedadd.py" line="107"/>
         <source>&lt;span style=&apos;color:red; font-size:15px; font-weight:bold;&apos;&gt;That feed is already exist!&lt;/span&gt;</source>
         <translation>&lt;span style=&apos;color:red; font-size:15px; font-weight:bold;&apos;&gt;That feed is already exist!&lt;/span&gt;</translation>
     </message>
     <message>
-        <location filename="dialogs/feedadd.py" line="107"/>
+        <location filename="dialogs/feedadd.py" line="110"/>
         <source>&lt;span style=&apos;color:red; font-size:15px; font-weight:bold;&apos;&gt;Wrong link name!&lt;/span&gt;</source>
         <translation>&lt;span style=&apos;color:red; font-size:15px; font-weight:bold;&apos;&gt;Wrong link name!&lt;/span&gt;</translation>
     </message>
@@ -292,27 +313,27 @@
 <context>
     <name>HelpMenu</name>
     <message>
-        <location filename="widgets/menu.py" line="91"/>
+        <location filename="widgets/menu.py" line="90"/>
         <source>Help</source>
         <translation>Help</translation>
     </message>
     <message>
-        <location filename="widgets/menu.py" line="107"/>
+        <location filename="widgets/menu.py" line="106"/>
         <source>Check for update</source>
         <translation>Check for update</translation>
     </message>
     <message>
-        <location filename="widgets/menu.py" line="108"/>
+        <location filename="widgets/menu.py" line="107"/>
         <source>Submit Feedback</source>
         <translation>Submit Feedback</translation>
     </message>
     <message>
-        <location filename="widgets/menu.py" line="109"/>
+        <location filename="widgets/menu.py" line="108"/>
         <source>About Qt</source>
         <translation>About Qt</translation>
     </message>
     <message>
-        <location filename="widgets/menu.py" line="110"/>
+        <location filename="widgets/menu.py" line="109"/>
         <source>About</source>
         <translation>About</translation>
     </message>
@@ -362,7 +383,7 @@
         </translation>
     </message>
     <message>
-        <location filename="widgets/lastpage.py" line="88"/>
+        <location filename="widgets/lastpage.py" line="102"/>
         <source>&lt;p&gt;&lt;a style=&apos;font-size:13pt; font-weight:bold&apos; href=&apos;{}&apos;&gt;{}&lt;/a&gt; - &lt;span&gt;Date: {}&lt;/span&gt;&lt;/p&gt;
         &lt;p&gt;Author: {} | Category: {}&lt;/p&gt;</source>
         <translation>&lt;p&gt;&lt;a style=&apos;font-size:13pt; font-weight:bold&apos; href=&apos;{}&apos;&gt;{}&lt;/a&gt; - &lt;span&gt;Date: {}&lt;/span&gt;&lt;/p&gt;
@@ -372,12 +393,12 @@
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="domestic.py" line="72"/>
+        <location filename="domestic.py" line="75"/>
         <source>Entries</source>
         <translation>Entries</translation>
     </message>
     <message>
-        <location filename="domestic.py" line="73"/>
+        <location filename="domestic.py" line="76"/>
         <source>Content</source>
         <translation>Content</translation>
     </message>
@@ -397,37 +418,37 @@
         <translation>These are already stored.</translation>
     </message>
     <message>
-        <location filename="domestic.py" line="211"/>
+        <location filename="domestic.py" line="214"/>
         <source>Are you sure?</source>
         <translation>Are you sure?</translation>
     </message>
     <message>
-        <location filename="domestic.py" line="211"/>
+        <location filename="domestic.py" line="214"/>
         <source>Do you want to delete the {} feed?</source>
         <translation>Do you want to delete the {} feed?</translation>
     </message>
     <message>
-        <location filename="domestic.py" line="281"/>
+        <location filename="domestic.py" line="283"/>
         <source>Domestic File</source>
         <translation>Domestic File</translation>
     </message>
     <message>
-        <location filename="domestic.py" line="281"/>
+        <location filename="domestic.py" line="283"/>
         <source>Domestic file (*.dfx)</source>
         <translation>Domestic file (*.dfx)</translation>
     </message>
     <message>
-        <location filename="domestic.py" line="225"/>
+        <location filename="domestic.py" line="228"/>
         <source>Before, you empty for the directory!</source>
         <translation>Before, you empty for the directory!</translation>
     </message>
     <message>
-        <location filename="domestic.py" line="109"/>
+        <location filename="domestic.py" line="119"/>
         <source>Recent News</source>
         <translation>Recent News</translation>
     </message>
     <message>
-        <location filename="domestic.py" line="109"/>
+        <location filename="domestic.py" line="119"/>
         <source>{} fresh news.</source>
         <translation>{} fresh news.</translation>
     </message>
@@ -435,19 +456,24 @@
 <context>
     <name>PodCastPlayer</name>
     <message>
-        <location filename="widgets/lastpage.py" line="15"/>
+        <location filename="widgets/lastpage.py" line="18"/>
         <source>Play</source>
         <translation>Play</translation>
     </message>
     <message>
-        <location filename="widgets/lastpage.py" line="17"/>
+        <location filename="widgets/lastpage.py" line="20"/>
         <source>Pause</source>
         <translation>Pause</translation>
     </message>
     <message>
-        <location filename="widgets/lastpage.py" line="19"/>
+        <location filename="widgets/lastpage.py" line="22"/>
         <source>Stop</source>
         <translation>Stop</translation>
+    </message>
+    <message>
+        <location filename="widgets/lastpage.py" line="32"/>
+        <source>Download</source>
+        <translation>Download</translation>
     </message>
 </context>
 <context>
@@ -514,12 +540,12 @@
         <translation>Tools</translation>
     </message>
     <message>
-        <location filename="widgets/menu.py" line="84"/>
+        <location filename="widgets/menu.py" line="83"/>
         <source>Options</source>
         <translation>Options</translation>
     </message>
     <message>
-        <location filename="widgets/menu.py" line="86"/>
+        <location filename="widgets/menu.py" line="85"/>
         <source>Downloads</source>
         <translation>Downloads</translation>
     </message>
@@ -527,17 +553,17 @@
 <context>
     <name>TreeWidget</name>
     <message>
-        <location filename="widgets/treewidget.py" line="126"/>
+        <location filename="widgets/treewidget.py" line="125"/>
         <source>Unread</source>
         <translation>Unread</translation>
     </message>
     <message>
-        <location filename="widgets/treewidget.py" line="144"/>
+        <location filename="widgets/treewidget.py" line="143"/>
         <source>Deleted</source>
         <translation>Deleted</translation>
     </message>
     <message>
-        <location filename="widgets/treewidget.py" line="162"/>
+        <location filename="widgets/treewidget.py" line="161"/>
         <source>Stored</source>
         <translation>Stored</translation>
     </message>
@@ -562,17 +588,17 @@
         <translation type="obsolete">Stored ({})</translation>
     </message>
     <message>
-        <location filename="widgets/treewidget.py" line="125"/>
+        <location filename="widgets/treewidget.py" line="124"/>
         <source>({}) Unread</source>
         <translation>({}) Unread</translation>
     </message>
     <message>
-        <location filename="widgets/treewidget.py" line="143"/>
+        <location filename="widgets/treewidget.py" line="142"/>
         <source>({}) Deleted</source>
         <translation>({}) Deleted</translation>
     </message>
     <message>
-        <location filename="widgets/treewidget.py" line="161"/>
+        <location filename="widgets/treewidget.py" line="160"/>
         <source>({}) Stored</source>
         <translation>({}) Stored</translation>
     </message>
@@ -585,7 +611,7 @@
         <translation type="obsolete">Domestic RSS Reader</translation>
     </message>
     <message>
-        <location filename="domestic.py" line="320"/>
+        <location filename="domestic.py" line="325"/>
         <source>Domestic Reader</source>
         <translation>Domestic Reader</translation>
     </message>
