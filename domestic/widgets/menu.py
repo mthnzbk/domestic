@@ -78,7 +78,6 @@ class ToolsMenu(QMenu):
         self.addSeparator()
         self.addAction(self.actionSettings)
 
-        self.actionDownloaded.setEnabled(False)
         self.actionSettings.setEnabled(False)
 
         self.actionSettings.setText(self.tr("Options"))

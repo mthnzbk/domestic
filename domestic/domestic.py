@@ -46,7 +46,7 @@ class MainWindow(QMainWindow):
 
         self.page = FirstPage(self.toolBox)
         self.toolBox.addItem(self.page, "")
-        self.page2 = LastPage(self.toolBox)
+        self.page2 = LastPage(self)
         self.toolBox.addItem(self.page2, "")
 
         self.menubar = QMenuBar(self)
@@ -89,6 +89,8 @@ class MainWindow(QMainWindow):
         self.menuFeeds.actionAllUpdate.triggered.connect(self.allUpdateTimer)
         self.menuFeeds.actionInfo.triggered.connect(self.infoDialog)
 
+        self.menuTools.actionDownloaded.triggered.connect(self.downloadDialogShow)
+
         self.treeWidget.folderClicked.connect(self.page.entryList)
         self.treeWidget.setFocus()
 
@@ -101,6 +103,11 @@ class MainWindow(QMainWindow):
         self.upTimer = QTimer(self)
         self.upTimer.start(1000*60*4)
         self.upTimer.timeout.connect(self.allUpdateTimer)
+
+        # Downloader Dialog
+
+        self.downloadDialog = DownloaderDialog(self)
+        self.page2.player.downloadButton.clicked.connect(self.downloadDialogShow)
 
     def allUpdateTimer(self):
         self.allUpdate()
@@ -305,6 +312,9 @@ class MainWindow(QMainWindow):
     def feedFolderAdd(self):
         f = FolderDialog(self)
         f.show()
+
+    def downloadDialogShow(self):
+        self.downloadDialog.show()
 
 def main():
     app = QApplication(sys.argv)
