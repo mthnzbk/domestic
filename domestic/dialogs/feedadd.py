@@ -4,6 +4,12 @@ from domestic.core import ReaderDb, isFeed, feedInfo
 from bs4 import BeautifulSoup
 from urllib.request import urlopen
 from urllib.parse import urljoin
+import ssl
+
+
+if hasattr(ssl, '_create_unverified_context'):
+    ssl._create_default_https_context = ssl._create_unverified_context
+
 
 class FeedAddDialog(QDialog):
     def __init__(self, parent=None):
