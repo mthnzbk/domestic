@@ -77,15 +77,13 @@ class FeedAddDialog(QDialog):
         try:
             with urlopen(url) as html:
                 html = BeautifulSoup(html.read())
-                try:
-                    if not html.find(rel="shortcut icon") is None:
-                        favicon_url = html.find(rel="shortcut icon")["href"]
-                    elif not html.find(rel="icon")["href"] is None:
-                        favicon_url = html.find(rel="icon")["href"]
-                    return urljoin(url, favicon_url)
-                except TypeError:
-                    return None
-        except:
+
+                if not html.find(rel="shortcut icon") is None:
+                    favicon_url = html.find(rel="shortcut icon")["href"]
+                elif not html.find(rel="icon")["href"] is None:
+                    favicon_url = html.find(rel="icon")["href"]
+                return urljoin(url, favicon_url)
+        except TypeError:
             return None
 
     def getFavicon(self, url):

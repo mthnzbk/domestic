@@ -16,16 +16,17 @@ class Thread(QThread):
         self.file = file
 
     def faviconUrl(self, url):
-        with urlopen(url) as html:
-            html = BeautifulSoup(html.read())
-            try:
+        try:
+            with urlopen(url) as html:
+                html = BeautifulSoup(html.read())
+
                 if not html.find(rel="shortcut icon") is None:
                     favicon_url = html.find(rel="shortcut icon")["href"]
                 elif not html.find(rel="icon")["href"] is None:
                     favicon_url = html.find(rel="icon")["href"]
                 return urljoin(url, favicon_url)
-            except TypeError:
-                return None
+        except TypeError:
+            return None
 
     def getFavicon(self, url):
         import sqlite3 as sql
