@@ -83,7 +83,7 @@ class FeedAddDialog(QDialog):
                 elif not html.find(rel="icon")["href"] is None:
                     favicon_url = html.find(rel="icon")["href"]
                 return urljoin(url, favicon_url)
-        except TypeError:
+        except:
             return None
 
     def getFavicon(self, url):

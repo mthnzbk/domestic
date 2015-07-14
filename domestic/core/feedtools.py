@@ -5,6 +5,8 @@ def isFeed(link):
     if feed.bozo:
         if type(feed.bozo_exception) == feedparser.CharacterEncodingOverride:
             return True
+        if type(feed.bozo_exception) == feedparser.NonXMLContentType:
+            return True
         else:
             return False
     else: return True
