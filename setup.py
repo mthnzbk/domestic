@@ -5,7 +5,7 @@ setup(
     packages = find_packages(),
     package_data = {"domestic" : ["languages/*", "images/icons/*" ,"images/*.png", "media/*"]},
     scripts = ["domestic-reader"],
-    version = "0.5.1.3",
+    version = "0.5.1.5",
     license = "GPL v3",
     description = "Free RSS/Atom Reader.",
     author = "Metehan Özbek",

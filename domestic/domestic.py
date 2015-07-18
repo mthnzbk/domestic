@@ -146,6 +146,8 @@ class MainWindow(QMainWindow):
         Settings.setValue("TreeWidgetHeader/size4",self.page.treeWidget.header().sectionSize(4))
         Settings.setValue("ToolTreeWidget/size", self.page.treeWidget.size())
         Settings.setValue("ToolWebView/size", self.page2.browser.size())
+        Settings.sync()
+        event.accept()
         sys.exit()
 
     def setWindowTitle(self, title=None):
@@ -323,7 +325,7 @@ def main():
     translator.load(os.join(mainPath, "languages", "{}.qm".format(LOCALE)))
     app.installTranslator(translator)
     app.setApplicationName(app.tr("Domestic Reader"))
-    app.setApplicationVersion("0.5.1.3")
+    app.setApplicationVersion("0.5.1.5")
 
     initialSettings()
     initialDb()
